@@ -14,6 +14,7 @@ public class Dreampult extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		//moi clown
 	}
 
 	@Override
