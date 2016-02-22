@@ -1,6 +1,7 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -11,30 +12,69 @@ public class WorldHandler {
     GameLoop game;
     OrthographicCamera camera;
 
+    float mapWidth;
+    float mapHeight;
+
+    float mapLeft;
+    float mapRight;
+    float mapBottom;
+    float mapTop;
+
+    float cameraHalfWidth;
+    float cameraHalfHeight;
+
+    float cameraLeft;
+    float cameraRight;
+    float cameraBottom;
+    float cameraTop;
+
+    /**
+     * Initialize map and camera
+     * @param gameLoop
+     */
     public WorldHandler(GameLoop gameLoop) {
         game = gameLoop;
-
         camera = game.camera;
+
+        // TODO : Tilemap based camera movement
+        //MapProperties mapProperties = tiledMap.getProperties();
+
+        //mapWidth = mapProperties.get("width", Integer.class);
+        //mapHeight = mapProperties.get("height", Integer.class);
+
+        mapWidth = game.WORLD_WIDTH;
+        mapHeight = game.WORLD_HEIGHT;
+
+
+        mapLeft = 0;
+        mapRight = 0 + mapWidth;
+        mapBottom = 0;
+        mapTop = 0 + mapHeight;
+
+        cameraHalfWidth = camera.viewportWidth * 0.5f;
+        cameraHalfHeight = camera.viewportHeight * 0.5f;
     }
 
+    /**
+     * Move camera if not near edge of game world.
+     */
     public void moveCamera() {
+        float x = game.player.body.getPosition().x;
+        float y = game.player.body.getPosition().y;
 
-        Vector2 pos = new Vector2(game.player.body.getPosition());
+        cameraLeft = x - cameraHalfWidth;
+        cameraRight = x + cameraHalfWidth;
+        cameraBottom = y - cameraHalfHeight;
+        cameraTop = y + cameraHalfHeight;
 
-        //camera.position.set(game.player.body.getPosition().x,
-               // game.player.body.getPosition().y, 0);
-
-
-
-        System.out.println(camera.position.y);
-
-        if(camera.position.y - camera.viewportHeight < 1) {
-            pos.y = camera.position.y + camera.viewportHeight / 2 - 0.5f;
+        if(cameraLeft > mapLeft && cameraRight < mapRight) {
+            camera.position.x = x;
         }
 
-        System.out.println(camera.position.y);
+        if(cameraTop < mapTop && cameraBottom > mapBottom) {
+            camera.position.y = y;
+        }
 
-        camera.position.set(pos, 0);
         camera.update();
     }
 

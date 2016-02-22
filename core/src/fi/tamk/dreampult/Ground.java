@@ -12,6 +12,10 @@ public class Ground {
     GameLoop game;
     Body body;
 
+    /**
+     * Initialize ground few pixels under the screen.
+     * @param gameLoop
+     */
     public Ground(GameLoop gameLoop) {
         this.game = gameLoop;
         body = createBodyDef();
@@ -32,5 +36,6 @@ public class Ground {
         shape.setAsBox(game.WORLD_WIDTH / 2, 0.1f);
         def.shape = shape;
         body.createFixture(def);
+        shape.dispose();
     }
 }

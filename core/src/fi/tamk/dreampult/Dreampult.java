@@ -9,12 +9,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Dreampult extends Game {
-    public final int SCREEN_WIDTH = 16;
-    public final int SCREEN_HEIGHT = 9;
+    public final int SCREEN_WIDTH = 10;
+    public final int SCREEN_HEIGHT = 5;
 
 	public SpriteBatch batch;
     public OrthographicCamera camera;
-	
+
+    /**
+     * Create and initialize Screen.
+     */
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
