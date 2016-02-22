@@ -22,6 +22,7 @@ public class GameLoop extends ScreenAdapter {
     public Player player;
     Box2DDebugRenderer debug;
     Ground ground;
+    WorldHandler worldHandler;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;
@@ -35,6 +36,7 @@ public class GameLoop extends ScreenAdapter {
         world = new World(new Vector2(0, -10f), true);
         player = new Player(world);
         ground = new Ground(this);
+        worldHandler = new WorldHandler(this);
 
     }
 
@@ -42,6 +44,8 @@ public class GameLoop extends ScreenAdapter {
     public void render(float delta) {
         game.batch.setProjectionMatrix(camera.combined);
         camera.update();
+
+        worldHandler.moveCamera();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
