@@ -28,7 +28,7 @@ public class Arrow {
      */
     public Arrow(GameLoop gameLoop) {
         game = gameLoop;
-        img = new Texture("arrow.png");
+        img = new Texture("./images/arrow.png");
         rotation = 0;
         body = createBodyDef();
         createBodyFixture();

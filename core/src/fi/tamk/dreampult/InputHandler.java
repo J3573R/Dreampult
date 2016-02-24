@@ -12,7 +12,7 @@ public class InputHandler extends InputAdapter {
     GameLoop game;
     public float point1;
     public float point2;
-    float speed = 2f;
+    //float speed = 2f;
 
     /**
      * Initialize input handler.
@@ -65,6 +65,8 @@ public class InputHandler extends InputAdapter {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        game.meter.hide();
+        float speed = game.meter.scale * 5;
         Vector2 force = new Vector2((float)Math.abs(Math.sin(game.arrow.rotation)) * speed, (float)Math.abs(Math.cos(game.arrow.rotation)) * speed);
         game.player.body.applyLinearImpulse(force, game.player.body.getWorldCenter(), true);
         game.moveArrow = true;
@@ -82,6 +84,7 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //changeArrow(screenX, screenY);
+        game.meter.show();
         game.moveArrow = false;
         return true;
     }

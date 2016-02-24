@@ -41,6 +41,7 @@ public class GameLoop extends ScreenAdapter {
     Box2DDebugRenderer debug;
     WorldHandler worldHandler;
     InputHandler inputHandler;
+    Meter meter = new Meter();
 
     Texture background;
     TextureRegion fullBackground;
@@ -83,6 +84,7 @@ public class GameLoop extends ScreenAdapter {
         debug = new Box2DDebugRenderer();
 
         world = new World(new Vector2(0, -2f), true);
+        meter = new Meter();
         player = new Player(world);
         arrow = new Arrow(this);
         moveArrow = true;
@@ -91,12 +93,12 @@ public class GameLoop extends ScreenAdapter {
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
 
-        background = new Texture("Tausta.png");
+        background = new Texture("./images/Tausta.png");
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         fullBackground = new TextureRegion(background);
         fullBackground.setRegion(0, 0, background.getWidth() * (background.getWidth() / WORLD_WIDTH), background.getHeight());
 
-        tiledMap = new TmxMapLoader().load("mappi.tmx");
+        tiledMap = new TmxMapLoader().load("./maps/mappi.tmx");
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/100f);
 
@@ -150,6 +152,8 @@ public class GameLoop extends ScreenAdapter {
         tiledMapRenderer.render();
 
         game.batch.begin();
+
+        meter.draw(game.batch);
 
         //game.batch.draw(fullBackground, 0, 0, 240, 5);
 
