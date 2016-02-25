@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Clown on 22.2.2016.
@@ -15,9 +16,14 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 public class Player {
     Texture img;
     Body body;
+    Array<Body> LeftLimbs;
+    Array<Body> RightLimbs;
     World world;
-    float width = 0.5f;
-    float height = 1.5f;
+    float width = 0.3f;
+    float height = 1f;
+
+    float limbWidth = width / 2;
+    float limbHeight = height / 2;
 
     /**
      * Create player.
@@ -26,28 +32,48 @@ public class Player {
     public Player(World world) {
         this.world = world;
         img = new Texture("./images/badlogic.jpg");
+        LeftLimbs = new Array<Body>();
+        RightLimbs = new Array<Body>();
 
         body = createBodyDef();
-        createBodyFixture(body, 2f, width, height, false);
+        createBodyFixture(body, 2f, width, height, false, 0);
 
         // TODO: Body joints tweaking
-        /*
+
+
         Body LeftArm = createBodyDef();
-        createBodyFixture(LeftArm, 0.2f, 0.3f, 1f,true);
-        createLimb(LeftArm, 0, 0.5f, 0, 0.5f, false);
+        createBodyFixture(LeftArm, 1f, limbWidth, limbHeight,true, 0);
+        createLimb(LeftArm,
+                   0, width,  // Body Origin X & Y
+                   0, limbHeight / 2 + 0.05f, // Limb Origin X & Y
+                   false); // Limit rotation
 
         Body RightArm = createBodyDef();
-        createBodyFixture(RightArm, 0.4f, 0.2f, 0.9f,true);
-        createLimb(RightArm, 0, 0.5f, 0, 0.5f, false);
+        createBodyFixture(RightArm, 1f, limbWidth, limbHeight,true, 0);
+        createLimb(RightArm,
+                0, width, // Body Origin X & Y
+                0, limbHeight / 2,  // Limb Origin X & Y
+                false);  // Limit rotation
 
         Body LeftLeg = createBodyDef();
-        createBodyFixture(LeftLeg, 0.2f, 0.3f, 1f,true);
-        createLimb(LeftLeg, 0, -0.5f, 0, 0.5f, true);
+        createBodyFixture(LeftLeg, 1f, limbWidth, limbHeight,true, 0);
+        createLimb(LeftLeg,
+                0, height / 2 * -1 + 0.1f, // Body Origin X & Y
+                0, limbHeight / 2  + 0.05f, // Limb Origin X & Y
+                true);  // Limit rotation
 
         Body RightLeg = createBodyDef();
-        createBodyFixture(RightLeg, 0.4f, 0.2f, 0.9f,true);
-        createLimb(RightLeg, 0, -0.5f, 0, 0.5f, true);
-        */
+        createBodyFixture(RightLeg, 1f, limbWidth, limbHeight,true, 0);
+        createLimb(RightLeg,
+                0, height / 2 * -1 + 0.1f, // Body Origin X & Y
+                0, limbHeight / 2, // Limb Origin X & Y
+                true);  // Limit rotation*/
+
+        LeftLimbs.add(LeftArm);
+        LeftLimbs.add(LeftLeg);
+        RightLimbs.add(RightArm);
+        RightLimbs.add(RightLeg);
+
     }
 
     /**
@@ -89,26 +115,47 @@ public class Player {
     /**
      * Create players body fixture.
      */
-    private void createBodyFixture(Body body, float density, float width, float height, boolean sensor) {
+    private void createBodyFixture(Body body, float density, float width, float height, boolean sensor, float radius) {
         FixtureDef def = new FixtureDef();
         def.density = density;
         def.friction = 5f;
         def.restitution = 0.5f;
         def.isSensor = sensor;
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2, height / 2, new Vector2(0, 0), 0);
-        def.shape = shape;
-        body.createFixture(def);
-        shape.dispose();
+        if(radius > 0) {
+            CircleShape circleShape = new CircleShape();
+            circleShape.setRadius(radius);
+            def.shape = circleShape;
+            body.createFixture(def);
+            circleShape.dispose();
+        } else {
+            PolygonShape polygonShape = new PolygonShape();
+            polygonShape.setAsBox(width / 2, height / 2, new Vector2(0, 0), 0);
+            def.shape = polygonShape;
+            body.createFixture(def);
+            polygonShape.dispose();
+        }
+
+
     }
+
 
     /**
      * Draw player position and rotation according body.
      * @param batch
      */
     public void draw(SpriteBatch batch) {
-        //System.out.println(body.getLinearVelocity().toString());
+
+        for (Body b : RightLimbs) {
+            batch.draw(img, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
+                    limbWidth / 2, limbHeight / 2, // Origin x, Origin y
+                    limbWidth, limbHeight, // Width, Height
+                    1, 1, // Scale X, Scale Y
+                    b.getAngle() * MathUtils.radiansToDegrees,    // Rotation
+                    1, 1, // srcX, srcY
+                    img.getWidth(), img.getHeight(), // srcWidth, srcHeight
+                    false, false); // flip x, flip y
+        }
         batch.draw(img, body.getPosition().x - width / 2, body.getPosition().y - height / 2, // Texture, x, y
                 width * 0.5f, height * 0.5f, // Origin x, Origin y
                 width, height, // Width, Height
@@ -117,6 +164,17 @@ public class Player {
                 1, 1, // srcX, srcY
                 img.getWidth(), img.getHeight(), // srcWidth, srcHeight
                 false, false); // flip x, flip y
+
+        for (Body b : LeftLimbs) {
+            batch.draw(img, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
+                    limbWidth / 2, limbHeight / 2, // Origin x, Origin y
+                    limbWidth, limbHeight, // Width, Height
+                    1, 1, // Scale X, Scale Y
+                    b.getAngle() * MathUtils.radiansToDegrees,    // Rotation
+                    1, 1, // srcX, srcY
+                    img.getWidth(), img.getHeight(), // srcWidth, srcHeight
+                    false, false); // flip x, flip y
+        }
     }
 
 }

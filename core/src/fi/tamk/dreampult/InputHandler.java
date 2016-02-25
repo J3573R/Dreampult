@@ -69,6 +69,7 @@ public class InputHandler extends InputAdapter {
         float speed = game.meter.scale * 5;
         Vector2 force = new Vector2((float)Math.abs(Math.sin(game.arrow.rotation)) * speed, (float)Math.abs(Math.cos(game.arrow.rotation)) * speed);
         game.player.body.applyLinearImpulse(force, game.player.body.getWorldCenter(), true);
+        game.player.body.applyAngularImpulse(-0.5f, true);
         game.moveArrow = true;
         return true;
     }
