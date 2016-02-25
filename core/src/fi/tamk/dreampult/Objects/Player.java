@@ -1,4 +1,4 @@
-package fi.tamk.dreampult;
+package fi.tamk.dreampult.Objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,33 +9,39 @@ import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
+import fi.tamk.dreampult.GameLoop;
 
 /**
  * Created by Clown on 22.2.2016.
  */
 public class Player {
+    GameLoop game;
+    World world;
     Texture img;
-    Body body;
     Array<Body> LeftLimbs;
     Array<Body> RightLimbs;
-    World world;
+
     float width = 0.3f;
     float height = 1f;
 
     float limbWidth = width / 2;
     float limbHeight = height / 2;
 
+    public Body body;
+
     /**
      * Create player.
      * @param world
      */
-    public Player(World world) {
+    public Player(World world, GameLoop game) {
         this.world = world;
-        img = new Texture("./images/badlogic.jpg");
+        this.game = game;
+        img = game.assets.get("./images/badlogic.jpg", Texture.class);
         LeftLimbs = new Array<Body>();
         RightLimbs = new Array<Body>();
 
         body = createBodyDef();
+        body.setUserData("player");
         createBodyFixture(body, 2f, width, height, false, 0);
 
         // TODO: Body joints tweaking
@@ -107,7 +113,7 @@ public class Player {
     private Body createBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(0.5f, 0.5f);
+        bodyDef.position.set(4f, 5f);
         bodyDef.bullet = true;
         return world.createBody(bodyDef);
     }
@@ -119,7 +125,7 @@ public class Player {
         FixtureDef def = new FixtureDef();
         def.density = density;
         def.friction = 5f;
-        def.restitution = 0.5f;
+        def.restitution = 0.8f;
         def.isSensor = sensor;
 
         if(radius > 0) {

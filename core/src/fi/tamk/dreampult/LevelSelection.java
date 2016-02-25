@@ -11,11 +11,11 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class LevelSelection implements Screen {
 
-    Dreampult game;
+    public Dreampult game;
 
-    OrthographicCamera camera;
+    public OrthographicCamera camera;
 
-    Texture img;
+    public Texture img;
 
     public LevelSelection(Dreampult gam, OrthographicCamera camera) {
         game = gam;
@@ -34,11 +34,11 @@ public class LevelSelection implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
 
-        if(Gdx.input.justTouched()) {
+        /*if(Gdx.input.justTouched()) {
             if (Gdx.input.isTouched()) {
-                game.setScreen(new GameLoop(game, camera));
+                game.setScreen(new GameLoop(game, game.assets.manager, camera));
             }
-        }
+        }*/
 
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

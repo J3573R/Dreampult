@@ -1,4 +1,4 @@
-package fi.tamk.dreampult;
+package fi.tamk.dreampult.Objects;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import fi.tamk.dreampult.GameLoop;
 
 /**
  * Created by Clown on 22.2.2016.
@@ -17,10 +18,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 public class Arrow {
     GameLoop game;
     Texture img;
-    Body body;
-    float width = 1f;
-    float height = 3f;
-    float rotation;
+
+    public Body body;
+    public float width = 1f;
+    public float height = 3f;
+    public float rotation;
 
     /**
      * Initialize arrow.
@@ -28,7 +30,7 @@ public class Arrow {
      */
     public Arrow(GameLoop gameLoop) {
         game = gameLoop;
-        img = new Texture("./images/arrow.png");
+        img = game.assets.get("./images/arrow.png", Texture.class);
         rotation = 0;
         body = createBodyDef();
         createBodyFixture();

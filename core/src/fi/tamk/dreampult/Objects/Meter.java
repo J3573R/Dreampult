@@ -1,33 +1,37 @@
-package fi.tamk.dreampult;
+package fi.tamk.dreampult.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import fi.tamk.dreampult.GameLoop;
+import org.w3c.dom.Text;
 
 /**
  * Created by Clown on 24.2.2016.
  */
 public class Meter {
-
-    TextureRegion meter;
-    TextureRegion meterColor;
-    float meterMax;
-    boolean show;
-    public float scale;
-
-    public float speed;
-
+    GameLoop game;
     final int UP = 1;
     final int DOWN = 2;
     int direction;
+    boolean show;
+
+    public TextureRegion meter;
+    public TextureRegion meterColor;
+    public float meterMax;
+    public float scale;
+    public float speed;
 
     /**
      * Initialize Meter variables and set default values
      */
-    public Meter() {
-        meter = new TextureRegion(new Texture("./images/meter.png"));
-        meterColor = new TextureRegion(new Texture("./images/meterColor.png"));
+    public Meter(GameLoop game) {
+        this.game = game;
+        Texture meter = game.assets.get("./images/meter.png", Texture.class);
+        this.meter = new TextureRegion(meter);
+        Texture meterColor = game.assets.get("./images/meterColor.png", Texture.class);
+        this.meterColor = new TextureRegion(meterColor);
         meterMax = 1.5f;
         speed = 3f;
         scale = 0;
