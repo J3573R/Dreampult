@@ -14,6 +14,9 @@ public class AssetHandler {
     public AssetManager manager = new AssetManager();
 
     public void loadTestMap() {
+        manager.load("./images/hahmojaba.png", Texture.class);
+        manager.load("./images/hahmojabanjalka.png", Texture.class);
+        manager.load("./images/hahmojabankasi.png", Texture.class);
         manager.load("./images/badlogic.jpg", Texture.class);
         manager.load("./images/arrow.png", Texture.class);
         manager.load("./images/meter.png", Texture.class);
