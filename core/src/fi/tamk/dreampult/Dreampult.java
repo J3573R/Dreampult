@@ -24,6 +24,7 @@ public class Dreampult extends Game {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 		setScreen(new GameLoop(this, camera));
+		//setScreen(new LevelSelection(this, camera));
 	}
 
 	@Override
