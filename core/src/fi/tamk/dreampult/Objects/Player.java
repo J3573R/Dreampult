@@ -61,7 +61,7 @@ public class Player {
         LeftArm.setUserData("arm");
         createBodyFixture(LeftArm, 1f, limbWidth, limbHeight, true, 0);
         createLimb(LeftArm,
-                   0, width,  // Body Origin X & Y
+                   0, width / 2 - 0.15f,  // Body Origin X & Y
                    0, limbHeight / 2 + 0.05f, // Limb Origin X & Y
                    false); // Limit rotation
 
@@ -69,7 +69,7 @@ public class Player {
         RightArm.setUserData("arm");
         createBodyFixture(RightArm, 1f, limbWidth, limbHeight,true, 0);
         createLimb(RightArm,
-                0, width, // Body Origin X & Y
+                0, width / 2 - 0.15f, // Body Origin X & Y
                 0, limbHeight / 2,  // Limb Origin X & Y
                 false);  // Limit rotation
 
