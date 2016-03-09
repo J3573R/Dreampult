@@ -23,10 +23,9 @@ public class CollisionHandler implements ContactListener {
                (a.equalsIgnoreCase("cloud") && b.equalsIgnoreCase("player"))) {
                 Vector2 vel = game.player.body.getLinearVelocity();
                 System.out.println(vel);
-                vel = new Vector2(Math.abs(vel.x) * 1.5f + 3, Math.abs(vel.y) * 1.5f + 3);
+                vel = new Vector2(Math.abs(vel.x) * 1.5f, Math.abs(vel.y) * 1.5f + 1);
                 game.player.body.setLinearVelocity(vel);
             }
-
         }
     }
 

@@ -52,7 +52,7 @@ public class Player {
 
         body = createBodyDef();
         body.setUserData("player");
-        createBodyFixture(body, 2f, width, height, false, 0);
+        createBodyFixture(body, 5f, width, height, false, 0);
 
         // TODO: Body joints tweaking
 

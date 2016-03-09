@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import fi.tamk.dreampult.Handlers.BackgroundHandler;
 import fi.tamk.dreampult.Handlers.CollisionHandler;
 import fi.tamk.dreampult.Handlers.InputHandler;
 import fi.tamk.dreampult.Handlers.WorldHandler;
@@ -41,6 +42,7 @@ public class GameLoop extends ScreenAdapter {
     public WorldHandler worldHandler;
     public InputHandler inputHandler;
     public CollisionHandler collision;
+    public BackgroundHandler bg;
     public Meter meter;
 
     public Texture background;
@@ -49,6 +51,7 @@ public class GameLoop extends ScreenAdapter {
     private double accumultator = 0;
     private float timestep = 1 / 60f;
     public boolean moveArrow;
+
 
 
 
@@ -62,7 +65,7 @@ public class GameLoop extends ScreenAdapter {
         this.camera = camera;
         this.assets = assets;
 
-        world = new World(new Vector2(0, -2f), true);
+        world = new World(new Vector2(0, -1f), true);
         collision = new CollisionHandler(this);
         world.setContactListener(collision);
 
@@ -72,6 +75,10 @@ public class GameLoop extends ScreenAdapter {
         arrow = new Arrow(this);
         meter = new Meter(this);
         ground = new Ground(this);
+        bg = new BackgroundHandler( this,
+                                    this.assets.get("./images/background/country-platform-back.png", Texture.class),
+                                    10,
+                                    5);
 
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
@@ -115,6 +122,11 @@ public class GameLoop extends ScreenAdapter {
                     arrow.rotation += Gdx.graphics.getDeltaTime();
                 }
 
+                if(player.body.getLinearVelocity().x < 0) {
+                    // TODO: Doesn't work. Velocity has to increase after camera starts moving.
+                    player.body.setLinearVelocity(0, player.body.getLinearVelocity().y);
+                }
+
             }
 
             /**
@@ -126,6 +138,8 @@ public class GameLoop extends ScreenAdapter {
             worldHandler.tiledMapRenderer.render();
 
             game.batch.begin();
+
+            bg.draw(game.batch, player.body.getLinearVelocity().x);
 
             meter.draw(game.batch);
 
