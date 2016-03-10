@@ -14,6 +14,7 @@ import fi.tamk.dreampult.Handlers.CollisionHandler;
 import fi.tamk.dreampult.Handlers.InputHandler;
 import fi.tamk.dreampult.Handlers.WorldHandler;
 import fi.tamk.dreampult.Objects.Arrow;
+import fi.tamk.dreampult.Objects.Clothes;
 import fi.tamk.dreampult.Objects.Ground;
 import fi.tamk.dreampult.Objects.Meter;
 import fi.tamk.dreampult.Objects.Player;
@@ -35,6 +36,7 @@ public class GameLoop extends ScreenAdapter {
     public Player player;
     public Arrow arrow;
     public Ground ground;
+    public Clothes clothes;
 
     public Dreampult game;
     public OrthographicCamera camera;
@@ -75,6 +77,7 @@ public class GameLoop extends ScreenAdapter {
         worldHandler = new WorldHandler(this);
 
         player = new Player(world, this);
+        clothes = new Clothes(player, this);
         arrow = new Arrow(this);
         meter = new Meter(this);
         ground = new Ground(this);
@@ -159,6 +162,8 @@ public class GameLoop extends ScreenAdapter {
             arrow.draw(game.batch);
 
             player.draw(game.batch);
+
+            clothes.draw(game.batch);
 
             game.batch.end();
             debug.render(world, camera.combined);

@@ -21,7 +21,9 @@ public class Player {
     Texture img;
     Texture imgBody;
     Texture imgLeg;
-    Texture imgArm;
+    Texture imgLeftArm;
+    Texture imgRightArm;
+    Texture imgHead;
 
     Array<Body> LeftLimbs;
     Array<Body> RightLimbs;
@@ -29,10 +31,11 @@ public class Player {
     float width = 0.3f;
     float height = 1f;
 
-    float limbWidth = width / 2;
-    float limbHeight = height / 2;
+    float limbWidth = width / 1.5f;
+    float limbHeight = height / 1.5f;
 
     public Body body;
+    public Body head;
 
     /**
      * Create player.
@@ -43,9 +46,11 @@ public class Player {
         this.game = game;
 
         img = game.assets.get("./images/badlogic.jpg", Texture.class);
-        imgBody = game.assets.get("./images/hahmojaba.png", Texture.class);
-        imgLeg = game.assets.get("./images/hahmojabanjalka.png", Texture.class);
-        imgArm = game.assets.get("./images/hahmojabankasi.png", Texture.class);
+        imgBody = game.assets.get("./images/body.png", Texture.class);
+        imgLeg = game.assets.get("./images/leg.png", Texture.class);
+        imgLeftArm = game.assets.get("./images/left_arm.png", Texture.class);
+        imgRightArm = game.assets.get("./images/right_arm.png", Texture.class);
+        imgHead = game.assets.get("./images/headwithball.png", Texture.class);
 
         LeftLimbs = new Array<Body>();
         RightLimbs = new Array<Body>();
@@ -56,12 +61,19 @@ public class Player {
 
         // TODO: Body joints tweaking
 
+        head = createBodyDef();
+        head.setUserData("head");
+        createBodyFixture(head, 1f, width, width, true, 0);
+        createLimb(head,
+                    0, height / 2 - 0.05f, // Body Origin X & Y
+                    0, width / 2, // Limb Origin X & Y
+                    true); // Limit rotation
 
         Body LeftArm = createBodyDef();
         LeftArm.setUserData("arm");
         createBodyFixture(LeftArm, 1f, limbWidth, limbHeight, true, 0);
         createLimb(LeftArm,
-                   0, width / 2 - 0.15f,  // Body Origin X & Y
+                   0, height / 2 - 0.1f,  // Body Origin X & Y
                    0, limbHeight / 2 + 0.05f, // Limb Origin X & Y
                    false); // Limit rotation
 
@@ -69,7 +81,7 @@ public class Player {
         RightArm.setUserData("arm");
         createBodyFixture(RightArm, 1f, limbWidth, limbHeight,true, 0);
         createLimb(RightArm,
-                0, width / 2 - 0.15f, // Body Origin X & Y
+                0, height / 2 - 0.1f, // Body Origin X & Y
                 0, limbHeight / 2,  // Limb Origin X & Y
                 false);  // Limit rotation
 
@@ -85,7 +97,7 @@ public class Player {
         RightLeg.setUserData("leg");
         createBodyFixture(RightLeg, 1f, limbWidth, limbHeight,true, 0);
         createLimb(RightLeg,
-                0, height / 2 * -1 + 0.1f, // Body Origin X & Y
+                0.1f, height / 2 * -1 + 0.1f, // Body Origin X & Y
                 0, limbHeight / 2, // Limb Origin X & Y
                 true);  // Limit rotation*/
 
@@ -113,8 +125,15 @@ public class Player {
         jointDef.localAnchorA.set(bodyOriginX, bodyOriginY);
         jointDef.localAnchorB.set(limbOriginX, limbOriginY);
         jointDef.enableLimit = limit;
-        jointDef.lowerAngle = -90 * MathUtils.degreesToRadians;
-        jointDef.upperAngle = 90 * MathUtils.degreesToRadians;
+
+        if (body.getUserData() == "head") {
+            System.out.println("It works");
+            jointDef.lowerAngle = 150 * MathUtils.degreesToRadians;
+            jointDef.upperAngle = 210 * MathUtils.degreesToRadians;
+        } else {
+            jointDef.lowerAngle = -90 * MathUtils.degreesToRadians;
+            jointDef.upperAngle = 90 * MathUtils.degreesToRadians;
+        }
 
         world.createJoint(jointDef);
     }
@@ -177,13 +196,13 @@ public class Player {
                         imgLeg.getWidth(), imgLeg.getHeight(), // srcWidth, srcHeight
                         false, false); // flip x, flip y
             } else if (b.getUserData() == "arm") {
-                batch.draw(imgArm, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
+                batch.draw(imgRightArm, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
                         limbWidth / 2, limbHeight / 2, // Origin x, Origin y
                         limbWidth, limbHeight, // Width, Height
                         1, 1, // Scale X, Scale Y
                         b.getAngle() * MathUtils.radiansToDegrees,    // Rotation
                         1, 1, // srcX, srcY
-                        imgArm.getWidth(), imgArm.getHeight(), // srcWidth, srcHeight
+                        imgRightArm.getWidth(), imgRightArm.getHeight(), // srcWidth, srcHeight
                         false, false); // flip x, flip y
             }
         }
@@ -196,6 +215,15 @@ public class Player {
                 imgBody.getWidth(), imgBody.getHeight(), // srcWidth, srcHeight
                 false, false); // flip x, flip y
 
+        batch.draw(imgHead, head.getPosition().x - width / 2, head.getPosition().y - width / 2, // Texture, x, y
+                width / 2, width / 2, // Origin x, Origin y
+                width, width, // Width, Height
+                1, 1, // Scale X, Scale Y
+                head.getAngle() * MathUtils.radiansToDegrees,    // Rotation
+                1, 1, // srcX, srcY
+                imgHead.getWidth(), imgHead.getHeight(), // srcWidth, srcHeight
+                true, true); // flip x, flip y
+
         for (Body b : LeftLimbs) {
             if(b.getUserData() == "leg") {
                 batch.draw(imgLeg, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
@@ -207,13 +235,13 @@ public class Player {
                         imgLeg.getWidth(), imgLeg.getHeight(), // srcWidth, srcHeight
                         false, false); // flip x, flip y
             } else if(b.getUserData() == "arm") {
-                batch.draw(imgArm, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
+                batch.draw(imgLeftArm, b.getPosition().x - limbWidth / 2, b.getPosition().y - limbHeight / 2, // Texture, x, y
                         limbWidth / 2, limbHeight / 2, // Origin x, Origin y
                         limbWidth, limbHeight, // Width, Height
                         1, 1, // Scale X, Scale Y
                         b.getAngle() * MathUtils.radiansToDegrees,    // Rotation
                         1, 1, // srcX, srcY
-                        imgArm.getWidth(), imgArm.getHeight(), // srcWidth, srcHeight
+                        imgLeftArm.getWidth(), imgLeftArm.getHeight(), // srcWidth, srcHeight
                         false, false); // flip x, flip y
             }
         }

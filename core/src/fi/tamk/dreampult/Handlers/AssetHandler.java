@@ -14,10 +14,15 @@ public class AssetHandler {
     public AssetManager manager = new AssetManager();
 
     public void loadTestMap() {
-        manager.load("./images/hahmojaba.png", Texture.class);
-        manager.load("./images/hahmojabanjalka.png", Texture.class);
-        manager.load("./images/hahmojabankasi.png", Texture.class);
+        manager.load("./images/body.png", Texture.class);
+        manager.load("./images/headwithball.png", Texture.class);
+        manager.load("./images/leg.png", Texture.class);
+        manager.load("./images/left_arm.png", Texture.class);
+        manager.load("./images/right_arm.png", Texture.class);
         manager.load("./images/badlogic.jpg", Texture.class);
+        manager.load("./images/left_sleeve.png", Texture.class);
+        manager.load("./images/right_sleeve.png", Texture.class);
+        manager.load("./images/shirt.png", Texture.class);
         manager.load("./images/arrow.png", Texture.class);
         manager.load("./images/meter.png", Texture.class);
         manager.load("./images/meterColor.png", Texture.class);
