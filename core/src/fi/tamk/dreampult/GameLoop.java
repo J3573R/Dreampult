@@ -43,6 +43,9 @@ public class GameLoop extends ScreenAdapter {
     public InputHandler inputHandler;
     public CollisionHandler collision;
     public BackgroundHandler bg;
+    public BackgroundHandler bg2;
+    public float bgSpeed;
+    public float bg2Speed;
     public Meter meter;
 
     public Texture background;
@@ -79,7 +82,12 @@ public class GameLoop extends ScreenAdapter {
                                     this.assets.get("./images/background/country-platform-back.png", Texture.class),
                                     10,
                                     5);
-
+        bg2 = new BackgroundHandler(this,
+                                    this.assets.get("./images/background/country-platform-forest.png", Texture.class),
+                                    10,
+                                    5);
+        bgSpeed = 0f;
+        bg2Speed = 0f;
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
         debug = new Box2DDebugRenderer();
@@ -123,8 +131,12 @@ public class GameLoop extends ScreenAdapter {
                 }
 
                 if(player.body.getLinearVelocity().x < 0) {
-                    // TODO: Doesn't work. Velocity has to increase after camera starts moving.
                     player.body.setLinearVelocity(0, player.body.getLinearVelocity().y);
+                }
+
+                if(player.body.getPosition().x > 5) {
+                    bgSpeed = player.body.getLinearVelocity().x * 0.5f;
+                    bg2Speed = player.body.getLinearVelocity().x * 0.3f;
                 }
 
             }
@@ -139,7 +151,8 @@ public class GameLoop extends ScreenAdapter {
 
             game.batch.begin();
 
-            bg.draw(game.batch, player.body.getLinearVelocity().x);
+            bg.draw(game.batch, bgSpeed);
+            bg2.draw(game.batch, bg2Speed);
 
             meter.draw(game.batch);
 
