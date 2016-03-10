@@ -21,9 +21,9 @@ public class Clothes {
     public Clothes(GameLoop game) {
         this.game = game;
 
-        leftSleeve = game.assets.get("./images/left_sleeve_fixed.png", Texture.class);
-        rightSleeve = game.assets.get("./images/right_sleeve.png", Texture.class);
-        shirt = game.assets.get("./images/shirt.png", Texture.class);
+        leftSleeve = game.assets.get("./images/player/pyjama/left_sleeve_fixed.png", Texture.class);
+        rightSleeve = game.assets.get("./images/player/pyjama/right_sleeve.png", Texture.class);
+        shirt = game.assets.get("./images/player/pyjama/shirt.png", Texture.class);
     }
 
     public void draw(SpriteBatch batch, Bodypart bodypart) {
