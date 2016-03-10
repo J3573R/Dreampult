@@ -21,10 +21,10 @@ public class CollisionHandler implements ContactListener {
         if(a != null && b != null) {
             if((a.equalsIgnoreCase("player") && b.equalsIgnoreCase("cloud")) ||
                (a.equalsIgnoreCase("cloud") && b.equalsIgnoreCase("player"))) {
-                Vector2 vel = game.player.body.getLinearVelocity();
+                Vector2 vel = game.player.torso.body.getLinearVelocity();
                 System.out.println(vel);
                 vel = new Vector2(Math.abs(vel.x) * 1.5f, Math.abs(vel.y) * 1.5f + 1);
-                game.player.body.setLinearVelocity(vel);
+                game.player.torso.body.setLinearVelocity(vel);
             }
         }
     }

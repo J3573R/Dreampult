@@ -109,8 +109,8 @@ public class WorldHandler {
      * Move camera if not near edge of game world.
      */
     public void moveCamera() {
-        float x = game.player.body.getPosition().x;
-        float y = game.player.body.getPosition().y;
+        float x = game.player.torso.body.getPosition().x;
+        float y = game.player.torso.body.getPosition().y;
 
         cameraLeft = x - cameraHalfWidth;
         cameraRight = x + cameraHalfWidth;

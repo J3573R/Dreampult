@@ -20,7 +20,7 @@ public class AssetHandler {
         manager.load("./images/left_arm.png", Texture.class);
         manager.load("./images/right_arm.png", Texture.class);
         manager.load("./images/badlogic.jpg", Texture.class);
-        manager.load("./images/left_sleeve.png", Texture.class);
+        manager.load("./images/left_sleeve_fixed.png", Texture.class);
         manager.load("./images/right_sleeve.png", Texture.class);
         manager.load("./images/shirt.png", Texture.class);
         manager.load("./images/arrow.png", Texture.class);

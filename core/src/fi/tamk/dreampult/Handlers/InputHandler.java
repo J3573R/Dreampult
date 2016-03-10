@@ -34,8 +34,8 @@ public class InputHandler extends InputAdapter {
         touchX = transform.x;
         touchY = transform.y;
 
-        float fixedX = game.player.body.getPosition().x;
-        float fixedY = game.player.body.getPosition().y;
+        float fixedX = game.player.torso.body.getPosition().x;
+        float fixedY = game.player.torso.body.getPosition().y;
 
         point1 = (touchX - fixedX) * -1;
         point2 = (touchY - fixedY);
@@ -70,8 +70,8 @@ public class InputHandler extends InputAdapter {
             game.meter.hide();
             float speed = game.meter.scale * 5;
             Vector2 force = new Vector2((float)Math.abs(Math.sin(game.arrow.rotation)) * speed, (float)Math.abs(Math.cos(game.arrow.rotation)) * speed);
-            game.player.body.applyLinearImpulse(force, game.player.body.getWorldCenter(), true);
-            game.player.body.applyAngularImpulse(-0.5f, true);
+            game.player.torso.body.applyLinearImpulse(force, game.player.torso.body.getWorldCenter(), true);
+            game.player.torso.body.applyAngularImpulse(-0.5f, true);
             game.moveArrow = true;
         }
         return true;

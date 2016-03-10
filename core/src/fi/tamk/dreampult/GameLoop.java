@@ -36,7 +36,6 @@ public class GameLoop extends ScreenAdapter {
     public Player player;
     public Arrow arrow;
     public Ground ground;
-    public Clothes clothes;
 
     public Dreampult game;
     public OrthographicCamera camera;
@@ -77,7 +76,6 @@ public class GameLoop extends ScreenAdapter {
         worldHandler = new WorldHandler(this);
 
         player = new Player(world, this);
-        clothes = new Clothes(player, this);
         arrow = new Arrow(this);
         meter = new Meter(this);
         ground = new Ground(this);
@@ -133,13 +131,13 @@ public class GameLoop extends ScreenAdapter {
                     arrow.rotation += Gdx.graphics.getDeltaTime();
                 }
 
-                if(player.body.getLinearVelocity().x < 0) {
-                    player.body.setLinearVelocity(0, player.body.getLinearVelocity().y);
+                if(player.torso.body.getLinearVelocity().x < 0) {
+                    player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
                 }
 
-                if(player.body.getPosition().x > 5) {
-                    bgSpeed = player.body.getLinearVelocity().x * 0.5f;
-                    bg2Speed = player.body.getLinearVelocity().x * 0.3f;
+                if(player.torso.body.getPosition().x > 5) {
+                    bgSpeed = player.torso.body.getLinearVelocity().x * 0.5f;
+                    bg2Speed = player.torso.body.getLinearVelocity().x * 0.3f;
                 }
 
             }
@@ -162,8 +160,6 @@ public class GameLoop extends ScreenAdapter {
             arrow.draw(game.batch);
 
             player.draw(game.batch);
-
-            clothes.draw(game.batch);
 
             game.batch.end();
             debug.render(world, camera.combined);

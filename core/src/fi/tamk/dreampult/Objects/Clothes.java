@@ -13,61 +13,46 @@ import fi.tamk.dreampult.GameLoop;
  */
 public class Clothes {
     GameLoop game;
-    Player player;
 
     Texture leftSleeve;
     Texture rightSleeve;
     Texture shirt;
 
-    Array<Body> LeftLimbs;
-    Array<Body> RightLimbs;
-
-    public Clothes(Player player, GameLoop game) {
+    public Clothes(GameLoop game) {
         this.game = game;
-        this.player = player;
 
-        LeftLimbs = player.LeftLimbs;
-        RightLimbs = player.RightLimbs;
-
-        leftSleeve = game.assets.get("./images/left_sleeve.png", Texture.class);
+        leftSleeve = game.assets.get("./images/left_sleeve_fixed.png", Texture.class);
         rightSleeve = game.assets.get("./images/right_sleeve.png", Texture.class);
         shirt = game.assets.get("./images/shirt.png", Texture.class);
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, Bodypart bodypart) {
 
-        for (Body b : RightLimbs) {
-            if (b.getUserData() == "arm") {
-                batch.draw(rightSleeve, b.getPosition().x - player.limbWidth / 2, b.getPosition().y - player.limbHeight / 2, // Texture, x, y
-                        player.limbWidth / 2, player.limbHeight / 2, // Origin x, Origin y
-                        player.limbWidth, player.limbHeight, // Width, Height
-                        1, 1, // Scale X, Scale Y
-                        b.getAngle() * MathUtils.radiansToDegrees,    // Rotation
-                        1, 1, // srcX, srcY
-                        rightSleeve.getWidth(), rightSleeve.getHeight(), // srcWidth, srcHeight
-                        false, false); // flip x, flip y
-            }
+        Texture img = leftSleeve;
+
+        if (bodypart.body.getUserData() == "left arm") {
+            img = leftSleeve;
         }
-        batch.draw(shirt, player.body.getPosition().x - player.width / 2, player.body.getPosition().y - player.height / 2, // Texture, x, y
-                player.width * 0.5f, player.height * 0.5f, // Origin x, Origin y
-                player.width, player.height, // Width, Height
+
+        else if (bodypart.body.getUserData() == "right arm") {
+            img = rightSleeve;
+        }
+
+        else if (bodypart.body.getUserData() == "torso") {
+            img = shirt;
+        }
+
+        else {
+            return;
+        }
+
+        batch.draw(img, bodypart.body.getPosition().x - bodypart.width / 2, bodypart.body.getPosition().y - bodypart.height / 2, // Texture, x, y
+                bodypart.width / 2, bodypart.height / 2, // Origin x, Origin y
+                bodypart.width, bodypart.height, // Width, Height
                 1, 1, // Scale X, Scale Y
-                player.body.getAngle() * MathUtils.radiansToDegrees,    // Rotation
+                bodypart.body.getAngle() * MathUtils.radiansToDegrees,    // Rotation
                 1, 1, // srcX, srcY
-                shirt.getWidth(), shirt.getHeight(), // srcWidth, srcHeight
+                img.getWidth(), img.getHeight(), // srcWidth, srcHeight
                 false, false); // flip x, flip y
-
-        for (Body b : LeftLimbs) {
-            if(b.getUserData() == "arm") {
-                batch.draw(leftSleeve, b.getPosition().x - player.limbWidth / 2, b.getPosition().y - player.limbHeight / 2, // Texture, x, y
-                        player.limbWidth / 2, player.limbHeight / 2, // Origin x, Origin y
-                        player.limbWidth, player.limbHeight, // Width, Height
-                        1, 1, // Scale X, Scale Y
-                        b.getAngle() * MathUtils.radiansToDegrees,    // Rotation
-                        1, 1, // srcX, srcY
-                        leftSleeve.getWidth(), leftSleeve.getHeight(), // srcWidth, srcHeight
-                        false, false); // flip x, flip y
-            }
-        }
     }
 }
