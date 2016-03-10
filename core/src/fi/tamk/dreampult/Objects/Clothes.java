@@ -21,7 +21,7 @@ public class Clothes {
     public Clothes(GameLoop game) {
         this.game = game;
 
-        leftSleeve = game.assets.get("./images/player/pyjama/left_sleeve_fixed.png", Texture.class);
+        leftSleeve = game.assets.get("./images/player/pyjama/left_sleeve.png", Texture.class);
         rightSleeve = game.assets.get("./images/player/pyjama/right_sleeve.png", Texture.class);
         shirt = game.assets.get("./images/player/pyjama/shirt.png", Texture.class);
     }
