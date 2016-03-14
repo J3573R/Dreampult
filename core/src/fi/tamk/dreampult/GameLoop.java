@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import fi.tamk.dreampult.Handlers.BackgroundHandler;
-import fi.tamk.dreampult.Handlers.CollisionHandler;
-import fi.tamk.dreampult.Handlers.InputHandler;
-import fi.tamk.dreampult.Handlers.WorldHandler;
+import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Objects.Arrow;
 import fi.tamk.dreampult.Objects.Clothes;
 import fi.tamk.dreampult.Objects.Ground;
@@ -48,9 +45,6 @@ public class GameLoop extends ScreenAdapter {
     public float bgSpeed;
     public float bg2Speed;
     public Meter meter;
-
-    public Texture background;
-    public TextureRegion fullBackground;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;

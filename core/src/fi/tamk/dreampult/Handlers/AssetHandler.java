@@ -29,6 +29,7 @@ public class AssetHandler {
         manager.load("./images/meterColor.png", Texture.class);
         manager.load("./images/background/country-platform-back.png", Texture.class);
         manager.load("./images/background/country-platform-forest.png", Texture.class);
+        manager.load("./images/dreampult_logo.png", Texture.class);
 
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load("./maps/mappi.tmx", TiledMap.class);

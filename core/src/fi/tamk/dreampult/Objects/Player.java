@@ -133,7 +133,7 @@ public class Player {
         FixtureDef def = new FixtureDef();
         def.density = density;
         def.friction = 5f;
-        def.restitution = 0.8f;
+        def.restitution = 0.9f;
         def.isSensor = sensor;
 
         if(radius > 0) {

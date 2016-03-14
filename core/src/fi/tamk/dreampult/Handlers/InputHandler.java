@@ -68,10 +68,12 @@ public class InputHandler extends InputAdapter {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(game.GAME_ON) {
             game.meter.hide();
-            float speed = game.meter.scale * 5;
-            Vector2 force = new Vector2((float)Math.abs(Math.sin(game.arrow.rotation)) * speed, (float)Math.abs(Math.cos(game.arrow.rotation)) * speed);
-            game.player.torso.body.applyLinearImpulse(force, game.player.torso.body.getWorldCenter(), true);
-            game.player.torso.body.applyAngularImpulse(-0.5f, true);
+            float speed = game.meter.scale * 3;
+            Vector2 force = new Vector2((float)Math.abs(Math.sin(game.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
+                                        (float)Math.abs(Math.cos(game.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
+            System.out.println(force);
+            game.player.torso.body.applyForceToCenter(force, true);
+            //game.player.torso.body.applyAngularImpulse(-0.5f, true);
             game.moveArrow = true;
         }
         return true;

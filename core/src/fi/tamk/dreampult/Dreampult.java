@@ -27,11 +27,11 @@ public class Dreampult extends Game {
 		batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        assets.loadTestMap();
-        assets.manager.finishLoading();
-        setScreen(new GameLoop(this, assets.manager, camera));
+        //assets.loadTestMap();
+        //assets.manager.finishLoading();
+        //setScreen(new GameLoop(this, assets.manager, camera));
 
-		//setScreen(new LevelSelection(this, camera));
+		setScreen(new LevelSelection(this, camera));
 	}
 
 	@Override

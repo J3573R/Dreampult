@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import fi.tamk.dreampult.Handlers.FontHandler;
 
 /**
  * Created by DV6-6B20 on 25.2.2016.
@@ -15,13 +16,20 @@ public class LevelSelection implements Screen {
 
     public OrthographicCamera camera;
 
-    public Texture img;
+    public Texture logo;
+
+    public FontHandler font;
 
     public LevelSelection(Dreampult gam, OrthographicCamera camera) {
         game = gam;
         this.camera = camera;
 
-        img = new Texture("./images/badlogic.jpg");
+        game.assets.loadTestMap();
+        game.assets.manager.finishLoading();
+
+        logo = game.assets.manager.get("./images/dreampult_logo.png", Texture.class);
+        font = new FontHandler();
+        font.text = "Press anything to start.";
     }
 
     @Override
@@ -34,14 +42,23 @@ public class LevelSelection implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
 
-        /*if(Gdx.input.justTouched()) {
+        if(Gdx.input.justTouched()) {
             if (Gdx.input.isTouched()) {
+                //game.assets.loadTestMap();
+                //game.assets.manager.finishLoading();
                 game.setScreen(new GameLoop(game, game.assets.manager, camera));
             }
-        }*/
+        }
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0.2f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        game.batch.begin();
+
+        game.batch.draw(logo, 0.5f, 1, 9, 4);
+        font.draw(game.batch);
+
+        game.batch.end();
 
     }
 
