@@ -16,7 +16,7 @@ public class AssetHandler {
     public void loadTestMap() {
         loadPlayer();
         loadClothes();
-        loadUi();
+        //loadUi();
         loadMap();
         loadAssets();
     }
@@ -39,6 +39,7 @@ public class AssetHandler {
         manager.load("./images/dreampult_logo.png", Texture.class);
         manager.load("./images/ui/pause_button.png", Texture.class);
         manager.load("./images/ui/pause_menu.png", Texture.class);
+        manager.load("./images/menu_tausta.png", Texture.class);
     }
     public void loadMap() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));

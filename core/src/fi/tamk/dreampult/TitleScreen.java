@@ -5,33 +5,35 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-
 import fi.tamk.dreampult.Handlers.FontHandler;
 
 /**
- * Created by DV6-6B20 on 15.3.2016.
+ * Created by DV6-6B20 on 25.2.2016.
  */
-public class LevelSelection implements Screen {
+public class TitleScreen implements Screen {
 
     public Dreampult game;
 
     public OrthographicCamera camera;
 
+    public Texture logo;
+
     public Texture background;
 
-    FontHandler font;
+    public FontHandler font;
 
-    public LevelSelection(Dreampult gam, OrthographicCamera camera) {
+    public TitleScreen(Dreampult gam, OrthographicCamera camera) {
         game = gam;
         this.camera = camera;
 
-        //game.assets.loadTestMap();
+        //game.assets.loadUi();
         //game.assets.manager.finishLoading();
 
+        logo = game.assets.manager.get("./images/dreampult_logo.png", Texture.class);
         background = game.assets.manager.get("./images/menu_tausta.png", Texture.class);
 
         font = new FontHandler();
-        font.text = "Select stage";
+        font.text = "Press anything to start.";
     }
 
     @Override
@@ -46,10 +48,10 @@ public class LevelSelection implements Screen {
 
         if(Gdx.input.justTouched()) {
             if (Gdx.input.isTouched()) {
-                game.assets.loadTestMap();
-                game.assets.manager.finishLoading();
+                //game.assets.loadTestMap();
+                //game.assets.manager.finishLoading();
 
-                game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                game.setScreen(new LevelSelection(game, camera));
             }
         }
 
@@ -59,9 +61,11 @@ public class LevelSelection implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0, 16, 9);
+        game.batch.draw(logo, 3, 4, 9, 4);
         font.draw(game.batch);
 
         game.batch.end();
+
     }
 
     @Override
@@ -86,6 +90,7 @@ public class LevelSelection implements Screen {
 
     @Override
     public void dispose() {
-
+        logo.dispose();
+        background.dispose();
     }
 }

@@ -20,12 +20,12 @@ public class FontHandler {
     public FontHandler() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Ubuntu-R.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 100;
+        parameter.size = 12;
         parameter.color = Color.WHITE;
         font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
-        x = 0;
-        y = 0;
+        x = 3;
+        y = 3;
     }
 
     public void draw(SpriteBatch batch) {
