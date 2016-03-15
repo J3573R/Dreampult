@@ -6,12 +6,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Objects.Arrow;
-import fi.tamk.dreampult.Objects.Clothes;
 import fi.tamk.dreampult.Objects.Ground;
 import fi.tamk.dreampult.Objects.Meter;
 import fi.tamk.dreampult.Objects.Player;
@@ -20,21 +18,17 @@ import fi.tamk.dreampult.Objects.Player;
  * Created by Clown on 22.2.2016.
  */
 public class GameLoop extends ScreenAdapter {
-    public boolean GAME_ON;
-
+    public Dreampult game;
+    public Collection collection;
     public AssetManager assets;
 
-    // Arrow direction setup
-    public final int UP = 1;
-    public final int DOWN = 2;
-    public int direction = UP;
+
 
     public World world;
     public Player player;
     public Arrow arrow;
     public Ground ground;
 
-    public Dreampult game;
     public OrthographicCamera camera;
     public Box2DDebugRenderer debug;
     public WorldHandler worldHandler;
@@ -42,16 +36,12 @@ public class GameLoop extends ScreenAdapter {
     public CollisionHandler collision;
     public BackgroundHandler bg;
     public BackgroundHandler bg2;
-    public float bgSpeed;
-    public float bg2Speed;
     public Meter meter;
+
+    public UserInterface ui;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;
-    public boolean moveArrow;
-
-
-
 
     /**
      * Initialize variables for render.
@@ -60,6 +50,7 @@ public class GameLoop extends ScreenAdapter {
      */
     public GameLoop(Dreampult game, AssetManager assets, OrthographicCamera camera) {
         this.game = game;
+        collection = game.collection;
         this.camera = camera;
         this.assets = assets;
 
@@ -75,29 +66,27 @@ public class GameLoop extends ScreenAdapter {
         ground = new Ground(this);
         bg = new BackgroundHandler( this,
                                     this.assets.get("./images/background/country-platform-back.png", Texture.class),
-                                    10,
-                                    5);
+                                    16,
+                                    9);
         bg2 = new BackgroundHandler(this,
                                     this.assets.get("./images/background/country-platform-forest.png", Texture.class),
-                                    10,
-                                    5);
-        bgSpeed = 0f;
-        bg2Speed = 0f;
+                                    16,
+                                    9);
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
         debug = new Box2DDebugRenderer();
 
-        moveArrow = true;
-        GAME_ON = true;
+        ui = new UserInterface(this);
+        game.collection.start();
     }
 
     /**
-     * Render the game.
+     * Render the loop.
      * @param delta
      */
     @Override
     public void render(float delta) {
-        if ( GAME_ON ) {
+        if ( game.collection.isGameOn() ) {
             /**
              * Do Stuff
              */
@@ -106,48 +95,33 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(camera.combined);
 
             worldHandler.tiledMapRenderer.setView(camera);
+            arrow.update();
 
-
-            if(moveArrow) {
-
-                if(arrow.rotation > 0) {
-                    direction = DOWN;
-                }
-
-                if(arrow.rotation < -1.6) {
-                    direction = UP;
-                }
-
-                if(direction == DOWN) {
-                    arrow.rotation -= Gdx.graphics.getDeltaTime();
-                }
-                if(direction == UP) {
-                    arrow.rotation += Gdx.graphics.getDeltaTime();
-                }
-
-                if(player.torso.body.getLinearVelocity().x < 0) {
-                    player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
-                }
-
-                if(player.torso.body.getPosition().x > 5) {
-                    bgSpeed = player.torso.body.getLinearVelocity().x * 0.5f;
-                    bg2Speed = player.torso.body.getLinearVelocity().x * 0.3f;
-                }
-
+            if (player.torso.body.getLinearVelocity().x < 0) {
+                player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
             }
+
+            if (player.torso.body.getPosition().x >= 5) {
+                bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.3f);
+                bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.5f);
+            }
+        } else {
+            bg.setSpeed(0);
+            bg2.setSpeed(0);
+        }
 
             /**
              * Draw stuff
              */
-            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClearColor(131, 182, 255, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             worldHandler.tiledMapRenderer.render();
 
             game.batch.begin();
 
-            bg.draw(game.batch, bgSpeed);
-            bg2.draw(game.batch, bg2Speed);
+            bg.draw(game.batch);
+            bg2.draw(game.batch);
 
             meter.draw(game.batch);
 
@@ -155,12 +129,10 @@ public class GameLoop extends ScreenAdapter {
 
             player.draw(game.batch);
 
+            ui.draw(game.batch);
+
             game.batch.end();
             debug.render(world, camera.combined);
-        }
-
-
-
     }
 
     /**

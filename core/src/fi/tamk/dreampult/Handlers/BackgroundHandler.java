@@ -26,12 +26,17 @@ public class BackgroundHandler {
     Vector2 position;
 
     /**
+     * Speed of scroll effect.
+     */
+    float speed;
+
+    /**
      * Calculate how many images we will need to make smooth scroll.
      */
     int imageAmount;
 
     /**
-     * Image width and height in game world.
+     * Image width and height in loop world.
      */
     float imgWidth;
     float imgHeight;
@@ -45,8 +50,8 @@ public class BackgroundHandler {
      * Initialize everything.
      * @param game GameLoop access.
      * @param background Background texture.
-     * @param imgWidth Width in game world.
-     * @param imgHeight Height in game world.
+     * @param imgWidth Width in loop world.
+     * @param imgHeight Height in loop world.
      */
     public BackgroundHandler(GameLoop game, Texture background, float imgWidth, float imgHeight){
         this.game = game;
@@ -55,17 +60,16 @@ public class BackgroundHandler {
 
         this.background = background;
         position = new Vector2(0, 0);
-        imageAmount = (int) Math.ceil((double) (10 / imgWidth)) + 1;
+        imageAmount = (int) Math.ceil((double) (16 / imgWidth)) + 1;
     }
 
     /**
      * Drawing background.
      * @param batch
-     * @param speed Speed of scroll effect.
      */
-    public void draw(SpriteBatch batch, float speed) {
+    public void draw(SpriteBatch batch) {
         // Move image according speed
-        move(speed);
+        move();
         // Update accord camera offset
         updateOffset();
 
@@ -80,9 +84,8 @@ public class BackgroundHandler {
 
     /**
      * Moving background position.
-     * @param speed Speed of movement.
      */
-    private void move(float speed) {
+    private void move() {
         for(int i = 0; i < imageAmount; i++) {
             if(position.x <= imgWidth * -1) {
                 position.x = 0f;
@@ -95,6 +98,10 @@ public class BackgroundHandler {
      * Updating offset according camera position.
      */
     public void updateOffset() {
-        offset = game.camera.position.x - 5f;
+        offset = game.camera.position.x - (16f / 2f);
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }

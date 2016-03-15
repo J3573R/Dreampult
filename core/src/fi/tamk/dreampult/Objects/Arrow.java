@@ -23,6 +23,8 @@ public class Arrow {
     public float width = 1f;
     public float height = 3f;
     public float rotation;
+    public int direction;
+    public boolean moving;
 
     /**
      * Initialize arrow.
@@ -30,10 +32,12 @@ public class Arrow {
      */
     public Arrow(GameLoop gameLoop) {
         game = gameLoop;
+        direction = game.game.collection.UP;
         img = game.assets.get("./images/arrow.png", Texture.class);
         rotation = 0;
         body = createBodyDef();
         createBodyFixture();
+        start();
     }
 
     /**
@@ -78,4 +82,31 @@ public class Arrow {
                 img.getWidth(), img.getHeight(), // srcWidth, srcHeight
                 false, false); // flip x, flip y
     }
+
+    public void update() {
+        if (moving) {
+            if (rotation > 0) {
+                direction = game.collection.DOWN;
+            }
+
+            if (rotation < -1.6) {
+                direction = game.collection.UP;
+            }
+
+            if (direction == game.collection.DOWN) {
+                rotation -= Gdx.graphics.getDeltaTime();
+            }
+            if (direction == game.collection.UP) {
+                rotation += Gdx.graphics.getDeltaTime();
+            }
+        }
+    }
+
+    public void start() {
+        moving = true;
+    }
+
+     public void pause() {
+         moving = false;
+     }
 }

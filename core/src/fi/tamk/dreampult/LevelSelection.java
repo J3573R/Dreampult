@@ -44,8 +44,8 @@ public class LevelSelection implements Screen {
 
         if(Gdx.input.justTouched()) {
             if (Gdx.input.isTouched()) {
-                //game.assets.loadTestMap();
-                //game.assets.manager.finishLoading();
+                //loop.assets.loadTestMap();
+                //loop.assets.manager.finishLoading();
                 game.setScreen(new GameLoop(game, game.assets.manager, camera));
             }
         }

@@ -3,13 +3,11 @@ package fi.tamk.dreampult.Handlers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -22,7 +20,7 @@ import fi.tamk.dreampult.GameLoop;
  */
 public class WorldHandler {
 
-    GameLoop game;
+    GameLoop loop;
     OrthographicCamera camera;
 
     /**
@@ -66,7 +64,7 @@ public class WorldHandler {
     int TILE_HEIGHT = 16;
 
     /**
-     * The tile map used by the game.
+     * The tile map used by the loop.
      */
     private TiledMap tiledMap;
 
@@ -80,8 +78,8 @@ public class WorldHandler {
      * @param gameLoop
      */
     public WorldHandler(GameLoop gameLoop) {
-        game = gameLoop;
-        camera = game.camera;
+        loop = gameLoop;
+        camera = loop.camera;
 
         mapLeft = 0;
         mapRight = 0 + WORLD_WIDTH;
@@ -98,7 +96,7 @@ public class WorldHandler {
      * Initialize Tiled map and create bodies of object layer walls.
      */
     public void createTiledMap() {
-        tiledMap = game.assets.get("./maps/mappi.tmx", TiledMap.class);
+        tiledMap = loop.assets.get("./maps/mappi.tmx", TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/100f);
         transformWallsToBodies("object-maa", "wall");
         transformWallsToBodies("object-paprika", "collectable");
@@ -106,11 +104,11 @@ public class WorldHandler {
     }
 
     /**
-     * Move camera if not near edge of game world.
+     * Move camera if not near edge of loop world.
      */
     public void moveCamera() {
-        float x = game.player.torso.body.getPosition().x;
-        float y = game.player.torso.body.getPosition().y;
+        float x = loop.player.torso.body.getPosition().x;
+        float y = loop.player.torso.body.getPosition().y;
 
         cameraLeft = x - cameraHalfWidth;
         cameraRight = x + cameraHalfWidth;
@@ -184,7 +182,7 @@ public class WorldHandler {
 
         myBodyDef.position.set(centerX, centerY);
 
-        Body wall = game.world.createBody(myBodyDef);
+        Body wall = loop.world.createBody(myBodyDef);
 
         wall.setUserData(userData);
 
@@ -209,7 +207,7 @@ public class WorldHandler {
 
         myBodyDef.position.set(centerX, centerY);
 
-        Body wall = game.world.createBody(myBodyDef);
+        Body wall = loop.world.createBody(myBodyDef);
 
         wall.setUserData(userData);
 

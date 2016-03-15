@@ -11,7 +11,7 @@ import fi.tamk.dreampult.GameLoop;
  * Created by Clown on 22.2.2016.
  */
 public class InputHandler extends InputAdapter {
-    GameLoop game;
+    GameLoop loop;
     public float point1;
     public float point2;
 
@@ -20,7 +20,7 @@ public class InputHandler extends InputAdapter {
      * @param gameLoop
      */
     public InputHandler(GameLoop gameLoop) {
-        game = gameLoop;
+        loop = gameLoop;
     }
 
     /**
@@ -30,18 +30,18 @@ public class InputHandler extends InputAdapter {
      */
     private void changeArrow(float touchX, float touchY) {
         Vector3 transform = new Vector3(touchX, touchY, 0);
-        game.camera.unproject(transform);
+        loop.camera.unproject(transform);
         touchX = transform.x;
         touchY = transform.y;
 
-        float fixedX = game.player.torso.body.getPosition().x;
-        float fixedY = game.player.torso.body.getPosition().y;
+        float fixedX = loop.player.torso.body.getPosition().x;
+        float fixedY = loop.player.torso.body.getPosition().y;
 
         point1 = (touchX - fixedX) * -1;
         point2 = (touchY - fixedY);
 
         if(checkDirection()) {
-            game.arrow.rotation = MathUtils.atan2(point1, point2);
+            loop.arrow.rotation = MathUtils.atan2(point1, point2);
         }
     }
 
@@ -66,15 +66,23 @@ public class InputHandler extends InputAdapter {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(game.GAME_ON) {
-            game.meter.hide();
-            float speed = game.meter.scale * 3;
-            Vector2 force = new Vector2((float)Math.abs(Math.sin(game.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
-                                        (float)Math.abs(Math.cos(game.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
+        System.out.println(screenX + " : " + screenY);
+        if(screenX >= 900 && screenY <= 65) {
+            if(loop.game.collection.isGameOn()) {
+                loop.game.collection.pause();
+            } else {
+                loop.game.collection.start();
+            }
+
+        } else if(loop.game.collection.isGameOn()) {
+            loop.meter.hide();
+            float speed = loop.meter.scale * 3;
+            Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
+                                        (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
             System.out.println(force);
-            game.player.torso.body.applyForceToCenter(force, true);
-            //game.player.torso.body.applyAngularImpulse(-0.5f, true);
-            game.moveArrow = true;
+            loop.player.torso.body.applyForceToCenter(force, true);
+            //loop.player.torso.body.applyAngularImpulse(-0.5f, true);
+            loop.arrow.start();
         }
         return true;
     }
@@ -90,9 +98,9 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //changeArrow(screenX, screenY);
-        if(game.GAME_ON) {
-            game.meter.show();
-            game.moveArrow = false;
+        if(loop.game.collection.isGameOn()) {
+            loop.meter.show();
+            loop.arrow.pause();
         }
 
         return true;
@@ -105,7 +113,7 @@ public class InputHandler extends InputAdapter {
      */
     public boolean keyDown(int keyCode) {
         if(keyCode == Input.Keys.SPACE) {
-            game.GAME_ON = false;
+            loop.game.collection.pause();
         }
         return true;
     }
@@ -117,7 +125,7 @@ public class InputHandler extends InputAdapter {
      */
     public boolean keyUp(int keyCode) {
         if(keyCode == Input.Keys.SPACE) {
-            game.GAME_ON = true;
+            loop.game.collection.start();
         }
         return true;
     }
