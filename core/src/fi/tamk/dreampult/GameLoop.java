@@ -154,6 +154,8 @@ public class GameLoop extends ScreenAdapter {
         }
     }
 
+    @Override
+    public void dispose() {
 
-
+    }
 }

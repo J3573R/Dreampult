@@ -2,6 +2,7 @@ package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,13 +18,16 @@ public class LevelSelection implements Screen {
 
     public OrthographicCamera camera;
 
+    public OrthographicCamera fontCamera;
+
     public Texture background;
 
     FontHandler font;
 
-    public LevelSelection(Dreampult gam, OrthographicCamera camera) {
+    public LevelSelection(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
+        fontCamera = fCamera;
 
         //game.assets.loadTestMap();
         //game.assets.manager.finishLoading();
@@ -31,7 +35,7 @@ public class LevelSelection implements Screen {
         background = game.assets.manager.get("./images/menu_tausta.png", Texture.class);
 
         font = new FontHandler();
-        font.text = "Select stage";
+        //font.text = "Select stage";
     }
 
     @Override
@@ -59,7 +63,13 @@ public class LevelSelection implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0, 16, 9);
-        font.draw(game.batch);
+
+        game.batch.setProjectionMatrix(fontCamera.combined);
+
+        font.draw(game.batch, "Select stage", 250, 400, Color.WHITE);
+        font.draw(game.batch, "Prev.", 0, 200, Color.BLACK);
+        font.draw(game.batch, "Next", 800, 200, Color.BLACK);
+        font.draw(game.batch, "Stage 1", 250, 200, Color.BLACK);
 
         game.batch.end();
     }

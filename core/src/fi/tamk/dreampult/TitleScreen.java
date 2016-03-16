@@ -2,6 +2,7 @@ package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,15 +17,19 @@ public class TitleScreen implements Screen {
 
     public OrthographicCamera camera;
 
+    public OrthographicCamera fontCamera;
+
     public Texture logo;
 
     public Texture background;
 
     public FontHandler font;
 
-    public TitleScreen(Dreampult gam, OrthographicCamera camera) {
+    public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
+
+        fontCamera = fCamera;
 
         //game.assets.loadUi();
         //game.assets.manager.finishLoading();
@@ -33,7 +38,7 @@ public class TitleScreen implements Screen {
         background = game.assets.manager.get("./images/menu_tausta.png", Texture.class);
 
         font = new FontHandler();
-        font.text = "Press anything to start.";
+        //font.text = "Press anything to start";
     }
 
     @Override
@@ -51,7 +56,7 @@ public class TitleScreen implements Screen {
                 //game.assets.loadTestMap();
                 //game.assets.manager.finishLoading();
 
-                game.setScreen(new LevelSelection(game, camera));
+                game.setScreen(new LevelSelection(game, camera, fontCamera));
             }
         }
 
@@ -62,7 +67,10 @@ public class TitleScreen implements Screen {
 
         game.batch.draw(background, 0, 0, 16, 9);
         game.batch.draw(logo, 3, 4, 9, 4);
-        font.draw(game.batch);
+
+        game.batch.setProjectionMatrix(fontCamera.combined);
+
+        font.draw(game.batch, "Press anything to start", 250, 250, Color.BLACK);
 
         game.batch.end();
 
