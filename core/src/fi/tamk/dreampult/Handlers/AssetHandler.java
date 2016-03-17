@@ -50,7 +50,8 @@ public class AssetHandler {
         manager.load("images/arrow.png", Texture.class);
         manager.load("images/meter.png", Texture.class);
         manager.load("images/meterColor.png", Texture.class);
-        manager.load("images/background/country-platform-back.png", Texture.class);
-        manager.load("images/background/country-platform-forest.png", Texture.class);
+        manager.load("images/background/back_clouds.png", Texture.class);
+        manager.load("images/background/middle_clouds.png", Texture.class);
+        manager.load("images/background/front_clouds.png", Texture.class);
     }
 }

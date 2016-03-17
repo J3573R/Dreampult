@@ -36,6 +36,7 @@ public class GameLoop extends ScreenAdapter {
     public CollisionHandler collision;
     public BackgroundHandler bg;
     public BackgroundHandler bg2;
+    public BackgroundHandler bg3;
     public Meter meter;
 
     public UserInterface ui;
@@ -65,11 +66,15 @@ public class GameLoop extends ScreenAdapter {
         meter = new Meter(this);
         ground = new Ground(this);
         bg = new BackgroundHandler( this,
-                                    this.assets.get("images/background/country-platform-back.png", Texture.class),
-                                    16,
-                                    9);
+                                    this.assets.get("images/background/back_clouds.png", Texture.class),
+                                    30,
+                                    17);
         bg2 = new BackgroundHandler(this,
-                                    this.assets.get("images/background/country-platform-forest.png", Texture.class),
+                                    this.assets.get("images/background/middle_clouds.png", Texture.class),
+                                    25,
+                                    14);
+        bg3 = new BackgroundHandler(this,
+                                    this.assets.get("images/background/front_clouds.png", Texture.class),
                                     16,
                                     9);
         inputHandler = new InputHandler(this);
@@ -102,12 +107,14 @@ public class GameLoop extends ScreenAdapter {
             }
 
             if (player.torso.body.getPosition().x >= 5) {
-                bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.3f);
-                bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.5f);
+                bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.2f);
+                bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.4f);
+                bg3.setSpeed(player.torso.body.getLinearVelocity().x * 0.6f);
             }
         } else {
             bg.setSpeed(0);
             bg2.setSpeed(0);
+            bg3.setSpeed(0);
         }
 
             /**
@@ -122,6 +129,7 @@ public class GameLoop extends ScreenAdapter {
 
             bg.draw(game.batch);
             bg2.draw(game.batch);
+            bg3.draw(game.batch);
 
             meter.draw(game.batch);
 
