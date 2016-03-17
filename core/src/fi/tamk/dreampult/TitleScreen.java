@@ -34,8 +34,8 @@ public class TitleScreen implements Screen {
         //game.assets.loadUi();
         //game.assets.manager.finishLoading();
 
-        logo = game.assets.manager.get("./images/dreampult_logo.png", Texture.class);
-        background = game.assets.manager.get("./images/menu_tausta.png", Texture.class);
+        logo = game.assets.manager.get("images/dreampult_logo.png", Texture.class);
+        background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
 
         font = new FontHandler();
         //font.text = "Press anything to start";

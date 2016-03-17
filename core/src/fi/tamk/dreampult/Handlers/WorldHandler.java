@@ -96,7 +96,7 @@ public class WorldHandler {
      * Initialize Tiled map and create bodies of object layer walls.
      */
     public void createTiledMap() {
-        tiledMap = loop.assets.get("./maps/mappi.tmx", TiledMap.class);
+        tiledMap = loop.assets.get("maps/mappi.tmx", TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/100f);
         transformWallsToBodies("object-maa", "wall");
         transformWallsToBodies("object-paprika", "collectable");

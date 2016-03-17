@@ -45,11 +45,11 @@ public class Player {
         rightArm = new Bodypart(game);
         torso = new Bodypart(game);
 
-        Texture imgBody = game.assets.get("./images/player/body.png", Texture.class);
-        Texture imgLeg = game.assets.get("./images/player/leg.png", Texture.class);
-        Texture imgLeftArm = game.assets.get("./images/player/left_arm.png", Texture.class);
-        Texture imgRightArm = game.assets.get("./images/player/right_arm.png", Texture.class);
-        Texture imgHead = game.assets.get("./images/player/headwithball.png", Texture.class);
+        Texture imgBody = game.assets.get("images/player/body.png", Texture.class);
+        Texture imgLeg = game.assets.get("images/player/leg.png", Texture.class);
+        Texture imgLeftArm = game.assets.get("images/player/left_arm.png", Texture.class);
+        Texture imgRightArm = game.assets.get("images/player/right_arm.png", Texture.class);
+        Texture imgHead = game.assets.get("images/player/headwithball.png", Texture.class);
 
         head.createBodypart("head", width, width, true, imgHead);
         leftLeg.createBodypart("left leg", 0.2f, 0.4f, true, imgLeg);

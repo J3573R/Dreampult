@@ -65,11 +65,11 @@ public class GameLoop extends ScreenAdapter {
         meter = new Meter(this);
         ground = new Ground(this);
         bg = new BackgroundHandler( this,
-                                    this.assets.get("./images/background/country-platform-back.png", Texture.class),
+                                    this.assets.get("images/background/country-platform-back.png", Texture.class),
                                     16,
                                     9);
         bg2 = new BackgroundHandler(this,
-                                    this.assets.get("./images/background/country-platform-forest.png", Texture.class),
+                                    this.assets.get("images/background/country-platform-forest.png", Texture.class),
                                     16,
                                     9);
         inputHandler = new InputHandler(this);

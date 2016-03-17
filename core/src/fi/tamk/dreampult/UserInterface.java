@@ -13,8 +13,8 @@ public class UserInterface {
 
     public UserInterface(GameLoop loop) {
         this.loop = loop;
-        pause = this.loop.assets.get("./images/ui/pause_button.png");
-        pauseMenu = this.loop.assets.get("./images/ui/pause_menu.png");
+        pause = this.loop.assets.get("images/ui/pause_button.png");
+        pauseMenu = this.loop.assets.get("images/ui/pause_menu.png");
     }
 
     public void draw(SpriteBatch batch) {

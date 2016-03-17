@@ -32,7 +32,7 @@ public class LevelSelection implements Screen {
         //game.assets.loadTestMap();
         //game.assets.manager.finishLoading();
 
-        background = game.assets.manager.get("./images/menu_tausta.png", Texture.class);
+        background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
 
         font = new FontHandler();
         //font.text = "Select stage";
