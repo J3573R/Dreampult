@@ -15,6 +15,7 @@ public class AssetHandler {
 
     public void loadTestMap() {
         loadPlayer();
+        loadMonsters();
         loadClothes();
         //loadUi();
         loadMap();
@@ -53,5 +54,10 @@ public class AssetHandler {
         manager.load("images/background/back_clouds.png", Texture.class);
         manager.load("images/background/middle_clouds.png", Texture.class);
         manager.load("images/background/front_clouds.png", Texture.class);
+        manager.load("images/background/bg2.png", Texture.class);
+    }
+
+    public void loadMonsters() {
+        manager.load("images/objects/pigmonster/pigmonster_animationframes.png", Texture.class);
     }
 }

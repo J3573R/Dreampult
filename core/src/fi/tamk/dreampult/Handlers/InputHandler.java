@@ -77,7 +77,7 @@ public class InputHandler extends InputAdapter {
 
         } else if(loop.game.collection.isGameOn()) {
             loop.meter.hide();
-            float speed = loop.meter.scale * 3;
+            float speed = loop.meter.scale * 6;
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
             System.out.println(force);

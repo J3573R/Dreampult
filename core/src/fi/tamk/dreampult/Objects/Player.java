@@ -24,11 +24,13 @@ public class Player {
     Bodypart leftArm;
     Bodypart rightArm;
 
-    float width = 0.3f;
-    float height = 0.6f;
+    float width = 0.5f;
+    float height = 1f;
 
     float limbWidth = width / 1.5f;
     float limbHeight = height / 1.5f;
+
+    // TODO: Se helvetin katapulttianimaatio pitäis kans tehdä.
 
     /**
      * Create player.
@@ -51,11 +53,13 @@ public class Player {
         Texture imgRightArm = game.assets.get("images/player/right_arm.png", Texture.class);
         Texture imgHead = game.assets.get("images/player/headwithball.png", Texture.class);
 
+        torso.density = 0.1f;
+
         head.createBodypart("head", width, width, true, imgHead);
-        leftLeg.createBodypart("left leg", 0.2f, 0.4f, true, imgLeg);
-        leftArm.createBodypart("left arm", 0.2f, 0.4f, true, imgLeftArm);
-        rightLeg.createBodypart("right leg", 0.2f, 0.4f, true, imgLeg);
-        rightArm.createBodypart("right arm", 0.2f, 0.4f, true, imgRightArm);
+        leftLeg.createBodypart("left leg", limbWidth, limbHeight, true, imgLeg);
+        leftArm.createBodypart("left arm", limbWidth, limbHeight, true, imgLeftArm);
+        rightLeg.createBodypart("right leg", limbWidth, limbHeight, true, imgLeg);
+        rightArm.createBodypart("right arm", limbWidth, limbHeight, true, imgRightArm);
         torso.createBodypart("torso", width, height, false, imgBody);
 
         connectBodypart(torso, leftArm,

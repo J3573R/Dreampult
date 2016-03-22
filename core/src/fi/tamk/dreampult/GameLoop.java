@@ -12,6 +12,8 @@ import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Objects.Arrow;
 import fi.tamk.dreampult.Objects.Ground;
 import fi.tamk.dreampult.Objects.Meter;
+import fi.tamk.dreampult.Objects.Monsters.Generator;
+import fi.tamk.dreampult.Objects.Monsters.PigMonster;
 import fi.tamk.dreampult.Objects.Player;
 
 /**
@@ -34,12 +36,15 @@ public class GameLoop extends ScreenAdapter {
     public WorldHandler worldHandler;
     public InputHandler inputHandler;
     public CollisionHandler collision;
+    public Texture background;
     public BackgroundHandler bg;
     public BackgroundHandler bg2;
     public BackgroundHandler bg3;
     public Meter meter;
 
     public UserInterface ui;
+
+    public Generator pigMonsters;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;
@@ -62,6 +67,9 @@ public class GameLoop extends ScreenAdapter {
         worldHandler = new WorldHandler(this);
 
         player = new Player(world, this);
+        background = assets.get("images/background/bg2.png", Texture.class);
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        pigMonsters = new Generator(this);
         arrow = new Arrow(this);
         meter = new Meter(this);
         ground = new Ground(this);
@@ -101,6 +109,7 @@ public class GameLoop extends ScreenAdapter {
 
             worldHandler.tiledMapRenderer.setView(camera);
             arrow.update();
+            pigMonsters.update();
 
             if (player.torso.body.getLinearVelocity().x < 0) {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
@@ -120,13 +129,18 @@ public class GameLoop extends ScreenAdapter {
             /**
              * Draw stuff
              */
-            Gdx.gl.glClearColor(131, 182, 255, 1);
+            Gdx.gl.glClearColor(131/255f, 182/255f, 255/255f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            worldHandler.tiledMapRenderer.render();
+            //worldHandler.tiledMapRenderer.render();
 
             game.batch.begin();
 
+            game.batch.draw(background,
+                            camera.position.x - collection.SCREEN_WIDTH / 2,
+                            camera.position.y - collection.SCREEN_HEIGHT / 2 - 0.5f,
+                            collection.SCREEN_WIDTH,
+                            collection.SCREEN_HEIGHT);
             bg.draw(game.batch);
             bg2.draw(game.batch);
             bg3.draw(game.batch);
@@ -136,6 +150,8 @@ public class GameLoop extends ScreenAdapter {
             arrow.draw(game.batch);
 
             player.draw(game.batch);
+
+            pigMonsters.draw(game.batch);
 
             ui.draw(game.batch);
 

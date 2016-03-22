@@ -24,6 +24,7 @@ public class LevelSelection implements Screen {
 
     FontHandler font;
 
+    // TODO: Tämä koodi tavalla tai toisella pitäis siirtää main menuun
     public LevelSelection(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
