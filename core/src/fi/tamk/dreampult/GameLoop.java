@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
-import fi.tamk.dreampult.Objects.Arrow;
+import fi.tamk.dreampult.Objects.Launching.Arrow;
 import fi.tamk.dreampult.Objects.Ground;
-import fi.tamk.dreampult.Objects.Meter;
+import fi.tamk.dreampult.Objects.Launching.Catapult;
+import fi.tamk.dreampult.Objects.Launching.Meter;
 import fi.tamk.dreampult.Objects.Monsters.Generator;
-import fi.tamk.dreampult.Objects.Monsters.PigMonster;
 import fi.tamk.dreampult.Objects.Player;
 
 /**
@@ -41,6 +41,7 @@ public class GameLoop extends ScreenAdapter {
     public BackgroundHandler bg2;
     public BackgroundHandler bg3;
     public Meter meter;
+    public Catapult catapult;
 
     public UserInterface ui;
 
@@ -72,6 +73,7 @@ public class GameLoop extends ScreenAdapter {
         pigMonsters = new Generator(this);
         arrow = new Arrow(this);
         meter = new Meter(this);
+        catapult = new Catapult(this);
         ground = new Ground(this);
         bg = new BackgroundHandler( this,
                                     this.assets.get("images/background/back_clouds.png", Texture.class),
@@ -104,6 +106,7 @@ public class GameLoop extends ScreenAdapter {
              * Do Stuff
              */
             doPhysicsStep(delta);
+
             worldHandler.moveCamera();
             game.batch.setProjectionMatrix(camera.combined);
 
@@ -115,11 +118,22 @@ public class GameLoop extends ScreenAdapter {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
             }
 
-            if (player.torso.body.getPosition().x >= 5) {
+            if (player.torso.body.getPosition().x >= 8) {
                 bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.2f);
                 bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.4f);
                 bg3.setSpeed(player.torso.body.getLinearVelocity().x * 0.6f);
             }
+
+            if(!collection.launch) {
+                float angle = catapult.spoonRotation;
+                Vector2 point = new Vector2(catapult.spoonPosition.x + 0.5f, catapult.spoonPosition.y + 2f);
+                Vector2 center = new Vector2(2, 0);
+                float rotatedX = (float) (Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y - center.y) + center.x);
+                float rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
+
+                player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
+            }
+
         } else {
             bg.setSpeed(0);
             bg2.setSpeed(0);
@@ -148,6 +162,8 @@ public class GameLoop extends ScreenAdapter {
             meter.draw(game.batch);
 
             arrow.draw(game.batch);
+
+            catapult.draw(game.batch);
 
             player.draw(game.batch);
 

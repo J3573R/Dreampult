@@ -16,7 +16,7 @@ public class PigMonster extends Monster {
      * @param gameLoop
      */
     public PigMonster(GameLoop gameLoop) {
-        this.sheet = gameLoop.assets.get("images/objects/pigmonster/pigmonster_animationframes.png", Texture.class);
+        this.sheet = gameLoop.assets.get("images/objects/pigMonster/pigmonster_animationframes.png", Texture.class);
         position = new Vector2(3, 3);
         width = 2;
         height = 2;

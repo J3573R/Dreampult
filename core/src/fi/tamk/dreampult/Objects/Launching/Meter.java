@@ -1,4 +1,4 @@
-package fi.tamk.dreampult.Objects;
+package fi.tamk.dreampult.Objects.Launching;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,9 +28,9 @@ public class Meter {
      */
     public Meter(GameLoop game) {
         this.game = game;
-        Texture meter = game.assets.get("images/meter.png", Texture.class);
+        Texture meter = game.assets.get("images/launching/meter.png", Texture.class);
         this.meter = new TextureRegion(meter);
-        Texture meterColor = game.assets.get("images/meterColor.png", Texture.class);
+        Texture meterColor = game.assets.get("images/launching/meterColor.png", Texture.class);
         this.meterColor = new TextureRegion(meterColor);
         meterMax = 1.5f;
         speed = 3f;

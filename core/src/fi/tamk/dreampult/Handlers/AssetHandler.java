@@ -15,6 +15,7 @@ public class AssetHandler {
 
     public void loadTestMap() {
         loadPlayer();
+        loadCatapult();
         loadMonsters();
         loadClothes();
         //loadUi();
@@ -48,16 +49,22 @@ public class AssetHandler {
     }
 
     public void loadAssets() {
-        manager.load("images/arrow.png", Texture.class);
-        manager.load("images/meter.png", Texture.class);
-        manager.load("images/meterColor.png", Texture.class);
+        manager.load("images/launching/arrow.png", Texture.class);
+        manager.load("images/launching/meter.png", Texture.class);
+        manager.load("images/launching/meterColor.png", Texture.class);
         manager.load("images/background/back_clouds.png", Texture.class);
         manager.load("images/background/middle_clouds.png", Texture.class);
         manager.load("images/background/front_clouds.png", Texture.class);
         manager.load("images/background/bg2.png", Texture.class);
     }
 
+    public void loadCatapult() {
+        manager.load("images/launching/catapult/Catapult.png", Texture.class);
+        manager.load("images/launching/catapult/Catapult_wheel.png", Texture.class);
+        manager.load("images/launching/catapult/Catapult_spoon.png", Texture.class);
+    }
+
     public void loadMonsters() {
-        manager.load("images/objects/pigmonster/pigmonster_animationframes.png", Texture.class);
+        manager.load("images/objects/pigMonster/pigmonster_animationframes.png", Texture.class);
     }
 }

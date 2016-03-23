@@ -55,12 +55,12 @@ public class Player {
 
         torso.density = 0.1f;
 
-        head.createBodypart("head", width, width, true, imgHead);
-        leftLeg.createBodypart("left leg", limbWidth, limbHeight, true, imgLeg);
-        leftArm.createBodypart("left arm", limbWidth, limbHeight, true, imgLeftArm);
-        rightLeg.createBodypart("right leg", limbWidth, limbHeight, true, imgLeg);
-        rightArm.createBodypart("right arm", limbWidth, limbHeight, true, imgRightArm);
-        torso.createBodypart("torso", width, height, false, imgBody);
+        head.createBodypart("head", new Vector2(1, 2.5f), width, width, true, imgHead);
+        leftLeg.createBodypart("left leg", new Vector2(1, 2), limbWidth, limbHeight, true, imgLeg);
+        leftArm.createBodypart("left arm", new Vector2(1, 2), limbWidth, limbHeight, true, imgLeftArm);
+        rightLeg.createBodypart("right leg", new Vector2(1, 2), limbWidth, limbHeight, true, imgLeg);
+        rightArm.createBodypart("right arm", new Vector2(1, 2), limbWidth, limbHeight, true, imgRightArm);
+        torso.createBodypart("torso", new Vector2(1, 2), width, height, false, imgBody);
 
         connectBodypart(torso, leftArm,
                 0, height / 2 - 0.1f,

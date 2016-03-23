@@ -66,7 +66,6 @@ public class InputHandler extends InputAdapter {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        System.out.println(screenX + " : " + screenY);
         if(screenX >= 900 && screenY <= 65) {
             if (loop.game.collection.isGameOn()) {
                 loop.game.collection.pause();
@@ -80,8 +79,10 @@ public class InputHandler extends InputAdapter {
             float speed = loop.meter.scale * 6;
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
-            System.out.println(force);
-            loop.player.torso.body.applyForceToCenter(force, true);
+            if((force.x > 0 || force.y > 0) && !loop.collection.launch) {
+                loop.collection.launch = true;
+                loop.player.torso.body.applyForceToCenter(force, true);
+            }
             //loop.player.torso.body.applyAngularImpulse(-0.5f, true);
             loop.arrow.start();
         }

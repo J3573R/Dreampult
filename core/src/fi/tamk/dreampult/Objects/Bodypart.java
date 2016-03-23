@@ -36,8 +36,8 @@ public class Bodypart {
         density = 1f;
     }
 
-    public void createBodypart(String userData, float width, float height, boolean sensor, Texture img) {
-        body = createBodyDef();
+    public void createBodypart(String userData, Vector2 position, float width, float height, boolean sensor, Texture img) {
+        body = createBodyDef(position);
         body.setUserData(userData);
         createBodyFixture(body, 1f, width, height, sensor, 0);
 
@@ -50,10 +50,10 @@ public class Bodypart {
      * Create players body definition.
      * @return
      */
-    private Body createBodyDef() {
+    private Body createBodyDef(Vector2 position) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(0.5f, 0.5f);
+        bodyDef.position.set(position);
         bodyDef.bullet = true;
         return game.world.createBody(bodyDef);
     }

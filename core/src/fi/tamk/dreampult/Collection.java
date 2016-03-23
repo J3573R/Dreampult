@@ -9,6 +9,7 @@ public class Collection {
     final public int SCREEN_HEIGHT = 9;
     public final int UP = 1;
     public final int DOWN = 2;
+    public boolean launch = false;
 
     public Collection() {
         gameIsOn = false;

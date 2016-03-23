@@ -1,4 +1,4 @@
-package fi.tamk.dreampult.Objects;
+package fi.tamk.dreampult.Objects.Launching;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -35,7 +35,7 @@ public class Arrow {
     public Arrow(GameLoop gameLoop) {
         game = gameLoop;
         direction = game.game.collection.UP;
-        img = game.assets.get("images/arrow.png", Texture.class);
+        img = game.assets.get("images/launching/arrow.png", Texture.class);
         rotation = 0;
         body = createBodyDef();
         createBodyFixture();
@@ -49,7 +49,7 @@ public class Arrow {
     public Body createBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.position.set(0.5f, 0.5f);
+        bodyDef.position.set(2.5f, 1f);
         return  game.world.createBody(bodyDef);
     }
 
