@@ -42,6 +42,12 @@ public class AssetHandler {
         manager.load("images/ui/pause_button.png", Texture.class);
         manager.load("images/ui/pause_menu.png", Texture.class);
         manager.load("images/menu_tausta.png", Texture.class);
+        manager.load("images/ui/settings_button.png", Texture.class);
+        manager.load("images/ui/exitButton.png", Texture.class);
+        manager.load("images/levelOne.png", Texture.class);
+        manager.load("images/lockedLevel.png", Texture.class);
+        manager.load("images/ui/mutedSound.png", Texture.class);
+        manager.load("images/ui/soundOn.png", Texture.class);
     }
     public void loadMap() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
@@ -49,7 +55,7 @@ public class AssetHandler {
     }
 
     public void loadAssets() {
-        manager.load("images/launching/arrow.png", Texture.class);
+        manager.load("images/launching/whiteArrow.png", Texture.class);
         manager.load("images/launching/meter.png", Texture.class);
         manager.load("images/launching/meterColor.png", Texture.class);
         manager.load("images/background/back_clouds.png", Texture.class);

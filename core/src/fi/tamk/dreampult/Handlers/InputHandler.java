@@ -66,6 +66,8 @@ public class InputHandler extends InputAdapter {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        System.out.println(screenX + " : " + screenY);
+
         if(screenX >= 900 && screenY <= 65) {
             if (loop.game.collection.isGameOn()) {
                 loop.game.collection.pause();
@@ -85,6 +87,15 @@ public class InputHandler extends InputAdapter {
             }
             //loop.player.torso.body.applyAngularImpulse(-0.5f, true);
             loop.arrow.start();
+        }
+
+        if((screenX >= 0 && screenX <= 60) && (screenY >= 0 && screenY <= 55)) {
+            System.out.println("Sound button pressed");
+            if (loop.game.collection.isSoundOn()) {
+                loop.game.collection.soundOff();
+            } else if (!loop.game.collection.isSoundOn()) {
+                loop.game.collection.soundOn();
+            }
         }
 
         if(!loop.game.collection.isGameOn()) {

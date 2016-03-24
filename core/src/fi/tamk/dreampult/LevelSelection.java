@@ -24,7 +24,7 @@ public class LevelSelection implements Screen {
 
     FontHandler font;
 
-    // TODO: Tämä koodi tavalla tai toisella pitäis siirtää main menuun
+
     public LevelSelection(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
@@ -49,15 +49,6 @@ public class LevelSelection implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
 
-        if(Gdx.input.justTouched()) {
-            if (Gdx.input.isTouched()) {
-                game.assets.loadTestMap();
-                game.assets.manager.finishLoading();
-
-                game.setScreen(new GameLoop(game, game.assets.manager, camera));
-            }
-        }
-
         Gdx.gl.glClearColor(0, 0.2f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -67,12 +58,14 @@ public class LevelSelection implements Screen {
 
         game.batch.setProjectionMatrix(fontCamera.combined);
 
-        font.draw(game.batch, "Select stage", 250, 400, Color.WHITE);
-        font.draw(game.batch, "Prev.", 0, 200, Color.BLACK);
-        font.draw(game.batch, "Next", 800, 200, Color.BLACK);
-        font.draw(game.batch, "Stage 1", 250, 200, Color.BLACK);
+        font.draw(game.batch, "Loading stage", 250, 400, Color.WHITE);
 
         game.batch.end();
+
+        //game.assets.loadTestMap();
+        //game.assets.manager.finishLoading();
+
+        //game.setScreen(new GameLoop(game, game.assets.manager, camera));
     }
 
     @Override

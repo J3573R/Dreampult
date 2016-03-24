@@ -5,14 +5,20 @@ package fi.tamk.dreampult;
  */
 public class Collection {
     private boolean gameIsOn;
+
     final public int SCREEN_WIDTH = 16;
     final public int SCREEN_HEIGHT = 9;
+
     public final int UP = 1;
     public final int DOWN = 2;
+
     public boolean launch = false;
+
+    private boolean soundIsOn;
 
     public Collection() {
         gameIsOn = false;
+        soundIsOn = true;
     }
 
     public void start() {
@@ -22,7 +28,18 @@ public class Collection {
         gameIsOn = false;
     }
 
+    public void soundOn() {
+        soundIsOn = true;
+    }
+    public void soundOff() {
+        soundIsOn = false;
+    }
+
     public boolean isGameOn() {
         return gameIsOn;
+    }
+
+    public boolean isSoundOn() {
+        return soundIsOn;
     }
 }

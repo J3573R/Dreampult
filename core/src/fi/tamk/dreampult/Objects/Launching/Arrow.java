@@ -35,7 +35,7 @@ public class Arrow {
     public Arrow(GameLoop gameLoop) {
         game = gameLoop;
         direction = game.game.collection.UP;
-        img = game.assets.get("images/launching/arrow.png", Texture.class);
+        img = game.assets.get("images/launching/whiteArrow.png", Texture.class);
         rotation = 0;
         body = createBodyDef();
         createBodyFixture();
