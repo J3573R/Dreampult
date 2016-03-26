@@ -30,7 +30,9 @@ public class Catapult {
     }
 
     public void draw(SpriteBatch batch) {
-
+        if(gameLoop.collection.launch) {
+            rotate();
+        }
         batch.draw(spoon, spoonPosition.x, spoonPosition.y, // Texture, x, y
                 2, 0, // Origin x, Origin y
                 2, 2, // Width, Height
@@ -53,7 +55,9 @@ public class Catapult {
     }
 
     public void rotate() {
-        spoonRotation -=  Gdx.graphics.getDeltaTime();
+        if(spoonRotation > -1f) {
+            spoonRotation -= 1.5f * Gdx.graphics.getDeltaTime();
+        }
     }
 
 }

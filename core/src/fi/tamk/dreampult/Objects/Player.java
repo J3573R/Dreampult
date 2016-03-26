@@ -104,6 +104,7 @@ public class Player {
         jointDef.localAnchorA.set(bodyOriginX, bodyOriginY);
         jointDef.localAnchorB.set(limbOriginX, limbOriginY);
         jointDef.enableLimit = limit;
+        jointDef.enableMotor = false;
 
         if ((bodypartOne.body.getUserData() == "head") ||
                 (bodypartTwo.body.getUserData() == "head")) {
@@ -116,47 +117,6 @@ public class Player {
 
         world.createJoint(jointDef);
     }
-
-
-    /**
-     * Create players body definition.
-     * @return
-     */
-    private Body createBodyDef() {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(0.5f, 0.5f);
-        bodyDef.bullet = true;
-        return world.createBody(bodyDef);
-    }
-
-    /**
-     * Create players body fixture.
-     */
-    private void createBodyFixture(Body body, float density, float width, float height, boolean sensor, float radius) {
-        FixtureDef def = new FixtureDef();
-        def.density = density;
-        def.friction = 5f;
-        def.restitution = 0.9f;
-        def.isSensor = sensor;
-
-        if(radius > 0) {
-            CircleShape circleShape = new CircleShape();
-            circleShape.setRadius(radius);
-            def.shape = circleShape;
-            body.createFixture(def);
-            circleShape.dispose();
-        } else {
-            PolygonShape polygonShape = new PolygonShape();
-            polygonShape.setAsBox(width / 2, height / 2, new Vector2(0, 0), 0);
-            def.shape = polygonShape;
-            body.createFixture(def);
-            polygonShape.dispose();
-        }
-
-
-    }
-
 
     /**
      * Draw player position and rotation according body.

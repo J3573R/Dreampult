@@ -83,6 +83,7 @@ public class InputHandler extends InputAdapter {
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
             if((force.x > 0 || force.y > 0) && !loop.collection.launch) {
                 loop.collection.launch = true;
+                loop.catapult.rotate();
                 loop.player.torso.body.applyForceToCenter(force, true);
             }
             //loop.player.torso.body.applyAngularImpulse(-0.5f, true);
