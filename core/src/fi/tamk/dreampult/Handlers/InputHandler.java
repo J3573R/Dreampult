@@ -78,15 +78,13 @@ public class InputHandler extends InputAdapter {
 
         } else if(loop.game.collection.isGameOn()) {
             loop.meter.hide();
-            float speed = loop.meter.scale * 6;
+            float speed = loop.meter.scale * 8;
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
             if((force.x > 0 || force.y > 0) && !loop.collection.launch) {
                 loop.collection.launch = true;
-                loop.catapult.rotate();
                 loop.player.torso.body.applyForceToCenter(force, true);
             }
-            //loop.player.torso.body.applyAngularImpulse(-0.5f, true);
             loop.arrow.start();
         }
 
