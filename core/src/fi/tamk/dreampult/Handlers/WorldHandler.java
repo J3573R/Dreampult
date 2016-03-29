@@ -88,8 +88,6 @@ public class WorldHandler {
 
         cameraHalfWidth = camera.viewportWidth * 0.5f;
         cameraHalfHeight = camera.viewportHeight * 0.5f;
-
-        createTiledMap();
     }
 
     /**
@@ -115,7 +113,7 @@ public class WorldHandler {
         cameraBottom = y - cameraHalfHeight;
         cameraTop = y + cameraHalfHeight;
 
-        if(cameraLeft > mapLeft && cameraRight < mapRight) {
+        if(cameraLeft > mapLeft) {
             camera.position.x = x;
         }
 

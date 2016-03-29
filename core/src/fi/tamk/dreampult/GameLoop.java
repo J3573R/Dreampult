@@ -3,9 +3,11 @@ package fi.tamk.dreampult;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
@@ -24,7 +26,8 @@ public class GameLoop extends ScreenAdapter {
     public Collection collection;
     public AssetManager assets;
 
-
+    FontHandler fontHandler;
+    OrthographicCamera fontCamera;
 
     public World world;
     public Player player;
@@ -46,16 +49,22 @@ public class GameLoop extends ScreenAdapter {
     public UserInterface ui;
 
     public Generator pigMonsters;
+    public Generator bedMonsters;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;
 
+    String slept;
     /**
      * Initialize variables for render.
      * @param game
      * @param camera
      */
     public GameLoop(Dreampult game, AssetManager assets, OrthographicCamera camera) {
+        fontHandler = new FontHandler(24);
+        fontCamera = new OrthographicCamera();
+        fontCamera.setToOrtho(false, 960, 540);
+
         this.game = game;
         collection = game.collection;
         this.camera = camera;
@@ -70,7 +79,8 @@ public class GameLoop extends ScreenAdapter {
         player = new Player(world, this);
         background = assets.get("images/background/bg2.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        pigMonsters = new Generator(this);
+        pigMonsters = new Generator(this, "pig", 5, 15, 30);
+        bedMonsters = new Generator(this, "bed", 5, 1, 1);
         arrow = new Arrow(this);
         meter = new Meter(this);
         catapult = new Catapult(this);
@@ -92,6 +102,7 @@ public class GameLoop extends ScreenAdapter {
         debug = new Box2DDebugRenderer();
 
         ui = new UserInterface(this);
+        slept = "Slept: 0h 0min";
         game.collection.start();
     }
 
@@ -108,11 +119,12 @@ public class GameLoop extends ScreenAdapter {
             doPhysicsStep(delta);
 
             worldHandler.moveCamera();
+            ground.body.setTransform(camera.position.x, 0, 0);
             game.batch.setProjectionMatrix(camera.combined);
 
-            worldHandler.tiledMapRenderer.setView(camera);
             arrow.update();
             pigMonsters.update();
+            bedMonsters.update();
 
             if (player.torso.body.getLinearVelocity().x < 0) {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
@@ -134,6 +146,8 @@ public class GameLoop extends ScreenAdapter {
                 player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
             }
 
+            slept = "Slept: " + (int) player.torso.body.getPosition().x / 60 +
+                    "h " + (int) player.torso.body.getPosition().x % 60 + "min";
         } else {
             bg.setSpeed(0);
             bg2.setSpeed(0);
@@ -145,8 +159,6 @@ public class GameLoop extends ScreenAdapter {
              */
             Gdx.gl.glClearColor(131/255f, 182/255f, 255/255f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            //worldHandler.tiledMapRenderer.render();
 
             game.batch.begin();
 
@@ -168,7 +180,11 @@ public class GameLoop extends ScreenAdapter {
             player.draw(game.batch);
 
             pigMonsters.draw(game.batch);
+            bedMonsters.draw(game.batch);
 
+            game.batch.setProjectionMatrix(fontCamera.combined);
+            fontHandler.draw(game.batch, slept, 900 / 2, 530);
+            game.batch.setProjectionMatrix(camera.combined);
             ui.draw(game.batch);
 
             game.batch.end();

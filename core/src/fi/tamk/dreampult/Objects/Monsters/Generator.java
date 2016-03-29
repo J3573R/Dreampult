@@ -15,42 +15,54 @@ import java.util.Random;
 public class Generator {
     // TODO: Vaatii hiukan hiomista. Tähän ei kallen tarvi koskea muutakuin jos oikeasti kiinnostaa. Jäi kesken ko tuli nälkä ja täs on vääntäny jo hetken.
     GameLoop gameLoop;
-    ArrayList<PigMonster> monsters = new ArrayList<PigMonster>();
-    int max;
-    int min;
+    ArrayList<Monster> monsters = new ArrayList<Monster>();
+
+    float interval;
+
+    int rangeX;
+    int rangeY;
 
     float traveled;
     Random random;
+
+    String type;
 
     /**
      * Initialises generator.
      * @param gameLoop
      */
-    public Generator(GameLoop gameLoop) {
-        this.gameLoop = gameLoop;
+    public Generator(GameLoop gameLoop, String type, float interval, int rangeX, int rangeY) {
         random = new Random();
-        max = 3;
-        traveled = 5;
+
+        this.gameLoop = gameLoop;
+        this.interval = interval;
+        this.rangeX = rangeX;
+        this.rangeY = rangeY;
+        this.type = type;
+
+        traveled = 5f;
     }
 
     /**
      * Generates new patch of monsters.
      */
     public void update() {
-        if(traveled + 5 < gameLoop.player.torso.body.getPosition().x) {
-            traveled += 10;
-            for(int i = 0; i < max; i++) {
-                //System.out.println("HERE");
-                PigMonster mon = new PigMonster(gameLoop);
-                mon.position = new Vector2((random.nextInt(15) + 1) + (gameLoop.camera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
-                                           random.nextInt(50));
-                monsters.add(mon);
+
+        if(traveled + interval < gameLoop.player.torso.body.getPosition().x) {
+            traveled = gameLoop.player.torso.body.getPosition().x;
+
+            Monster mon = parseType();
+            mon.initalizePosition(new Vector2(random.nextInt(rangeX) + (gameLoop.camera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
+                    random.nextInt(rangeY)), type);
+            monsters.add(mon);
+            if(type.equals("bed")) {
+                System.out.println("ADDED BED");
             }
         }
 
-        Iterator<PigMonster> iterator = monsters.iterator();
+        Iterator<Monster> iterator = monsters.iterator();
         while(iterator.hasNext()) {
-            PigMonster monster = iterator.next();
+            Monster monster = iterator.next();
             if((monster.position.x + monster.width) < (gameLoop.camera.position.x - gameLoop.collection.SCREEN_WIDTH / 2f)) {
                 iterator.remove();
             }
@@ -66,6 +78,20 @@ public class Generator {
             monster.update(Gdx.graphics.getDeltaTime());
             monster.draw(batch);
         }
+    }
+
+    private Monster parseType(){
+        if(type.equals("pig")) {
+            PigMonster mon = new PigMonster(gameLoop);
+            return mon;
+        }
+
+        if(type.equals("bed")) {
+            BedMonster mon = new BedMonster(gameLoop);
+            return mon;
+        }
+
+        return new PigMonster(gameLoop);
     }
 
 }

@@ -19,10 +19,19 @@ public class CollisionHandler implements ContactListener {
         String b = (String) contact.getFixtureB().getBody().getUserData();
 
         if(a != null && b != null) {
-            if((a.equalsIgnoreCase("player") && b.equalsIgnoreCase("cloud")) ||
-               (a.equalsIgnoreCase("cloud") && b.equalsIgnoreCase("player"))) {
+            if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("pig")) ||
+               (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
-                vel = new Vector2(Math.abs(vel.x) * 1.5f, Math.abs(vel.y) * 1.5f + 1);
+                vel = new Vector2(vel.x * 1.5f, -5);
+                game.player.torso.body.setLinearVelocity(vel);
+            }
+        }
+
+        if(a != null && b != null) {
+            if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("bed")) ||
+                    (a.equalsIgnoreCase("bed") && b.equalsIgnoreCase("torso"))) {
+                //Vector2 vel = game.player.torso.body.getLinearVelocity();
+                Vector2 vel = new Vector2(5, 15);
                 game.player.torso.body.setLinearVelocity(vel);
             }
         }

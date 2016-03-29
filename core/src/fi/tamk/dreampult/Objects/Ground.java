@@ -27,7 +27,7 @@ public class Ground {
     private Body createBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(game.worldHandler.WORLD_WIDTH / 2, -0.1f);
+        bodyDef.position.set(game.collection.SCREEN_WIDTH / 2, 0f);
         return game.world.createBody(bodyDef);
     }
 
@@ -35,7 +35,7 @@ public class Ground {
         FixtureDef def = new FixtureDef();
         def.density = 0;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(game.worldHandler.WORLD_WIDTH / 2, 0.1f);
+        shape.setAsBox(game.collection.SCREEN_WIDTH / 2, 0.1f);
         def.shape = shape;
         body.createFixture(def);
         shape.dispose();

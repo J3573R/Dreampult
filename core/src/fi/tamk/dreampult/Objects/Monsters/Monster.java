@@ -1,16 +1,24 @@
 package fi.tamk.dreampult.Objects.Monsters;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import fi.tamk.dreampult.GameLoop;
 
 /**
  * Created by Clown on 22.3.2016.
  */
 public class Monster {
+    GameLoop loop;
+
     Animation animation;
     Texture sheet;
     TextureRegion[] frames;
@@ -19,8 +27,16 @@ public class Monster {
     Vector2 position;
     float width;
     float height;
+    Body body;
 
-    public Monster() {}
+    float hitboxOffsetX = 0;
+    float hitboxOffsetY = 0;
+
+    //public Monster() {}
+
+    public Monster(GameLoop loop) {
+        this.loop = loop;
+    }
 
     /**
      * Creates animation from sprite sheet.
@@ -41,6 +57,13 @@ public class Monster {
         current = animation.getKeyFrame(stateTime, true);
     }
 
+    public void initalizePosition(Vector2 position, String userdata) {
+        this.position = position;
+        body = createBodyDef();
+        body.setUserData(userdata);
+        createBodyFixture(1f);
+    }
+
     /**
      * Updates animation.
      * @param delta
@@ -56,5 +79,22 @@ public class Monster {
      */
     public void draw(SpriteBatch batch) {
         batch.draw(current, position.x, position.y, width, height);
+    }
+
+    public Body createBodyDef() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(position.x + width / 2, position.y + height / 2);
+        return loop.world.createBody(bodyDef);
+    }
+
+    public void createBodyFixture(Float density) {
+        FixtureDef def = new FixtureDef();
+        def.density = density;
+        def.isSensor = true;
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox((width - hitboxOffsetX) / 2, (height  - hitboxOffsetY) / 2, new Vector2(0, 0), 0);
+        def.shape = polygonShape;
+        this.body.createFixture(def);
     }
 }
