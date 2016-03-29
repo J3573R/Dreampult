@@ -26,8 +26,6 @@ public class Arrow {
     public int direction;
     public boolean moving;
 
-    // TODO: Uusi tekstuuri nuolelle jostain. Tämän hetkiseen ei oikeuksia.
-
     /**
      * Initialize arrow.
      * @param gameLoop

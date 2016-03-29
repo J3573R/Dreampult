@@ -48,6 +48,9 @@ public class AssetHandler {
         manager.load("images/lockedLevel.png", Texture.class);
         manager.load("images/ui/mutedSound.png", Texture.class);
         manager.load("images/ui/soundOn.png", Texture.class);
+        manager.load("images/ui/blankButton.png", Texture.class);
+        manager.load("images/ui/falseButton.png", Texture.class);
+        manager.load("images/ui/trueButton.png", Texture.class);
     }
     public void loadMap() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));

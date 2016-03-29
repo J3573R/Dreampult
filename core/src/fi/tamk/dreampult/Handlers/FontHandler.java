@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class FontHandler {
 
     public BitmapFont font;
-    //public String text;
     public int x;
     public int y;
 
@@ -21,11 +20,9 @@ public class FontHandler {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Ubuntu-R.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 50;
-        parameter.color = Color.BLACK;
+        parameter.color = Color.WHITE;
         font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
-        //x = 250;
-        //y = 250;
     }
 
     public FontHandler(int size) {

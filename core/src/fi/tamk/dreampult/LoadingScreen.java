@@ -12,7 +12,7 @@ import fi.tamk.dreampult.Handlers.FontHandler;
 /**
  * Created by DV6-6B20 on 15.3.2016.
  */
-public class LevelSelection implements Screen {
+public class LoadingScreen implements Screen {
 
     public Dreampult game;
 
@@ -22,21 +22,29 @@ public class LevelSelection implements Screen {
 
     public Texture background;
 
+    public Texture blankButton;
+    public Texture trueButton;
+    public Texture falseButton;
+
     FontHandler font;
 
+    boolean loaded;
 
-    public LevelSelection(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
+
+    public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
         fontCamera = fCamera;
 
-        //game.assets.loadTestMap();
-        //game.assets.manager.finishLoading();
-
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
 
+        blankButton = game.assets.manager.get("images/ui/blankButton.png", Texture.class);
+        trueButton = game.assets.manager.get("images/ui/trueButton.png", Texture.class);
+        falseButton = game.assets.manager.get("images/ui/falseButton.png", Texture.class);
+
         font = new FontHandler();
-        //font.text = "Select stage";
+
+        loaded = false;
     }
 
     @Override
@@ -47,6 +55,10 @@ public class LevelSelection implements Screen {
     @Override
     public void render(float delta) {
 
+        if(game.assets.manager.update()) {
+            loaded = true;
+        }
+
         game.batch.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glClearColor(0, 0.2f, 0, 1);
@@ -56,16 +68,25 @@ public class LevelSelection implements Screen {
 
         game.batch.draw(background, 0, 0, 16, 9);
 
+        if(loaded) {
+            game.batch.draw(trueButton, 4, 3, 2, 1);
+            game.batch.draw(falseButton, 8, 3, 2, 1);
+        } else {
+            game.batch.draw(blankButton, 4, 3, 2, 1);
+            game.batch.draw(blankButton, 8, 3, 2, 1);
+        }
+
         game.batch.setProjectionMatrix(fontCamera.combined);
 
-        font.draw(game.batch, "Loading stage", 250, 400, Color.WHITE);
+        font.draw(game.batch, "Sleep is for the weak", 200, 300);
 
         game.batch.end();
 
-        //game.assets.loadTestMap();
-        //game.assets.manager.finishLoading();
-
-        //game.setScreen(new GameLoop(game, game.assets.manager, camera));
+        if(loaded) {
+            if(Gdx.input.justTouched()) {
+                game.setScreen(new GameLoop(game, game.assets.manager, camera));
+            }
+        }
     }
 
     @Override

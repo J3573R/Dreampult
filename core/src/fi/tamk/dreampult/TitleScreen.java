@@ -80,26 +80,15 @@ public class TitleScreen implements Screen {
                 System.out.println("Level loading started");
 
                 game.assets.loadTestMap();
-                game.assets.manager.finishLoading();
+                //game.assets.manager.finishLoading();
 
-                //game.setScreen(new LevelSelection(game, camera, fontCamera));
-                game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                game.setScreen(new LoadingScreen(game, camera, fontCamera));
+                //game.setScreen(new GameLoop(game, game.assets.manager, camera));
 
             } else {
                 System.out.println(touchPoint.x + " : " + touchPoint.y);
             }
         }
-
-//        if(Gdx.input.justTouched()) {
-//            if(Gdx.input.isTouched()) {
-//
-//                game.assets.loadTestMap();
-//                game.assets.manager.finishLoading();
-//
-//                game.setScreen(new LevelSelection(game, camera, fontCamera));
-//                game.setScreen(new GameLoop(game, game.assets.manager, camera));
-//            }
-//        }
 
         Gdx.gl.glClearColor(0, 0.2f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -118,7 +107,7 @@ public class TitleScreen implements Screen {
         game.batch.draw(lockedLevel, 6, 1, 3, 2);
         game.batch.draw(lockedLevel, 9, 1, 3, 2);
 
-//        game.batch.setProjectionMatrix(fontCamera.combined);
+//      game.batch.setProjectionMatrix(fontCamera.combined);
 
         game.batch.end();
 
