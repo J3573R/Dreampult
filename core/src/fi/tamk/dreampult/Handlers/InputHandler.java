@@ -1,5 +1,6 @@
 package fi.tamk.dreampult.Handlers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.MathUtils;
@@ -30,7 +31,7 @@ public class InputHandler extends InputAdapter {
      */
     private void changeArrow(float touchX, float touchY) {
         Vector3 transform = new Vector3(touchX, touchY, 0);
-        loop.camera.unproject(transform);
+        loop.GameCamera.unproject(transform);
         touchX = transform.x;
         touchY = transform.y;
 
@@ -66,17 +67,24 @@ public class InputHandler extends InputAdapter {
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        System.out.println(screenX + " : " + screenY);
 
-        if(screenX >= 900 && screenY <= 65) {
-            if (loop.game.collection.isGameOn()) {
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        loop.UserInterfaceCamera.unproject(touchPos);
+
+        if(loop.ui.pauseButton.contains(touchPos.x, touchPos.y)) {
+            if(loop.game.collection.isGameOn()) {
                 loop.game.collection.pause();
-
+                loop.game.collection.showPauseMenu();
             } else {
                 loop.game.collection.start();
+                loop.game.collection.hidePauseMenu();
             }
+        }else if(loop.ui.soundButton.contains(touchPos.x, touchPos.y)) {
+            loop.ui.toggleSound();
+        }
 
-        } else if(loop.game.collection.isGameOn()) {
+
+       if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();
             float speed = loop.meter.scale * 8;
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
@@ -86,30 +94,6 @@ public class InputHandler extends InputAdapter {
                 loop.player.torso.body.applyForceToCenter(force, true);
             }
             loop.arrow.start();
-        }
-
-        if((screenX >= 0 && screenX <= 60) && (screenY >= 0 && screenY <= 55)) {
-            System.out.println("Sound button pressed");
-            if (loop.game.collection.isSoundOn()) {
-                loop.game.collection.soundOff();
-            } else if (!loop.game.collection.isSoundOn()) {
-                loop.game.collection.soundOn();
-            }
-        }
-
-        if(!loop.game.collection.isGameOn()) {
-            if((screenX >= 418 && screenY <= 270) && (screenX <= 535 && screenY >= 228)) {
-                loop.game.collection.start();
-
-            } else if ((screenX >= 418 && screenY <= 333) && (screenX <= 535 && screenY >= 292)) {
-                System.out.println("Reset button pressed");
-            } else if ((screenX >= 418 && screenY <= 395) && (screenX <= 535 && screenY >= 355)) {
-                System.out.println("Exit button pressed");
-            } else if ((screenX >= 418 && screenY <= 210) && (screenX <= 466 && screenY >= 162)) {
-                System.out.println("Sound button pressed");
-            } else if ((screenX >= 489 && screenY <= 210) && (screenX <= 535 && screenY >= 162)) {
-                System.out.println("Music button pressed");
-            }
         }
 
         return true;
@@ -125,8 +109,10 @@ public class InputHandler extends InputAdapter {
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //changeArrow(screenX, screenY);
-        if(loop.game.collection.isGameOn()) {
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        loop.UserInterfaceCamera.unproject(touchPos);
+
+        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.show();
             loop.arrow.pause();
         }

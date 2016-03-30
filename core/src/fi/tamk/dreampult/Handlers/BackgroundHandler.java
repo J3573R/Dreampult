@@ -1,13 +1,10 @@
 package fi.tamk.dreampult.Handlers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import fi.tamk.dreampult.GameLoop;
-
-import java.util.ArrayList;
 
 /**
  * Created by root on 9.3.2016.
@@ -70,7 +67,7 @@ public class BackgroundHandler {
     public void draw(SpriteBatch batch) {
         // Move image according speed
         move();
-        // Update accord camera offset
+        // Update accord GameCamera offset
         updateOffset();
 
         for(int i = 0; i < imageAmount; i++) {
@@ -95,10 +92,10 @@ public class BackgroundHandler {
     }
 
     /**
-     * Updating offset according camera position.
+     * Updating offset according GameCamera position.
      */
     public void updateOffset() {
-        offset = game.camera.position.x - (16f / 2f);
+        offset = game.GameCamera.position.x - (16f / 2f);
     }
 
     public void setSpeed(float speed) {

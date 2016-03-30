@@ -3,14 +3,13 @@ package fi.tamk.dreampult;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
+import fi.tamk.dreampult.Objects.HitEffect;
 import fi.tamk.dreampult.Objects.Launching.Arrow;
 import fi.tamk.dreampult.Objects.Ground;
 import fi.tamk.dreampult.Objects.Launching.Catapult;
@@ -26,15 +25,18 @@ public class GameLoop extends ScreenAdapter {
     public Collection collection;
     public AssetManager assets;
 
+    public OrthographicCamera GameCamera;
+    public OrthographicCamera UserInterfaceCamera;
+
     FontHandler fontHandler;
-    OrthographicCamera fontCamera;
+
 
     public World world;
     public Player player;
     public Arrow arrow;
     public Ground ground;
+    public HitEffect hit;
 
-    public OrthographicCamera camera;
     public Box2DDebugRenderer debug;
     public WorldHandler worldHandler;
     public InputHandler inputHandler;
@@ -54,20 +56,21 @@ public class GameLoop extends ScreenAdapter {
     private double accumultator = 0;
     private float timestep = 1 / 60f;
 
+    private float timer = 0;
+
     String slept;
     /**
      * Initialize variables for render.
      * @param game
-     * @param camera
+     * @param GameCamera
      */
-    public GameLoop(Dreampult game, AssetManager assets, OrthographicCamera camera) {
+    public GameLoop(Dreampult game, AssetManager assets, OrthographicCamera GameCamera) {
         fontHandler = new FontHandler(24);
-        fontCamera = new OrthographicCamera();
-        fontCamera.setToOrtho(false, 960, 540);
 
         this.game = game;
         collection = game.collection;
-        this.camera = camera;
+        this.GameCamera = game.GameCamera;
+        this.UserInterfaceCamera = game.UserInterfaceCamera;
         this.assets = assets;
 
         world = new World(new Vector2(0, -1f), true);
@@ -79,12 +82,14 @@ public class GameLoop extends ScreenAdapter {
         player = new Player(world, this);
         background = assets.get("images/background/bg2.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        pigMonsters = new Generator(this, "pig", 5, 15, 30);
-        bedMonsters = new Generator(this, "bed", 5, 1, 1);
+        pigMonsters = new Generator(this, "pig", 5, new Vector2(15, 0), new Vector2(20, 5));
+        bedMonsters = new Generator(this, "bed", 20, new Vector2(1, 0), new Vector2(1, 0));
         arrow = new Arrow(this);
         meter = new Meter(this);
         catapult = new Catapult(this);
         ground = new Ground(this);
+        hit = new HitEffect(this);
+
         bg = new BackgroundHandler( this,
                                     this.assets.get("images/background/back_clouds.png", Texture.class),
                                     30,
@@ -102,6 +107,7 @@ public class GameLoop extends ScreenAdapter {
         debug = new Box2DDebugRenderer();
 
         ui = new UserInterface(this);
+        ui.createPauseMenu();
         slept = "Slept: 0h 0min";
         game.collection.start();
     }
@@ -119,12 +125,13 @@ public class GameLoop extends ScreenAdapter {
             doPhysicsStep(delta);
 
             worldHandler.moveCamera();
-            ground.body.setTransform(camera.position.x, 0, 0);
-            game.batch.setProjectionMatrix(camera.combined);
+            ground.body.setTransform(GameCamera.position.x, 0, 0);
+            game.batch.setProjectionMatrix(GameCamera.combined);
 
             arrow.update();
             pigMonsters.update();
             bedMonsters.update();
+            hit.update(Gdx.graphics.getDeltaTime());
 
             if (player.torso.body.getLinearVelocity().x < 0) {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
@@ -144,6 +151,16 @@ public class GameLoop extends ScreenAdapter {
                 float rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
 
                 player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
+            } else {
+                if(player.torso.body.getLinearVelocity().x < 0.1f) {
+                    timer += delta;
+                } else {
+                    timer = 0;
+                }
+
+                if(timer > 1f) {
+                    collection.pause();
+                }
             }
 
             slept = "Slept: " + (int) player.torso.body.getPosition().x / 60 +
@@ -163,8 +180,8 @@ public class GameLoop extends ScreenAdapter {
             game.batch.begin();
 
             game.batch.draw(background,
-                            camera.position.x - collection.SCREEN_WIDTH / 2,
-                            camera.position.y - collection.SCREEN_HEIGHT / 2 - 0.5f,
+                            GameCamera.position.x - collection.SCREEN_WIDTH / 2,
+                            GameCamera.position.y - collection.SCREEN_HEIGHT / 2 - 0.5f,
                             collection.SCREEN_WIDTH,
                             collection.SCREEN_HEIGHT);
             bg.draw(game.batch);
@@ -182,13 +199,18 @@ public class GameLoop extends ScreenAdapter {
             pigMonsters.draw(game.batch);
             bedMonsters.draw(game.batch);
 
-            game.batch.setProjectionMatrix(fontCamera.combined);
+            if(hit.playing) {
+                hit.draw(game.batch);
+            }
+
+            game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             fontHandler.draw(game.batch, slept, 900 / 2, 530);
-            game.batch.setProjectionMatrix(camera.combined);
+            game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
+            ui.drawPauseMenu(game.batch);
 
             game.batch.end();
-            debug.render(world, camera.combined);
+            debug.render(world, GameCamera.combined);
     }
 
     /**

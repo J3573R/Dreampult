@@ -5,9 +5,13 @@ package fi.tamk.dreampult;
  */
 public class Collection {
     private boolean gameIsOn;
+    private boolean PauseMenu;
 
     final public int SCREEN_WIDTH = 16;
     final public int SCREEN_HEIGHT = 9;
+
+    final public int REAL_WIDTH = 960;
+    final public int REAL_HEIGHT = 540;
 
     public final int UP = 1;
     public final int DOWN = 2;
@@ -19,6 +23,7 @@ public class Collection {
     public Collection() {
         gameIsOn = false;
         soundIsOn = true;
+        PauseMenu = false;
     }
 
     public void start() {
@@ -41,5 +46,16 @@ public class Collection {
 
     public boolean isSoundOn() {
         return soundIsOn;
+    }
+
+    public boolean isPauseMenu() {
+        return PauseMenu;
+    }
+
+    public void showPauseMenu() {
+        this.PauseMenu = true;
+    }
+    public void hidePauseMenu() {
+        this.PauseMenu = false;
     }
 }

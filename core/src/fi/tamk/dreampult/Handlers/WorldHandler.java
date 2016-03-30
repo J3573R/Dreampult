@@ -74,12 +74,12 @@ public class WorldHandler {
     public TiledMapRenderer tiledMapRenderer;
 
     /**
-     * Initialize map and camera
+     * Initialize map and GameCamera
      * @param gameLoop
      */
     public WorldHandler(GameLoop gameLoop) {
         loop = gameLoop;
-        camera = loop.camera;
+        camera = loop.GameCamera;
 
         mapLeft = 0;
         mapRight = 0 + WORLD_WIDTH;
@@ -102,7 +102,7 @@ public class WorldHandler {
     }
 
     /**
-     * Move camera if not near edge of loop world.
+     * Move GameCamera if not near edge of loop world.
      */
     public void moveCamera() {
         float x = loop.player.torso.body.getPosition().x;

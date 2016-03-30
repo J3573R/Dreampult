@@ -19,8 +19,8 @@ public class Generator {
 
     float interval;
 
-    int rangeX;
-    int rangeY;
+    Vector2 rangeX;
+    Vector2 rangeY;
 
     float traveled;
     Random random;
@@ -31,7 +31,7 @@ public class Generator {
      * Initialises generator.
      * @param gameLoop
      */
-    public Generator(GameLoop gameLoop, String type, float interval, int rangeX, int rangeY) {
+    public Generator(GameLoop gameLoop, String type, float interval, Vector2 rangeX, Vector2 rangeY) {
         random = new Random();
 
         this.gameLoop = gameLoop;
@@ -52,8 +52,8 @@ public class Generator {
             traveled = gameLoop.player.torso.body.getPosition().x;
 
             Monster mon = parseType();
-            mon.initalizePosition(new Vector2(random.nextInt(rangeX) + (gameLoop.camera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
-                    random.nextInt(rangeY)), type);
+            mon.initalizePosition(new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (gameLoop.GameCamera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
+                    random.nextInt((int)rangeY.x) + rangeY.y), type);
             monsters.add(mon);
             if(type.equals("bed")) {
                 System.out.println("ADDED BED");
@@ -63,7 +63,7 @@ public class Generator {
         Iterator<Monster> iterator = monsters.iterator();
         while(iterator.hasNext()) {
             Monster monster = iterator.next();
-            if((monster.position.x + monster.width) < (gameLoop.camera.position.x - gameLoop.collection.SCREEN_WIDTH / 2f)) {
+            if((monster.position.x + monster.width) < (gameLoop.GameCamera.position.x - gameLoop.collection.SCREEN_WIDTH / 2f)) {
                 iterator.remove();
             }
         }

@@ -46,7 +46,7 @@ public class AssetHandler {
         manager.load("images/ui/exitButton.png", Texture.class);
         manager.load("images/levelOne.png", Texture.class);
         manager.load("images/lockedLevel.png", Texture.class);
-        manager.load("images/ui/mutedSound.png", Texture.class);
+        manager.load("images/ui/soundOff.png", Texture.class);
         manager.load("images/ui/soundOn.png", Texture.class);
         manager.load("images/ui/blankButton.png", Texture.class);
         manager.load("images/ui/falseButton.png", Texture.class);
@@ -65,6 +65,7 @@ public class AssetHandler {
         manager.load("images/background/middle_clouds.png", Texture.class);
         manager.load("images/background/front_clouds.png", Texture.class);
         manager.load("images/background/bg2.png", Texture.class);
+        manager.load("images/player/hiteffect.png", Texture.class);
     }
 
     public void loadCatapult() {

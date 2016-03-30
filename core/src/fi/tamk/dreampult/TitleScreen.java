@@ -83,7 +83,7 @@ public class TitleScreen implements Screen {
                 //game.assets.manager.finishLoading();
 
                 game.setScreen(new LoadingScreen(game, camera, fontCamera));
-                //game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                //game.setScreen(new GameLoop(game, game.assets.manager, GameCamera));
 
             } else {
                 System.out.println(touchPoint.x + " : " + touchPoint.y);
@@ -107,7 +107,7 @@ public class TitleScreen implements Screen {
         game.batch.draw(lockedLevel, 6, 1, 3, 2);
         game.batch.draw(lockedLevel, 9, 1, 3, 2);
 
-//      game.batch.setProjectionMatrix(fontCamera.combined);
+//      game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
 
         game.batch.end();
 
