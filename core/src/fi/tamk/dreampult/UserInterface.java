@@ -32,6 +32,8 @@ public class UserInterface {
     ShapeRenderer shapeRenderer;
     public Rectangle bg;
 
+    Texture shootTexture;
+
     public UserInterface(GameLoop loop) {
         this.loop = loop;
 
@@ -60,6 +62,7 @@ public class UserInterface {
         shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
         shapeRenderer.end();
         batch.begin();
+        batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
         batch.setProjectionMatrix(loop.GameCamera.combined);
     }
 
@@ -97,6 +100,7 @@ public class UserInterface {
     }
 
     public void createShootButton() {
+        shootTexture = this.loop.assets.get("images/ui/shootButton.png", Texture.class);
         shootButton = new Circle();
         shootButton.set(880, 80, 60);
     }

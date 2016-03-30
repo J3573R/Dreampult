@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -29,21 +30,17 @@ public class TitleScreen implements Screen {
     public FontHandler font;
 
     public Texture settings;
+    public boolean settingsPressed;
 
     public Texture exit;
 
     public Texture levelOne;
     public Texture lockedLevel;
 
-    public Texture endScreen;
-
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
         fontCamera = fCamera;
-
-        //game.assets.loadUi();
-        //game.assets.manager.finishLoading();
 
         logo = game.assets.manager.get("images/dreampult_logo.png", Texture.class);
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
@@ -53,7 +50,8 @@ public class TitleScreen implements Screen {
         lockedLevel = game.assets.manager.get("images/lockedLevel.png", Texture.class);
 
         font = new FontHandler();
-        //font.text = "Press anything to start";
+
+        settingsPressed = false;
 
     }
 
@@ -72,20 +70,23 @@ public class TitleScreen implements Screen {
         if(Gdx.input.justTouched()) {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            if((touchPoint.x >= 0 && touchPoint.x <= 1) && (touchPoint.y >= 8 && touchPoint.y <= 9)) {
+            if(((touchPoint.x >= 0 && touchPoint.x <= 1) && (touchPoint.y >= 8 && touchPoint.y <= 9)) && (!settingsPressed)) {
                 System.out.println("Settings button pressed");
+                settingsPressed = true;
 
-            } else if((touchPoint.x >= 15 && touchPoint.x <= 16) && (touchPoint.y >= 8 && touchPoint.y <= 9)) {
+            } else if((touchPoint.x >= 15 && touchPoint.x <= 16) && (touchPoint.y >= 8 && touchPoint.y <= 9) && (!settingsPressed)) {
                 System.out.println("Exit button pressed");
+                Gdx.app.exit();
 
-            } else if((touchPoint.x >= 3 && touchPoint.x <= 6) && (touchPoint.y >= 3 && touchPoint.y <= 5)) {
+            } else if((touchPoint.x >= 3 && touchPoint.x <= 6) && (touchPoint.y >= 3 && touchPoint.y <= 5) && (!settingsPressed)) {
                 System.out.println("Level loading started");
 
                 game.assets.loadTestMap();
-                //game.assets.manager.finishLoading();
 
                 game.setScreen(new LoadingScreen(game, camera, fontCamera));
-                //game.setScreen(new GameLoop(game, game.assets.manager, GameCamera));
+
+            } else if(settingsPressed) {
+                settingsPressed = false;
 
             } else {
                 System.out.println(touchPoint.x + " : " + touchPoint.y);
@@ -109,10 +110,13 @@ public class TitleScreen implements Screen {
         game.batch.draw(lockedLevel, 6, 1, 3, 2);
         game.batch.draw(lockedLevel, 9, 1, 3, 2);
 
-//      game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
+//        game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
+
+        if(settingsPressed) {
+            game.batch.draw(settings, 1, 1, 1, 1);
+        }
 
         game.batch.end();
-
 
     }
 

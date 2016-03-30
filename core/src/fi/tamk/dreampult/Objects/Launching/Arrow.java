@@ -26,6 +26,8 @@ public class Arrow {
     public int direction;
     public boolean moving;
 
+    boolean show;
+
     /**
      * Initialize arrow.
      * @param gameLoop
@@ -34,6 +36,7 @@ public class Arrow {
         game = gameLoop;
         direction = game.game.collection.UP;
         img = game.assets.get("images/launching/whiteArrow.png", Texture.class);
+        show = true;
         rotation = 0;
         body = createBodyDef();
         createBodyFixture();
@@ -71,16 +74,19 @@ public class Arrow {
      * @param batch
      */
     public void draw(SpriteBatch batch) {
+        if (show) {
+
         body.setTransform(body.getPosition(), rotation);
 
-        batch.draw(img, body.getPosition().x - 0.48f, body.getPosition().y, // Texture, x, y
-                0.5f, 0, // Origin x, Origin y
-                width, height, // Width, Height
-                1, 1, // Scale X, Scale Y
-                rotation * MathUtils.radiansToDegrees,    // Rotation
-                1, 1, // srcX, srcY
-                img.getWidth(), img.getHeight(), // srcWidth, srcHeight
-                false, false); // flip x, flip y
+            batch.draw(img, body.getPosition().x - 0.48f, body.getPosition().y, // Texture, x, y
+                    0.5f, 0, // Origin x, Origin y
+                    width, height, // Width, Height
+                    1, 1, // Scale X, Scale Y
+                    rotation * MathUtils.radiansToDegrees,    // Rotation
+                    1, 1, // srcX, srcY
+                    img.getWidth(), img.getHeight(), // srcWidth, srcHeight
+                    false, false); // flip x, flip y
+        }
     }
 
     public void update() {
@@ -109,4 +115,12 @@ public class Arrow {
      public void pause() {
          moving = false;
      }
+
+    public void show() {
+        show = true;
+    }
+
+    public void hide() {
+        show = false;
+    }
 }

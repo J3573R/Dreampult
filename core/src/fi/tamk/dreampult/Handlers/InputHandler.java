@@ -92,6 +92,7 @@ public class InputHandler extends InputAdapter {
             if((force.x > 0 || force.y > 0) && !loop.collection.launch) {
                 loop.collection.launch = true;
                 loop.player.torso.body.applyForceToCenter(force, true);
+                loop.arrow.hide();
             }
             loop.arrow.start();
         }
