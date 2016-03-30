@@ -212,7 +212,7 @@ public class GameLoop extends ScreenAdapter {
 
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             fontHandler.draw(game.batch, slept, 900 / 2, 530);
-            game.batch.setProjectionMatrix(GameCamera.combined);
+            //game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
 

@@ -50,26 +50,28 @@ public class UserInterface {
         batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
         batch.draw(pauseTexture, pauseButton.getX(), pauseButton.getY(), pauseButton.getWidth(), pauseButton.getHeight());
         if(soundState) {
-            System.out.println("ON");
             batch.draw(soundOn, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());
         } else {
-            System.out.println("OFF");
             batch.draw(soundOff, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());
         }
+        batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.SKY);
         shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
         shapeRenderer.end();
+        batch.begin();
         batch.setProjectionMatrix(loop.GameCamera.combined);
     }
 
     public void drawPauseMenu(SpriteBatch batch) {
         if(loop.collection.isPauseMenu()) {
             batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
+            batch.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.SKY);
             shapeRenderer.rect(bg.getX(), bg.getY(), bg.getWidth(), bg.getHeight());
             shapeRenderer.end();
+            batch.begin();
             batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
@@ -91,7 +93,7 @@ public class UserInterface {
         soundOn = this.loop.assets.get("images/ui/soundOn.png", Texture.class);
         soundOff = this.loop.assets.get("images/ui/soundOff.png", Texture.class);
         soundButton = new Rectangle();
-        soundButton.set(910, 490, 50, 50);
+        soundButton.set(0, 490, 50, 50);
     }
 
     public void createShootButton() {
