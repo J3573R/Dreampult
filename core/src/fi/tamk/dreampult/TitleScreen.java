@@ -35,6 +35,8 @@ public class TitleScreen implements Screen {
     public Texture levelOne;
     public Texture lockedLevel;
 
+    public Texture endScreen;
+
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;

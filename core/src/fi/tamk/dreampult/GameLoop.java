@@ -59,6 +59,10 @@ public class GameLoop extends ScreenAdapter {
     private float timer = 0;
 
     String slept;
+
+    public Texture endScreen;
+    public boolean theEnd;
+
     /**
      * Initialize variables for render.
      * @param game
@@ -110,6 +114,9 @@ public class GameLoop extends ScreenAdapter {
         ui.createPauseMenu();
         slept = "Slept: 0h 0min";
         game.collection.start();
+
+        endScreen = game.assets.manager.get("images/endScreen.png", Texture.class);
+        theEnd = false;
     }
 
     /**
@@ -208,6 +215,13 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
+
+            //if(theEnd) {
+            //    game.batch.draw(endScreen, 0, 0, 16, 9);
+
+            //    game.batch.setProjectionMatrix(fontCamera.combined);
+                //fontHandler.draw(game.batch, slept, 900/ 2, 530); <-- Proper coordinates needed
+            //}
 
             game.batch.end();
             debug.render(world, GameCamera.combined);
