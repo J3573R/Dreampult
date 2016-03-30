@@ -51,6 +51,7 @@ public class AssetHandler {
         manager.load("images/ui/blankButton.png", Texture.class);
         manager.load("images/ui/falseButton.png", Texture.class);
         manager.load("images/ui/trueButton.png", Texture.class);
+        manager.load("images/endScreen.png", Texture.class);
     }
     public void loadMap() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
