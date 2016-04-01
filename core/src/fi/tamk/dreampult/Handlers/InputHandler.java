@@ -86,9 +86,10 @@ public class InputHandler extends InputAdapter {
 
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();
-            float speed = loop.meter.scale * 8;
+            float speed = loop.meter.scale * 15;
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
+           System.out.println(force);
             if((force.x > 0 || force.y > 0) && !loop.collection.launch) {
                 loop.collection.launch = true;
                 loop.player.torso.body.applyForceToCenter(force, true);

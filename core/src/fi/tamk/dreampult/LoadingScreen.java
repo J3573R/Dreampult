@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import fi.tamk.dreampult.Handlers.FontHandler;
 
 /**
@@ -28,6 +29,8 @@ public class LoadingScreen implements Screen {
 
     FontHandler font;
 
+    String loading;
+
     boolean loaded;
 
 
@@ -45,6 +48,8 @@ public class LoadingScreen implements Screen {
         font = new FontHandler();
 
         loaded = false;
+
+        loading = "Loading...";
     }
 
     @Override
@@ -54,6 +59,13 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        if(loaded) {
+            loading = "Loaded!";
+            if(Gdx.input.justTouched()) {
+                game.setScreen(new GameLoop(game, game.assets.manager, camera));
+            }
+        }
 
         if(game.assets.manager.update()) {
             loaded = true;
@@ -67,26 +79,26 @@ public class LoadingScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0, 16, 9);
-
-        if(loaded) {
-            game.batch.draw(trueButton, 4, 3, 2, 1);
-            game.batch.draw(falseButton, 8, 3, 2, 1);
-        } else {
-            game.batch.draw(blankButton, 4, 3, 2, 1);
-            game.batch.draw(blankButton, 8, 3, 2, 1);
-        }
-
         game.batch.setProjectionMatrix(fontCamera.combined);
 
-        font.draw(game.batch, "Sleep is for the weak", 200, 300);
+        if(loaded) {
+            game.batch.draw(trueButton, 960 / 4 - 50, 125, 200, 100);
+            game.batch.draw(falseButton, 960 / 3 * 2 - 50, 125, 200, 100);
+        } else {
+            game.batch.draw(blankButton, 960 / 4 - 50, 125, 200, 100);
+            game.batch.draw(blankButton, 960 / 3 * 2 - 50, 125, 200, 100);
+        }
+
+        GlyphLayout layout = new GlyphLayout(font.font, loading);
+
+        font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
+
+        layout.setText(font.font, "Sleep is for the weak");
+        font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 300);
 
         game.batch.end();
 
-        if(loaded) {
-            if(Gdx.input.justTouched()) {
-                game.setScreen(new GameLoop(game, game.assets.manager, camera));
-            }
-        }
+
     }
 
     @Override

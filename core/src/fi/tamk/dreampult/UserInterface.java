@@ -56,13 +56,17 @@ public class UserInterface {
         } else {
             batch.draw(soundOff, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());
         }
+
+        if(!loop.collection.launch) {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.SKY);
         shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
         shapeRenderer.end();
         batch.begin();
-        batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
+
+            batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
+        }
         batch.setProjectionMatrix(loop.GameCamera.combined);
     }
 
@@ -89,14 +93,14 @@ public class UserInterface {
     public void createPauseButton() {
         pauseTexture = this.loop.assets.get("images/ui/pause_button.png");
         pauseButton = new Rectangle();
-        pauseButton.set(910, 490, 50, 50);
+        pauseButton.set(880, 460, 80, 80);
     }
 
     public void createSoundButton() {
         soundOn = this.loop.assets.get("images/ui/soundOn.png", Texture.class);
         soundOff = this.loop.assets.get("images/ui/soundOff.png", Texture.class);
         soundButton = new Rectangle();
-        soundButton.set(0, 490, 50, 50);
+        soundButton.set(0, 460, 80, 80);
     }
 
     public void createShootButton() {
