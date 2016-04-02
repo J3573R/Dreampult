@@ -21,7 +21,7 @@ public class TitleScreen implements Screen {
 
     public OrthographicCamera camera;
 
-    public OrthographicCamera fontCamera;
+    public OrthographicCamera userInterfaceCamera;
 
     public Texture logo;
 
@@ -40,10 +40,18 @@ public class TitleScreen implements Screen {
     public Texture soundOn;
     public Texture soundOff;
 
+    public Texture finFlag;
+    public Texture britFlag;
+
+    boolean finLanguage;
+
+    public Rectangle finRectangle;
+    public Rectangle britRectangle;
+
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
-        fontCamera = fCamera;
+        userInterfaceCamera = fCamera;
 
         logo = game.assets.manager.get("images/dreampult_logo.png", Texture.class);
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
@@ -55,10 +63,17 @@ public class TitleScreen implements Screen {
         soundOn = game.assets.manager.get("images/ui/soundOn.png", Texture.class);
         soundOff = game.assets.manager.get("images/ui/soundOff.png", Texture.class);
 
+        finFlag = game.assets.manager.get("images/finFlag.png", Texture.class);
+        britFlag = game.assets.manager.get("images/britFlag.png", Texture.class);
+
         font = new FontHandler();
 
         settingsPressed = false;
 
+        finLanguage = true;
+
+        finRectangle = new Rectangle(760, 440, 100, 100);
+        britRectangle = new Rectangle(860, 460, 100, 70);
     }
 
     @Override
@@ -80,16 +95,12 @@ public class TitleScreen implements Screen {
                 System.out.println("Sound button pressed");
                 settingsPressed = true;
 
-            } else if((touchPoint.x >= 14 && touchPoint.x <= 16) && (touchPoint.y >= 7 && touchPoint.y <= 9) && (!settingsPressed)) {
-                System.out.println("Exit button pressed");
-                Gdx.app.exit();
-
             } else if((touchPoint.x >= 3 && touchPoint.x <= 6) && (touchPoint.y >= 3 && touchPoint.y <= 5) && (!settingsPressed)) {
                 System.out.println("Level loading started");
 
                 game.assets.loadTestMap();
 
-                game.setScreen(new LoadingScreen(game, camera, fontCamera));
+                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera));
 
             } else if(settingsPressed) {
                 settingsPressed = false;
@@ -107,21 +118,35 @@ public class TitleScreen implements Screen {
         game.batch.draw(background, 0, 0, 16, 9);
         game.batch.draw(logo, 3, 5, 9, 4);
         //game.batch.draw(settings, 0, 7, 2, 2);
-        game.batch.draw(exit, 14, 7, 2, 2);
 
         game.batch.draw(levelOne, 3, 3, 3, 2);
         game.batch.draw(lockedLevel, 6, 3, 3, 2);
         game.batch.draw(lockedLevel, 9, 3, 3, 2);
-        game.batch.draw(lockedLevel, 3, 1, 3, 2);
-        game.batch.draw(lockedLevel, 6, 1, 3, 2);
-        game.batch.draw(lockedLevel, 9, 1, 3, 2);
 
-//        game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
+        game.batch.setProjectionMatrix(userInterfaceCamera.combined);
+
+        if(Gdx.input.justTouched()) {
+            userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+            if(finRectangle.contains(touchPoint.x, touchPoint.y)) {
+                finLanguage = true;
+            } else if(britRectangle.contains(touchPoint.x, touchPoint.y)) {
+                finLanguage = false;
+            }
+        }
 
         if(settingsPressed) {
-            game.batch.draw(soundOff, 0, 7, 2, 2);
+            game.batch.draw(soundOff, 0, 440, 100, 100);
         } else {
-            game.batch.draw(soundOn, 0, 7, 2, 2);
+            game.batch.draw(soundOn, 0, 440, 100, 100);
+        }
+
+        if(finLanguage) {
+            game.batch.draw(finFlag, 760, 440, 100, 100);
+            game.batch.draw(britFlag, 860, 460, 50, 20);
+        } else {
+            game.batch.draw(finFlag, 760, 440, 50, 50);
+            game.batch.draw(britFlag, 860, 460, 100, 70);
         }
 
         game.batch.end();

@@ -8,7 +8,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+
 import fi.tamk.dreampult.Handlers.FontHandler;
+import fi.tamk.dreampult.Handlers.QuestionHandler;
 
 /**
  * Created by DV6-6B20 on 15.3.2016.
@@ -27,12 +31,18 @@ public class LoadingScreen implements Screen {
     public Texture trueButton;
     public Texture falseButton;
 
+    public Rectangle truthRectangle;
+    public Rectangle falseRectangle;
+
     FontHandler font;
 
     String loading;
 
     boolean loaded;
 
+    QuestionHandler questionHandler;
+
+    String question;
 
     public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
@@ -50,6 +60,13 @@ public class LoadingScreen implements Screen {
         loaded = false;
 
         loading = "Loading...";
+
+        truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
+        falseRectangle = new Rectangle(960 / 3 * 2 - 50, 125, 200, 100);
+
+        questionHandler = new QuestionHandler();
+
+        question = questionHandler.randomQuestion();
     }
 
     @Override
@@ -60,10 +77,23 @@ public class LoadingScreen implements Screen {
     @Override
     public void render(float delta) {
 
+        Vector3 touchPoint = new Vector3();
+
         if(loaded) {
             loading = "Loaded!";
             if(Gdx.input.justTouched()) {
-                game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+                if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
+                    System.out.println("Truth chosen");
+                    game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
+                    System.out.println("False chosen");
+                    game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                } else {
+                    System.out.println(touchPoint.x + " : " + touchPoint.y);
+                    System.out.println(question);
+                }
             }
         }
 
@@ -82,18 +112,18 @@ public class LoadingScreen implements Screen {
         game.batch.setProjectionMatrix(fontCamera.combined);
 
         if(loaded) {
-            game.batch.draw(trueButton, 960 / 4 - 50, 125, 200, 100);
-            game.batch.draw(falseButton, 960 / 3 * 2 - 50, 125, 200, 100);
+            game.batch.draw(trueButton, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
+            game.batch.draw(falseButton, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
         } else {
-            game.batch.draw(blankButton, 960 / 4 - 50, 125, 200, 100);
-            game.batch.draw(blankButton, 960 / 3 * 2 - 50, 125, 200, 100);
+            game.batch.draw(blankButton, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
+            game.batch.draw(blankButton, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
         }
 
         GlyphLayout layout = new GlyphLayout(font.font, loading);
 
         font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
 
-        layout.setText(font.font, "Sleep is for the weak");
+        layout.setText(font.font, question);
         font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 300);
 
         game.batch.end();
