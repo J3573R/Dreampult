@@ -76,7 +76,6 @@ public class QuestionHandler {
             returnQuestion = questionEleven;
         }
 
-        //return returnQuestion;
-        return questionOne;
+        return returnQuestion;
     }
 }
