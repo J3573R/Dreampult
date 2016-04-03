@@ -56,6 +56,7 @@ public class UserInterface {
         pauseMenu = this.loop.assets.get("images/ui/pause_menu.png");
 
         middle = new Vector2(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
+        //middle = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         createBackground();
         createPauseMenu();
@@ -90,6 +91,7 @@ public class UserInterface {
             batch.end();
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setProjectionMatrix(loop.UserInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.5f);
             shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
@@ -109,6 +111,7 @@ public class UserInterface {
             batch.end();
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
             shapeRenderer.setColor(0, 0, 0, 0.5f);
             shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
