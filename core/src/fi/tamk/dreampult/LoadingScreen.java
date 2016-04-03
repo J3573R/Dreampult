@@ -44,6 +44,8 @@ public class LoadingScreen implements Screen {
 
     String question;
 
+    public boolean questionAnswer; //To be implemented later
+
     public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
@@ -55,7 +57,7 @@ public class LoadingScreen implements Screen {
         trueButton = game.assets.manager.get("images/ui/trueButton.png", Texture.class);
         falseButton = game.assets.manager.get("images/ui/falseButton.png", Texture.class);
 
-        font = new FontHandler();
+        font = new FontHandler(40);
 
         loaded = false;
 
