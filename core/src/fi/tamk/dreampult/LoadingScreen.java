@@ -44,7 +44,7 @@ public class LoadingScreen implements Screen {
 
     String question;
 
-    public boolean questionAnswer; //To be implemented later
+    public boolean questionAnswer; //To be implemented later on
 
     public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
