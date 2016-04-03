@@ -35,6 +35,20 @@ public class Dreampult extends Game {
 		setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
 	}
 
+    public void MainMenu() {
+        collection.launch = false;
+        collection.hidePauseMenu();
+        collection.hideScoreScreen();
+        setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
+    }
+
+	public void restart() {
+		collection.launch = false;
+		collection.hidePauseMenu();
+		collection.hideScoreScreen();
+		setScreen( new GameLoop(this, assets.manager, GameCamera));
+	}
+
 	@Override
 	public void render () {
 		super.render();

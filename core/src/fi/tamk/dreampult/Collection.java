@@ -6,6 +6,7 @@ package fi.tamk.dreampult;
 public class Collection {
     private boolean gameIsOn;
     private boolean PauseMenu;
+    private boolean ScoreScreen;
 
     final public int SCREEN_WIDTH = 16;
     final public int SCREEN_HEIGHT = 9;
@@ -57,5 +58,14 @@ public class Collection {
     }
     public void hidePauseMenu() {
         this.PauseMenu = false;
+    }
+
+    public boolean isScoreScreen() {return  ScoreScreen; }
+
+    public void showScoreScreen() {
+        this.ScoreScreen = true;
+    }
+    public void hideScoreScreen() {
+        this.ScoreScreen = false;
     }
 }

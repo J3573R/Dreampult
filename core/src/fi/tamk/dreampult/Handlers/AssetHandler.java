@@ -81,5 +81,6 @@ public class AssetHandler {
     public void loadMonsters() {
         manager.load("images/objects/pigMonster/pigmonster_animationframes.png", Texture.class);
         manager.load("images/objects/bedmonster/bed.png", Texture.class);
+        manager.load("images/objects/clock/alarmclock.png", Texture.class);
     }
 }

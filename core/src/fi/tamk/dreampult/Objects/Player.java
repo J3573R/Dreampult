@@ -17,12 +17,12 @@ import fi.tamk.dreampult.GameLoop;
 public class Player {
     GameLoop game;
     World world;
-    Bodypart head;
-    Bodypart leftLeg;
-    Bodypart rightLeg;
+    public Bodypart head;
+    public Bodypart leftLeg;
+    public Bodypart rightLeg;
     public Bodypart torso;
-    Bodypart leftArm;
-    Bodypart rightArm;
+    public Bodypart leftArm;
+    public Bodypart rightArm;
 
     float width = 0.5f;
     float height = 1f;
@@ -130,6 +130,14 @@ public class Player {
         head.draw(batch);
         leftArm.draw(batch);
         leftLeg.draw(batch);
+    }
+
+    public void setBodypartVelocity(Vector2 vel) {
+        rightArm.body.setLinearVelocity(vel);
+        leftArm.body.setLinearVelocity(vel);
+        rightLeg.body.setLinearVelocity(vel);
+        leftLeg.body.setLinearVelocity(vel);
+        head.body.setLinearVelocity(vel);
     }
 
 }

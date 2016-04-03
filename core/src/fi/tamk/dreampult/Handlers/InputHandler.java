@@ -83,6 +83,14 @@ public class InputHandler extends InputAdapter {
             loop.ui.toggleSound();
         }
 
+        if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
+            loop.game.restart();
+        }
+
+        if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
+            loop.game.MainMenu();
+        }
+
 
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();

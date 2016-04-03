@@ -21,8 +21,8 @@ public class FontHandler {
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 50;
         parameter.color = Color.WHITE;
-        font = generator.generateFont(parameter); // font size 12 pixels
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        font = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     public FontHandler(int size) {
@@ -31,8 +31,18 @@ public class FontHandler {
         parameter.size = size;
         parameter.color = Color.WHITE;
 
-        font = generator.generateFont(parameter); // font size 12 pixels
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        font = generator.generateFont(parameter);
+        generator.dispose();
+    }
+
+    public FontHandler(int size, Color color) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Ubuntu-R.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = size;
+        parameter.color = color;
+
+        font = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     public void draw(SpriteBatch batch, String text, int x, int y) {
@@ -41,7 +51,6 @@ public class FontHandler {
 
     public void draw(SpriteBatch batch, String text, int x, int y, Color fontColor) {
         font.setColor(fontColor);
-
         font.draw(batch, text, x, y);
     }
 }

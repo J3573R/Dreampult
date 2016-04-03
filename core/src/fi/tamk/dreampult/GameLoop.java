@@ -52,6 +52,7 @@ public class GameLoop extends ScreenAdapter {
 
     public Generator pigMonsters;
     public Generator bedMonsters;
+    public Generator clock;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;
@@ -74,6 +75,7 @@ public class GameLoop extends ScreenAdapter {
         this.game = game;
         collection = game.collection;
         this.GameCamera = game.GameCamera;
+        game.GameCamera.position.set(8f, 4.5f, 0);
         this.UserInterfaceCamera = game.UserInterfaceCamera;
         this.assets = assets;
 
@@ -88,6 +90,7 @@ public class GameLoop extends ScreenAdapter {
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         pigMonsters = new Generator(this, "pig", 5, new Vector2(15, 0), new Vector2(20, 5));
         bedMonsters = new Generator(this, "bed", 20, new Vector2(1, 0), new Vector2(1, 0));
+        clock = new Generator(this, "clock", 33, new Vector2(1, 1), new Vector2(1, 0));
         arrow = new Arrow(this);
         meter = new Meter(this);
         catapult = new Catapult(this);
@@ -111,7 +114,6 @@ public class GameLoop extends ScreenAdapter {
         debug = new Box2DDebugRenderer();
 
         ui = new UserInterface(this);
-        ui.createPauseMenu();
         slept = "Slept: 0h 0min";
         game.collection.start();
 
@@ -137,7 +139,10 @@ public class GameLoop extends ScreenAdapter {
 
             arrow.update();
             pigMonsters.update();
-            bedMonsters.update();
+            bedMonsters.update(1);
+            if((int) player.torso.body.getPosition().x / 60 > 8) {
+                clock.update(-1);
+            }
             hit.update(Gdx.graphics.getDeltaTime());
 
             if (player.torso.body.getLinearVelocity().x < 0) {
@@ -158,6 +163,9 @@ public class GameLoop extends ScreenAdapter {
                 float rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
 
                 player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
+                Vector2 zeroVel = new Vector2(0, 0);
+                player.setBodypartVelocity(zeroVel);
+
             } else {
                 if(player.torso.body.getLinearVelocity().x < 0.1f) {
                     timer += delta;
@@ -165,8 +173,9 @@ public class GameLoop extends ScreenAdapter {
                     timer = 0;
                 }
 
-                if(timer > 1f) {
+                if(timer > 2f) {
                     collection.pause();
+                    collection.showScoreScreen();
                 }
             }
 
@@ -205,6 +214,7 @@ public class GameLoop extends ScreenAdapter {
 
             pigMonsters.draw(game.batch);
             bedMonsters.draw(game.batch);
+            clock.draw(game.batch);
 
             if(hit.playing) {
                 hit.draw(game.batch);
@@ -215,6 +225,7 @@ public class GameLoop extends ScreenAdapter {
             //game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
+            ui.drawScoreScreen(game.batch);
 
             //if(theEnd) {
             //    game.batch.draw(endScreen, 0, 0, 16, 9);

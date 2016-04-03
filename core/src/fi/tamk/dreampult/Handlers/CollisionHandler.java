@@ -25,17 +25,34 @@ public class CollisionHandler implements ContactListener {
                (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 playAnimation(contact);
-                vel = new Vector2(vel.x * 1.5f, -5);
+                vel.set(vel.x, -5);
                 game.player.torso.body.setLinearVelocity(vel);
             }
-        }
 
-        if(a != null && b != null) {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("bed")) ||
                     (a.equalsIgnoreCase("bed") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
-                Vector2 vel = new Vector2(5, 15);
+                Vector2 vel = game.player.torso.body.getLinearVelocity();
+                if(vel.x < 5f) {
+                    vel.x = 5f;
+                }else {
+                    vel.x += 2f;
+                }
+                if(vel.y < 13f) {
+                    vel.y = 13f;
+                }
                 game.player.torso.body.setLinearVelocity(vel);
+            }
+
+            if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("clock")) ||
+                    (a.equalsIgnoreCase("clock") && b.equalsIgnoreCase("torso"))) {
+                Vector2 vel = new Vector2(0, 0);
+                game.player.torso.body.setLinearVelocity(vel);
+                game.player.head.body.setLinearVelocity(vel);
+                game.player.leftArm.body.setLinearVelocity(vel);
+                game.player.rightArm.body.setLinearVelocity(vel);
+                game.player.leftLeg.body.setLinearVelocity(vel);
+                game.player.rightLeg.body.setLinearVelocity(vel);
             }
         }
     }

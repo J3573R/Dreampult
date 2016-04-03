@@ -1,12 +1,15 @@
 package fi.tamk.dreampult;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import fi.tamk.dreampult.Helpers.Button;
 
 /**
  * Created by Clown on 15.3.2016.
@@ -30,12 +33,20 @@ public class UserInterface {
 
 
     ShapeRenderer shapeRenderer;
-    public Rectangle bg;
+    Rectangle background;
+    Vector2 backgroundPosition;
+
+    Button title;
+    Button scoreTitle;
+    public Button restartButton;
+    public Button mainMenuButton;
+    public Button quitButton;
 
     Texture shootTexture;
 
     public UserInterface(GameLoop loop) {
         this.loop = loop;
+        shapeRenderer = new ShapeRenderer();
 
         createPauseButton();
         createSoundButton();
@@ -43,9 +54,11 @@ public class UserInterface {
 
         pauseMenu = this.loop.assets.get("images/ui/pause_menu.png");
 
-
-
         middle = new Vector2(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
+
+        createBackground();
+        createPauseMenu();
+        createScoreScreen();
     }
 
     public void draw(SpriteBatch batch) {
@@ -74,36 +87,77 @@ public class UserInterface {
         if(loop.collection.isPauseMenu()) {
             batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
             batch.end();
+            Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(Color.SKY);
-            shapeRenderer.rect(bg.getX(), bg.getY(), bg.getWidth(), bg.getHeight());
+            shapeRenderer.setColor(0, 0, 0, 0.5f);
+            shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
+            shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
             batch.begin();
+            title.draw(shapeRenderer, batch);
+            restartButton.draw(shapeRenderer, batch);
+            mainMenuButton.draw(shapeRenderer, batch);
+            quitButton.draw(shapeRenderer, batch);
             batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
 
-    public void createPauseMenu() {
-        shapeRenderer = new ShapeRenderer();
-        bg = new Rectangle();
-        Vector2 bgSize = new Vector2(200, 200);
-        bg.set(middle.x - bgSize.x / 2, middle.y - bgSize.y / 2, bgSize.x, bgSize.y);
+    public void drawScoreScreen(SpriteBatch batch) {
+        if(loop.collection.isScoreScreen()) {
+            batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
+            batch.end();
+            Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0, 0, 0, 0.5f);
+            shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
+            shapeRenderer.setColor(1, 0, 0, 1);
+            shapeRenderer.end();
+            batch.begin();
+            scoreTitle.draw(shapeRenderer, batch);
+            restartButton.draw(shapeRenderer, batch);
+            mainMenuButton.draw(shapeRenderer, batch);
+            quitButton.draw(shapeRenderer, batch);
+            batch.setProjectionMatrix(loop.GameCamera.combined);
+        }
     }
 
-    public void createPauseButton() {
+    private void createBackground() {
+        background = new Rectangle();
+        backgroundPosition = new Vector2(300, 300);
+        background.set(middle.x - backgroundPosition.x / 2, middle.y - backgroundPosition.y / 2, backgroundPosition.x, backgroundPosition.y);
+    }
+
+    private void createPauseMenu() {
+        float buttonWidth = 200;
+        float buttonHeight = background.height / 6;
+        title = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, "Pause");
+        title.setAlpha(0f);
+        restartButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, "Restart");
+        mainMenuButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, "Main Menu");
+        quitButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Quit");
+    }
+
+    public void createScoreScreen() {
+        float buttonWidth = 200;
+        float buttonHeight = background.height / 6;
+        scoreTitle = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, "You woke up!");
+        scoreTitle.setAlpha(0f);
+    }
+
+    private void createPauseButton() {
         pauseTexture = this.loop.assets.get("images/ui/pause_button.png");
         pauseButton = new Rectangle();
         pauseButton.set(880, 460, 80, 80);
     }
 
-    public void createSoundButton() {
+    private void createSoundButton() {
         soundOn = this.loop.assets.get("images/ui/soundOn.png", Texture.class);
         soundOff = this.loop.assets.get("images/ui/soundOff.png", Texture.class);
         soundButton = new Rectangle();
         soundButton.set(0, 460, 80, 80);
     }
 
-    public void createShootButton() {
+    private void createShootButton() {
         shootTexture = this.loop.assets.get("images/ui/shootButton.png", Texture.class);
         shootButton = new Circle();
         shootButton.set(880, 80, 60);

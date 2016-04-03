@@ -13,7 +13,6 @@ import java.util.Random;
  * Created by Clown on 22.3.2016.
  */
 public class Generator {
-    // TODO: Vaatii hiukan hiomista. Tähän ei kallen tarvi koskea muutakuin jos oikeasti kiinnostaa. Jäi kesken ko tuli nälkä ja täs on vääntäny jo hetken.
     GameLoop gameLoop;
     ArrayList<Monster> monsters = new ArrayList<Monster>();
 
@@ -54,10 +53,29 @@ public class Generator {
             Monster mon = parseType();
             mon.initalizePosition(new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (gameLoop.GameCamera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
                     random.nextInt((int)rangeY.x) + rangeY.y), type);
+
             monsters.add(mon);
-            if(type.equals("bed")) {
-                System.out.println("ADDED BED");
+        }
+
+        Iterator<Monster> iterator = monsters.iterator();
+        while(iterator.hasNext()) {
+            Monster monster = iterator.next();
+            if((monster.position.x + monster.width) < (gameLoop.GameCamera.position.x - gameLoop.collection.SCREEN_WIDTH / 2f)) {
+                iterator.remove();
             }
+        }
+    }
+
+    public void update(float addition) {
+
+        if(traveled + interval < gameLoop.player.torso.body.getPosition().x) {
+            traveled = gameLoop.player.torso.body.getPosition().x;
+
+            Monster mon = parseType();
+            mon.initalizePosition(new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (gameLoop.GameCamera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
+                    random.nextInt((int)rangeY.x) + rangeY.y), type);
+            monsters.add(mon);
+            setInterval(interval + addition);
         }
 
         Iterator<Monster> iterator = monsters.iterator();
@@ -91,7 +109,20 @@ public class Generator {
             return mon;
         }
 
+        if(type.equals("clock")) {
+            Clock mon = new Clock(gameLoop);
+            return mon;
+        }
+
         return new PigMonster(gameLoop);
+    }
+
+    public float getInterval() {
+        return interval;
+    }
+
+    public void setInterval(float interval) {
+        this.interval = interval;
     }
 
 }
