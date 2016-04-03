@@ -50,6 +50,7 @@ public class TitleScreen implements Screen {
 
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
+
         this.camera = camera;
         userInterfaceCamera = fCamera;
 

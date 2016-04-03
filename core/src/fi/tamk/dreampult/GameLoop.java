@@ -88,8 +88,8 @@ public class GameLoop extends ScreenAdapter {
         player = new Player(world, this);
         background = assets.get("images/background/bg2.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        pigMonsters = new Generator(this, "pig", 5, new Vector2(15, 0), new Vector2(20, 5));
-        bedMonsters = new Generator(this, "bed", 20, new Vector2(1, 0), new Vector2(1, 0));
+        pigMonsters = new Generator(this, "pig", 15, new Vector2(15, 0), new Vector2(20, 5));
+        bedMonsters = new Generator(this, "bed", 10, new Vector2(1, 0), new Vector2(1, 0));
         clock = new Generator(this, "clock", 33, new Vector2(1, 1), new Vector2(1, 0));
         arrow = new Arrow(this);
         meter = new Meter(this);
@@ -139,7 +139,7 @@ public class GameLoop extends ScreenAdapter {
 
             arrow.update();
             pigMonsters.update();
-            bedMonsters.update(1);
+            bedMonsters.update(2);
             if((int) player.torso.body.getPosition().x / 60 > 8) {
                 clock.update(-1);
             }
@@ -235,7 +235,7 @@ public class GameLoop extends ScreenAdapter {
             //}
 
             game.batch.end();
-            debug.render(world, GameCamera.combined);
+            //debug.render(world, GameCamera.combined);
     }
 
     /**

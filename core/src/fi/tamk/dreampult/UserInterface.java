@@ -41,6 +41,7 @@ public class UserInterface {
     public Button restartButton;
     public Button mainMenuButton;
     public Button quitButton;
+    public Button talentsButton;
 
     Texture shootTexture;
 
@@ -115,6 +116,7 @@ public class UserInterface {
             batch.begin();
             scoreTitle.draw(shapeRenderer, batch);
             restartButton.draw(shapeRenderer, batch);
+            //talentsButton.draw(shapeRenderer, batch);
             mainMenuButton.draw(shapeRenderer, batch);
             quitButton.draw(shapeRenderer, batch);
             batch.setProjectionMatrix(loop.GameCamera.combined);
@@ -130,7 +132,7 @@ public class UserInterface {
     private void createPauseMenu() {
         float buttonWidth = 200;
         float buttonHeight = background.height / 6;
-        title = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, "Pause");
+        title = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight + 20, buttonWidth, buttonHeight, "Pause");
         title.setAlpha(0f);
         restartButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, "Restart");
         mainMenuButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, "Main Menu");
@@ -142,6 +144,7 @@ public class UserInterface {
         float buttonHeight = background.height / 6;
         scoreTitle = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, "You woke up!");
         scoreTitle.setAlpha(0f);
+        //talentsButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
     }
 
     private void createPauseButton() {

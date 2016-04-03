@@ -76,7 +76,7 @@ public class Arrow {
         if (show) {
 
         body.setTransform(body.getPosition(), rotation);
-            System.out.println(rotation);
+            //System.out.println(rotation);
 
             batch.draw(img, body.getPosition().x - 0.48f, body.getPosition().y, // Texture, x, y
                     0.5f, 0, // Origin x, Origin y

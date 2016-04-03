@@ -25,7 +25,7 @@ public class CollisionHandler implements ContactListener {
                (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 playAnimation(contact);
-                vel.set(vel.x, -5);
+                vel.set(vel.x, -15);
                 game.player.torso.body.setLinearVelocity(vel);
             }
 
@@ -33,14 +33,15 @@ public class CollisionHandler implements ContactListener {
                     (a.equalsIgnoreCase("bed") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
-                if(vel.x < 5f) {
+                /*if(vel.x < 5f) {
                     vel.x = 5f;
                 }else {
                     vel.x += 2f;
                 }
                 if(vel.y < 13f) {
                     vel.y = 13f;
-                }
+                }*/
+                vel.set(15, 15);
                 game.player.torso.body.setLinearVelocity(vel);
             }
 

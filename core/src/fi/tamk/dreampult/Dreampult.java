@@ -30,12 +30,15 @@ public class Dreampult extends Game {
 
         assets.loadUi();
         assets.manager.finishLoading();
-        //setScreen(new GameLoop(this, assets.manager, GameCamera));
 
-		setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
+        setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
 	}
 
     public void MainMenu() {
+        GameCamera = new OrthographicCamera();
+        GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
+        UserInterfaceCamera = new OrthographicCamera();
+        UserInterfaceCamera.setToOrtho(false, 960, 540);
         collection.launch = false;
         collection.hidePauseMenu();
         collection.hideScoreScreen();
