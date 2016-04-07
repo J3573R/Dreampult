@@ -47,6 +47,7 @@ public class CollisionHandler implements ContactListener {
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("clock")) ||
                     (a.equalsIgnoreCase("clock") && b.equalsIgnoreCase("torso"))) {
+                game.retry = 0;
                 Vector2 vel = new Vector2(0, 0);
                 game.player.torso.body.setLinearVelocity(vel);
                 game.player.head.body.setLinearVelocity(vel);

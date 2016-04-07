@@ -78,7 +78,7 @@ public class Arrow {
         body.setTransform(body.getPosition(), rotation);
             //System.out.println(rotation);
 
-            batch.draw(img, body.getPosition().x - 0.48f, body.getPosition().y, // Texture, x, y
+            batch.draw(img, body.getPosition().x - 0.48f + game.player.torso.body.getPosition().x, body.getPosition().y, // Texture, x, y
                     0.5f, 0, // Origin x, Origin y
                     width, height, // Width, Height
                     1, 1, // Scale X, Scale Y

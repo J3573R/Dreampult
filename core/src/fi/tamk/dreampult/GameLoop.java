@@ -30,7 +30,6 @@ public class GameLoop extends ScreenAdapter {
 
     FontHandler fontHandler;
 
-
     public World world;
     public Player player;
     public Arrow arrow;
@@ -47,12 +46,18 @@ public class GameLoop extends ScreenAdapter {
     public BackgroundHandler bg3;
     public Meter meter;
     public Catapult catapult;
+    public Talents talents;
 
     public UserInterface ui;
 
     public Generator pigMonsters;
     public Generator bedMonsters;
     public Generator clock;
+
+    public boolean gliding;
+    public int bounces;
+    public int retry;
+    public boolean secondLaunch;
 
     private double accumultator = 0;
     private float timestep = 1 / 60f;
@@ -78,6 +83,14 @@ public class GameLoop extends ScreenAdapter {
         game.GameCamera.position.set(8f, 4.5f, 0);
         this.UserInterfaceCamera = game.UserInterfaceCamera;
         this.assets = assets;
+        talents = new Talents();
+        secondLaunch = false;
+
+        if(talents.isAdditionalLaunch()) {
+            retry = 1;
+        } else {
+            retry = 0;
+        }
 
         world = new World(new Vector2(0, -1f), true);
         collision = new CollisionHandler(this);
@@ -96,6 +109,12 @@ public class GameLoop extends ScreenAdapter {
         catapult = new Catapult(this);
         ground = new Ground(this);
         hit = new HitEffect(this);
+
+        gliding = false;
+        if(talents.isExtraBounces()) {
+            bounces += 2;
+        }
+
 
         bg = new BackgroundHandler( this,
                                     this.assets.get("images/background/back_clouds.png", Texture.class),
@@ -139,8 +158,8 @@ public class GameLoop extends ScreenAdapter {
 
             arrow.update();
             pigMonsters.update();
-            bedMonsters.update(2);
-            if((int) player.torso.body.getPosition().x / 60 > 8) {
+            //bedMonsters.update(2);
+            if(((int) player.torso.body.getPosition().x * 0.8f) / 60 > 8) {
                 clock.update(-1);
             }
             hit.update(Gdx.graphics.getDeltaTime());
@@ -150,9 +169,9 @@ public class GameLoop extends ScreenAdapter {
             }
 
             if (player.torso.body.getPosition().x >= 8) {
-                bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.2f);
-                bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.4f);
-                bg3.setSpeed(player.torso.body.getLinearVelocity().x * 0.6f);
+                bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.4f);
+                bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.6f);
+                bg3.setSpeed(player.torso.body.getLinearVelocity().x * 0.8f);
             }
 
             if(!collection.launch) {
@@ -161,6 +180,10 @@ public class GameLoop extends ScreenAdapter {
                 Vector2 center = new Vector2(2, 0);
                 float rotatedX = (float) (Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y - center.y) + center.x);
                 float rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
+
+                if(secondLaunch) {
+                    rotatedX = player.torso.body.getPosition().x;
+                }
 
                 player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
                 Vector2 zeroVel = new Vector2(0, 0);
@@ -173,14 +196,41 @@ public class GameLoop extends ScreenAdapter {
                     timer = 0;
                 }
 
+                if(gliding && talents.isPyjamaGlide()) {
+                    if(Gdx.input.getY() < 270) {
+                        Vector2 vel = player.torso.body.getLinearVelocity();
+                        vel.set(vel.x, vel.y + 0.03f);
+                        player.torso.body.setLinearVelocity(vel);
+                    } else {
+                        Vector2 vel = player.torso.body.getLinearVelocity();
+                        vel.set(vel.x, vel.y - 0.1f);
+                        player.torso.body.setLinearVelocity(vel);
+                    }
+                }
+
+                inputHandler.timerTick();
+
                 if(timer > 2f) {
-                    collection.pause();
-                    collection.showScoreScreen();
+                    if(retry <= 0){
+                        collection.pause();
+                        collection.showScoreScreen();
+                    } else {
+                        collection.launch = false;
+                        catapult.reset();
+                        arrow.show();
+                        bedMonsters.clearMonster();
+                        pigMonsters.clearMonster();
+                        meter.scale = 0;
+                        secondLaunch = true;
+                        retry -= 1;
+                    }
+
                 }
             }
-
-            slept = "Slept: " + (int) player.torso.body.getPosition().x / 60 +
-                    "h " + (int) player.torso.body.getPosition().x % 60 + "min";
+            int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
+            int minutes = (int) (player.torso.body.getPosition().x * 0.8f) % 60;
+            slept = "Slept: " + hour +
+                    "h " + minutes + "min";
         } else {
             bg.setSpeed(0);
             bg2.setSpeed(0);
@@ -222,6 +272,7 @@ public class GameLoop extends ScreenAdapter {
 
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             fontHandler.draw(game.batch, slept, 900 / 2, 530);
+            fontHandler.draw(game.batch, "Bounces:" + bounces, 900 / 2, 20);
             //game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);

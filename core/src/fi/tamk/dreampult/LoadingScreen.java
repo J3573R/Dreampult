@@ -1,5 +1,6 @@
 package fi.tamk.dreampult;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.QuestionHandler;
+import fi.tamk.dreampult.Helpers.Question;
 
 /**
  * Created by DV6-6B20 on 15.3.2016.
@@ -42,7 +44,7 @@ public class LoadingScreen implements Screen {
 
     QuestionHandler questionHandler;
 
-    String question;
+    Question question;
 
     public boolean questionAnswer; //To be implemented later on
 
@@ -68,7 +70,7 @@ public class LoadingScreen implements Screen {
 
         questionHandler = new QuestionHandler();
 
-        question = questionHandler.randomQuestion();
+        question = questionHandler.anyItem();
     }
 
     @Override
@@ -87,11 +89,20 @@ public class LoadingScreen implements Screen {
                 fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
                 if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Truth chosen");
-                    game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                    //System.out.println("Truth chosen");
+                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, camera);
+                    if(question.isTrue(true)){
+
+                        gameLoop.bounces += 1;
+                    }
+                    game.setScreen(gameLoop);
+
                 } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("False chosen");
-                    game.setScreen(new GameLoop(game, game.assets.manager, camera));
+                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, camera);
+                    if(question.isTrue(false)){
+                        gameLoop.bounces += 1;
+                    }
+                    game.setScreen(gameLoop);
                 } else {
                     System.out.println(touchPoint.x + " : " + touchPoint.y);
                     System.out.println(question);
@@ -125,12 +136,9 @@ public class LoadingScreen implements Screen {
 
         font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
 
-        layout.setText(font.font, question);
-        font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 300);
+        question.draw(game.batch, font);
 
         game.batch.end();
-
-
     }
 
     @Override

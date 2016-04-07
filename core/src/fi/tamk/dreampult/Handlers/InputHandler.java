@@ -16,12 +16,16 @@ public class InputHandler extends InputAdapter {
     public float point1;
     public float point2;
 
+    boolean timerOn;
+    float timer;
+
     /**
      * Initialize input handler.
      * @param gameLoop
      */
     public InputHandler(GameLoop gameLoop) {
         loop = gameLoop;
+        timer = 0f;
     }
 
     /**
@@ -68,6 +72,14 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        if(loop.game.collection.isGameOn() && loop.game.collection.launch && timer < 0.5f && loop.bounces > 0) {
+            System.out.println("BOUNCE");
+            //Vector2 force = loop.player.torso.body.getLinearVelocity();
+            Vector2 force = new Vector2(15, 15);
+            loop.player.torso.body.setLinearVelocity(force);
+            loop.bounces -= 1;
+        }
+
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         loop.UserInterfaceCamera.unproject(touchPos);
 
@@ -99,6 +111,9 @@ public class InputHandler extends InputAdapter {
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();
             float speed = loop.meter.scale * 15;
+            if(loop.talents.isBoostLaunch()) {
+                speed *= 2;
+            }
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
            System.out.println(force);
@@ -106,9 +121,14 @@ public class InputHandler extends InputAdapter {
                 loop.collection.launch = true;
                 loop.player.torso.body.applyForceToCenter(force, true);
                 loop.arrow.hide();
+                loop.meter.hide();
             }
             loop.arrow.start();
         }
+
+        loop.gliding = false;
+        timer = 0;
+        timerOn = false;
 
         return true;
     }
@@ -130,6 +150,9 @@ public class InputHandler extends InputAdapter {
             loop.meter.show();
             loop.arrow.pause();
         }
+
+        loop.gliding = true;
+        timerOn = true;
 
         return true;
     }
@@ -156,5 +179,11 @@ public class InputHandler extends InputAdapter {
             loop.game.collection.start();
         }
         return true;
+    }
+
+    public void timerTick() {
+        if(timerOn) {
+            timer += Gdx.graphics.getDeltaTime();
+        }
     }
 }

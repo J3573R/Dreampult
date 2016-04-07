@@ -138,6 +138,17 @@ public class Player {
         rightLeg.body.setLinearVelocity(vel);
         leftLeg.body.setLinearVelocity(vel);
         head.body.setLinearVelocity(vel);
-    }
 
+        rightArm.body.setAngularVelocity(0);
+        leftArm.body.setAngularVelocity(0);
+        rightLeg.body.setAngularVelocity(0);
+        leftLeg.body.setAngularVelocity(0);
+        head.body.setAngularVelocity(0);
+
+        rightArm.body.setAngularDamping(0);
+        leftArm.body.setAngularDamping(0);
+        rightLeg.body.setAngularDamping(0);
+        leftLeg.body.setAngularDamping(0);
+        head.body.setAngularDamping(0);
+    }
 }

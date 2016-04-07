@@ -125,4 +125,8 @@ public class Generator {
         this.interval = interval;
     }
 
+    public void clearMonster(){
+        monsters = new ArrayList<Monster>();
+    }
+
 }

@@ -20,6 +20,7 @@ public class Catapult {
     public Texture spoon;
     public Vector2 spoonPosition = new Vector2(0.2f, 0.2f);
     public float spoonRotation;
+    public float x;
 
     public Catapult(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
@@ -27,13 +28,14 @@ public class Catapult {
         wheel = gameLoop.assets.get("images/launching/catapult/Catapult_wheel.png", Texture.class);
         spoon = gameLoop.assets.get("images/launching/catapult/Catapult_spoon.png", Texture.class);
         spoonRotation = 0.2f;
+        x = 0;
     }
 
     public void draw(SpriteBatch batch) {
         if(gameLoop.collection.launch) {
             rotate();
         }
-        batch.draw(spoon, spoonPosition.x, spoonPosition.y, // Texture, x, y
+        batch.draw(spoon, spoonPosition.x + x, spoonPosition.y, // Texture, x, y
                 2, 0, // Origin x, Origin y
                 2, 2, // Width, Height
                 1, 1, // Scale X, Scale Y
@@ -42,9 +44,9 @@ public class Catapult {
                 spoon.getWidth(), spoon.getHeight(), // srcWidth, srcHeight
                 false, false); // flip x, flip y
         //batch.draw(spoon, 0.2f, 0.2f, 2, 2);
-        batch.draw(body, 1, 0, 2, 2);
+        batch.draw(body, 1 + x, 0, 2, 2);
         //batch.draw(, 1.5f, 0.5f, 1f, 1f);
-        batch.draw(wheel, 1.5f, 0.5f, // Texture, x, y
+        batch.draw(wheel, 1.5f + x, 0.5f, // Texture, x, y
                  0.5f, 0.5f, // Origin x, Origin y
                 1f, 1f, // Width, Height
                 1, 1, // Scale X, Scale Y
@@ -58,6 +60,11 @@ public class Catapult {
         if(spoonRotation > -1f) {
             spoonRotation -= 1.5f * Gdx.graphics.getDeltaTime();
         }
+    }
+
+    public void reset() {
+        x = gameLoop.player.torso.body.getPosition().x;
+        spoonRotation = 0.2f;
     }
 
 }

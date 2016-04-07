@@ -73,12 +73,12 @@ public class UserInterface {
         }
 
         if(!loop.collection.launch) {
-        batch.end();
+        /*batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.SKY);
         shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
         shapeRenderer.end();
-        batch.begin();
+        batch.begin();*/
 
             batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
         }

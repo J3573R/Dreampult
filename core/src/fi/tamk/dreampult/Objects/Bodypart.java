@@ -64,8 +64,14 @@ public class Bodypart {
     private void createBodyFixture(Body body, float density, float width, float height, boolean sensor, float radius) {
         FixtureDef def = new FixtureDef();
         def.density = density;
-        def.friction = 5f;
-        def.restitution = 0.8f;
+        def.friction = 7f;
+        if(game.talents.isGrowSlippery()) {
+            def.friction = 3f;
+        }
+        def.restitution = 0.3f;
+        if(game.talents.isGrowBouncy()) {
+            def.restitution = 0.8f;
+        }
         def.isSensor = sensor;
 
         if(radius > 0) {
@@ -99,6 +105,8 @@ public class Bodypart {
                     img.getWidth(), img.getHeight(), // srcWidth, srcHeight
                     flip, flip); // flip x, flip y
 
-        clothes.draw(batch, this);
+        if(game.talents.isPyjamaGlide()){
+            clothes.draw(batch, this);
+        }
     }
 }
