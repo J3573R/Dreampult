@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.Locale;
+
 import fi.tamk.dreampult.Handlers.FontHandler;
 
 /**
@@ -51,6 +53,9 @@ public class TitleScreen implements Screen {
     public Rectangle secondLevelRectangle;
     public Rectangle thirdLevelRectangle;
 
+    Locale finLocale;
+    Locale engLocale;
+
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
 
@@ -73,7 +78,7 @@ public class TitleScreen implements Screen {
 
         soundPressed = false;
 
-        finLanguage = true;
+        finLanguage = false;
 
         finRectangle = new Rectangle(760, 440, 100, 100);
         britRectangle = new Rectangle(860, 460, 100, 70);
@@ -83,6 +88,9 @@ public class TitleScreen implements Screen {
         firstLevelRectangle = new Rectangle(180, 180, 180, 120);
         secondLevelRectangle = new Rectangle(360, 180, 180, 120);
         thirdLevelRectangle = new Rectangle(540, 180, 180, 120);
+
+        finLocale = new Locale("fi", "FI");
+        engLocale = new Locale("en", "UK");
     }
 
     @Override
@@ -108,11 +116,13 @@ public class TitleScreen implements Screen {
 
                 game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera));
 
-            } else if (finRectangle.contains(touchPoint.x, touchPoint.y)) {
+            } else if (finRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
                 finLanguage = true;
+                game.language(finLocale);
 
-            } else if (britRectangle.contains(touchPoint.x, touchPoint.y)) {
+            } else if (britRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
                 finLanguage = false;
+                game.language(engLocale);
 
             } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");

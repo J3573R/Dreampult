@@ -68,7 +68,7 @@ public class LoadingScreen implements Screen {
         truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
         falseRectangle = new Rectangle(960 / 3 * 2 - 50, 125, 200, 100);
 
-        questionHandler = new QuestionHandler();
+        questionHandler = new QuestionHandler(game);
 
         question = questionHandler.anyItem();
     }

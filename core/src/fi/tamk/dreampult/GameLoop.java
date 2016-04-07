@@ -158,7 +158,7 @@ public class GameLoop extends ScreenAdapter {
 
             arrow.update();
             pigMonsters.update();
-            //bedMonsters.update(2);
+            bedMonsters.update(2);
             if(((int) player.torso.body.getPosition().x * 0.8f) / 60 > 8) {
                 clock.update(-1);
             }

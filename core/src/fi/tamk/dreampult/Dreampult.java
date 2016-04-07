@@ -1,8 +1,13 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
+
 import fi.tamk.dreampult.Handlers.AssetHandler;
 
 public class Dreampult extends Game {
@@ -14,11 +19,18 @@ public class Dreampult extends Game {
 
 	public Collection collection;
 
+    public I18NBundle myBundle;
+
+    Locale startLocale;
+
     /**
      * Create and initialize Screen.
      */
 	@Override
 	public void create () {
+        startLocale = new Locale("en", "UK");
+        language(startLocale);
+
 		collection = new Collection();
 		batch = new SpriteBatch();
 
@@ -33,6 +45,10 @@ public class Dreampult extends Game {
 
         setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
 	}
+
+    public void language(Locale locale) {
+        myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+    }
 
     public void MainMenu() {
         GameCamera = new OrthographicCamera();
