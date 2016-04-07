@@ -91,6 +91,10 @@ public class InputHandler extends InputAdapter {
             loop.game.MainMenu();
         }
 
+        if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
+            Gdx.app.exit();
+        }
+
 
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();

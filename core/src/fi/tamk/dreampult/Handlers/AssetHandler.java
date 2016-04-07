@@ -18,7 +18,6 @@ public class AssetHandler {
         loadCatapult();
         loadMonsters();
         loadClothes();
-        //loadUi();
         loadMap();
         loadAssets();
     }
@@ -42,8 +41,6 @@ public class AssetHandler {
         manager.load("images/ui/pause_button.png", Texture.class);
         manager.load("images/ui/pause_menu.png", Texture.class);
         manager.load("images/menu_tausta.png", Texture.class);
-        manager.load("images/ui/settings_button.png", Texture.class);
-        manager.load("images/ui/exitButton.png", Texture.class);
         manager.load("images/levelOne.png", Texture.class);
         manager.load("images/lockedLevel.png", Texture.class);
         manager.load("images/ui/soundOff.png", Texture.class);

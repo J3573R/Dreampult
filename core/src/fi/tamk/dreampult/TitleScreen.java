@@ -29,10 +29,7 @@ public class TitleScreen implements Screen {
 
     public FontHandler font;
 
-    public Texture settings;
-    public boolean settingsPressed;
-
-    public Texture exit;
+    public boolean soundPressed;
 
     public Texture levelOne;
     public Texture lockedLevel;
@@ -48,6 +45,12 @@ public class TitleScreen implements Screen {
     public Rectangle finRectangle;
     public Rectangle britRectangle;
 
+    public Rectangle soundRectangle;
+
+    public Rectangle firstLevelRectangle;
+    public Rectangle secondLevelRectangle;
+    public Rectangle thirdLevelRectangle;
+
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
 
@@ -56,8 +59,7 @@ public class TitleScreen implements Screen {
 
         logo = game.assets.manager.get("images/dreampult_logo.png", Texture.class);
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
-        settings = game.assets.manager.get("images/ui/settings_button.png", Texture.class);
-        exit = game.assets.manager.get("images/ui/exitButton.png", Texture.class);
+
         levelOne = game.assets.manager.get("images/levelOne.png", Texture.class);
         lockedLevel = game.assets.manager.get("images/lockedLevel.png", Texture.class);
 
@@ -69,12 +71,18 @@ public class TitleScreen implements Screen {
 
         font = new FontHandler();
 
-        settingsPressed = false;
+        soundPressed = false;
 
         finLanguage = true;
 
         finRectangle = new Rectangle(760, 440, 100, 100);
         britRectangle = new Rectangle(860, 460, 100, 70);
+
+        soundRectangle = new Rectangle(0, 440, 100, 100);
+
+        firstLevelRectangle = new Rectangle(180, 180, 180, 120);
+        secondLevelRectangle = new Rectangle(360, 180, 180, 120);
+        thirdLevelRectangle = new Rectangle(540, 180, 180, 120);
     }
 
     @Override
@@ -85,26 +93,34 @@ public class TitleScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        game.batch.setProjectionMatrix(camera.combined);
+        //game.batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(userInterfaceCamera.combined);
 
         Vector3 touchPoint = new Vector3();
 
         if(Gdx.input.justTouched()) {
-            camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            if(((touchPoint.x >= 0 && touchPoint.x <= 2) && (touchPoint.y >= 7 && touchPoint.y <= 9)) && (!settingsPressed)) {
-                System.out.println("Sound button pressed");
-                settingsPressed = true;
-
-            } else if((touchPoint.x >= 3 && touchPoint.x <= 6) && (touchPoint.y >= 3 && touchPoint.y <= 5) && (!settingsPressed)) {
+            if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Level loading started");
 
                 game.assets.loadTestMap();
 
                 game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera));
 
-            } else if(settingsPressed) {
-                settingsPressed = false;
+            } else if (finRectangle.contains(touchPoint.x, touchPoint.y)) {
+                finLanguage = true;
+
+            } else if (britRectangle.contains(touchPoint.x, touchPoint.y)) {
+                finLanguage = false;
+
+            } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
+                System.out.println("Sound button pressed");
+                soundPressed = true;
+
+            } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && soundPressed) {
+                System.out.println("Sound button pressed");
+                soundPressed = false;
 
             } else {
                 System.out.println(touchPoint.x + " : " + touchPoint.y);
@@ -116,38 +132,28 @@ public class TitleScreen implements Screen {
 
         game.batch.begin();
 
-        game.batch.draw(background, 0, 0, 16, 9);
-        game.batch.draw(logo, 3, 5, 9, 4);
-        //game.batch.draw(settings, 0, 7, 2, 2);
+        game.batch.draw(background, 0, 0, 960, 540);
 
-        game.batch.draw(levelOne, 3, 3, 3, 2);
-        game.batch.draw(lockedLevel, 6, 3, 3, 2);
-        game.batch.draw(lockedLevel, 9, 3, 3, 2);
+        game.batch.draw(logo, 180, 300, 540, 240);
 
-        game.batch.setProjectionMatrix(userInterfaceCamera.combined);
+        game.batch.draw(levelOne, 180, 180, 180, 120);
+        game.batch.draw(lockedLevel, 360, 180, 180, 120);
+        game.batch.draw(lockedLevel, 540, 180, 180, 120);
 
-        if(Gdx.input.justTouched()) {
-            userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-            if(finRectangle.contains(touchPoint.x, touchPoint.y)) {
-                finLanguage = true;
-            } else if(britRectangle.contains(touchPoint.x, touchPoint.y)) {
-                finLanguage = false;
-            }
-        }
-
-        if(settingsPressed) {
-            game.batch.draw(soundOff, 0, 440, 100, 100);
+        if(soundPressed) {
+            game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),
+                            soundRectangle.getWidth(), soundRectangle.getHeight());
         } else {
-            game.batch.draw(soundOn, 0, 440, 100, 100);
+            game.batch.draw(soundOn, soundRectangle.getX(), soundRectangle.getY(),
+                            soundRectangle.getWidth(), soundRectangle.getHeight());
         }
 
         if(finLanguage) {
-            game.batch.draw(finFlag, 760, 440, 100, 100);
-            game.batch.draw(britFlag, 860, 460, 50, 20);
+            game.batch.draw(finFlag, finRectangle.getX(), finRectangle.getY(), 100, 100);
+            game.batch.draw(britFlag, britRectangle.getX(), britRectangle.getY(), 50, 20);
         } else {
-            game.batch.draw(finFlag, 760, 440, 50, 50);
-            game.batch.draw(britFlag, 860, 460, 100, 70);
+            game.batch.draw(finFlag, finRectangle.getX(), finRectangle.getY(), 50, 50);
+            game.batch.draw(britFlag, britRectangle.getX(), britRectangle.getY(), 100, 70);
         }
 
         game.batch.end();
