@@ -133,7 +133,8 @@ public class GameLoop extends ScreenAdapter {
         debug = new Box2DDebugRenderer();
 
         ui = new UserInterface(this);
-        slept = "Slept: 0h 0min";
+        //slept = "Slept: 0h 0min";
+        slept = game.myBundle.get("slept") + "0h 0min";
         game.collection.start();
 
         endScreen = game.assets.manager.get("images/endScreen.png", Texture.class);
@@ -229,8 +230,9 @@ public class GameLoop extends ScreenAdapter {
             }
             int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
             int minutes = (int) (player.torso.body.getPosition().x * 0.8f) % 60;
-            slept = "Slept: " + hour +
-                    "h " + minutes + "min";
+            //slept = "Slept: " + hour +
+                    //"h " + minutes + "min";
+            slept = game.myBundle.get("slept") + " " + hour + "h " + minutes + "min";
         } else {
             bg.setSpeed(0);
             bg2.setSpeed(0);
@@ -272,7 +274,8 @@ public class GameLoop extends ScreenAdapter {
 
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             fontHandler.draw(game.batch, slept, 900 / 2, 530);
-            fontHandler.draw(game.batch, "Bounces:" + bounces, 900 / 2, 20);
+            //fontHandler.draw(game.batch, "Bounces:" + bounces, 900 / 2, 20);
+            fontHandler.draw(game.batch, game.myBundle.get("bounces") + " " + bounces, 900 / 2, 20);
             //game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);

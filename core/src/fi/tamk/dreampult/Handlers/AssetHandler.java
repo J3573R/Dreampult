@@ -46,8 +46,7 @@ public class AssetHandler {
         manager.load("images/ui/soundOff.png", Texture.class);
         manager.load("images/ui/soundOn.png", Texture.class);
         manager.load("images/ui/blankButton.png", Texture.class);
-        manager.load("images/ui/falseButton.png", Texture.class);
-        manager.load("images/ui/trueButton.png", Texture.class);
+        manager.load("images/ui/activeButton.png", Texture.class);
         manager.load("images/endScreen.png", Texture.class);
         manager.load("images/ui/shootButton.png", Texture.class);
         manager.load("images/finFlag.png", Texture.class);

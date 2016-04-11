@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.Locale;
 
 import fi.tamk.dreampult.Handlers.FontHandler;
+import fi.tamk.dreampult.Helpers.Button;
 
 /**
  * Created by DV6-6B20 on 25.2.2016.

@@ -1,19 +1,19 @@
 package fi.tamk.dreampult;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.QuestionHandler;
+import fi.tamk.dreampult.Helpers.Button;
 import fi.tamk.dreampult.Helpers.Question;
 
 /**
@@ -30,8 +30,7 @@ public class LoadingScreen implements Screen {
     public Texture background;
 
     public Texture blankButton;
-    public Texture trueButton;
-    public Texture falseButton;
+    public Texture activeButton;
 
     public Rectangle truthRectangle;
     public Rectangle falseRectangle;
@@ -46,7 +45,13 @@ public class LoadingScreen implements Screen {
 
     Question question;
 
-    public boolean questionAnswer; //To be implemented later on
+    String positiveAnswer;
+    String negativeAnswer;
+
+    ShapeRenderer shapeRenderer;
+
+    Button truthButton;
+    Button falseButton;
 
     public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
@@ -56,14 +61,13 @@ public class LoadingScreen implements Screen {
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
 
         blankButton = game.assets.manager.get("images/ui/blankButton.png", Texture.class);
-        trueButton = game.assets.manager.get("images/ui/trueButton.png", Texture.class);
-        falseButton = game.assets.manager.get("images/ui/falseButton.png", Texture.class);
+        activeButton = game.assets.manager.get("images/ui/activeButton.png", Texture.class);
 
         font = new FontHandler(40);
 
         loaded = false;
 
-        loading = "Loading...";
+        loading = game.myBundle.get("loading");
 
         truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
         falseRectangle = new Rectangle(960 / 3 * 2 - 50, 125, 200, 100);
@@ -71,6 +75,14 @@ public class LoadingScreen implements Screen {
         questionHandler = new QuestionHandler(game);
 
         question = questionHandler.anyItem();
+
+        positiveAnswer = game.myBundle.get("true");
+        negativeAnswer = game.myBundle.get("false");
+
+        shapeRenderer = new ShapeRenderer();
+
+        truthButton = new Button(960 / 4 - 50, 125, 200, 100, positiveAnswer);
+        falseButton = new Button(960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
     }
 
     @Override
@@ -84,7 +96,7 @@ public class LoadingScreen implements Screen {
         Vector3 touchPoint = new Vector3();
 
         if(loaded) {
-            loading = "Loaded!";
+            loading = game.myBundle.get("loaded");
             if(Gdx.input.justTouched()) {
                 fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -124,9 +136,10 @@ public class LoadingScreen implements Screen {
         game.batch.draw(background, 0, 0, 16, 9);
         game.batch.setProjectionMatrix(fontCamera.combined);
 
+
         if(loaded) {
-            game.batch.draw(trueButton, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
-            game.batch.draw(falseButton, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
+            truthButton.draw(shapeRenderer, game.batch);
+            falseButton.draw(shapeRenderer, game.batch);
         } else {
             game.batch.draw(blankButton, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
             game.batch.draw(blankButton, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
@@ -134,9 +147,41 @@ public class LoadingScreen implements Screen {
 
         GlyphLayout layout = new GlyphLayout(font.font, loading);
 
+        game.batch.end();
+
+        Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setProjectionMatrix(fontCamera.combined);
+        shapeRenderer.setColor(0, 0, 0, 0.5f);
+        shapeRenderer.rect(960 / 2 - (layout.width / 2) * 1.1f,
+                400 - (layout.height * 1.5f),
+                layout.width * 1.1f,
+                layout.height * 2);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.end();
+
+        game.batch.begin();
+
         font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
 
-        question.draw(game.batch, font);
+        question.initializeLayout(font);
+
+        game.batch.end();
+
+        Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setProjectionMatrix(fontCamera.combined);
+        shapeRenderer.setColor(0, 0, 0, 0.5f);
+        shapeRenderer.rect(960 / 2 - (question.layout.width / 2) * 1.05f,
+                                        300 - (question.layout.height * 1.5f),
+                                        question.layout.width * 1.05f,
+                                        question.layout.height * 2);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.end();
+
+        game.batch.begin();
+
+        question.draw(game.batch);
 
         game.batch.end();
     }

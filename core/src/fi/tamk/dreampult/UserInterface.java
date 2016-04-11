@@ -135,17 +135,17 @@ public class UserInterface {
     private void createPauseMenu() {
         float buttonWidth = 200;
         float buttonHeight = background.height / 6;
-        title = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight + 20, buttonWidth, buttonHeight, "Pause");
+        title = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight + 20, buttonWidth, buttonHeight, loop.game.myBundle.get("pause"));
         title.setAlpha(0f);
-        restartButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, "Restart");
-        mainMenuButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, "Main Menu");
-        quitButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Quit");
+        restartButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, loop.game.myBundle.get("restart"));
+        mainMenuButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, loop.game.myBundle.get("mainMenu"));
+        quitButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, loop.game.myBundle.get("quit"));
     }
 
     public void createScoreScreen() {
         float buttonWidth = 200;
         float buttonHeight = background.height / 6;
-        scoreTitle = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, "You woke up!");
+        scoreTitle = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
         scoreTitle.setAlpha(0f);
         //talentsButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
     }

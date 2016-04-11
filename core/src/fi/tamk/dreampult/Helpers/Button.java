@@ -25,6 +25,7 @@ public class Button {
     Color textColor;
     Color buttonColor;
 
+    public GlyphLayout layout;
 
     public Button(float x, float y, float width, float height, String text) {
 
@@ -38,7 +39,8 @@ public class Button {
     }
 
     public void createText() {
-        GlyphLayout layout = new GlyphLayout();
+        //GlyphLayout
+        layout = new GlyphLayout();
         layout.setText(fontHandler.font, buttonText);
         float fontX = button.x + (button.width - layout.width) / 2;
         float fontY = button.y + (button.height + layout.height) / 2;
