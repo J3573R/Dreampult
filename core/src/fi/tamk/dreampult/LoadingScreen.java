@@ -2,6 +2,7 @@ package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,6 +54,9 @@ public class LoadingScreen implements Screen {
     Button truthButton;
     Button falseButton;
 
+//    Sound positiveSound;
+//    Sound negativeSound;
+
     public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
         game = gam;
         this.camera = camera;
@@ -62,6 +66,9 @@ public class LoadingScreen implements Screen {
 
         blankButton = game.assets.manager.get("images/ui/blankButton.png", Texture.class);
         activeButton = game.assets.manager.get("images/ui/activeButton.png", Texture.class);
+
+//        positiveSound = game.assets.manager.get("audio/soundEffects/positive.wav", Sound.class);
+//        negativeSound= game.assets.manager.get("audio/soundEffects/negative.wav", Sound.class);
 
         font = new FontHandler(40);
 
@@ -104,15 +111,20 @@ public class LoadingScreen implements Screen {
                     //System.out.println("Truth chosen");
                     GameLoop gameLoop = new GameLoop(game, game.assets.manager, camera);
                     if(question.isTrue(true)){
-
+//                        positiveSound.play();
                         gameLoop.bounces += 1;
+                    } else {
+//                        negativeSound.play();
                     }
                     game.setScreen(gameLoop);
 
                 } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
                     GameLoop gameLoop = new GameLoop(game, game.assets.manager, camera);
                     if(question.isTrue(false)){
+//                        positiveSound.play();
                         gameLoop.bounces += 1;
+                    } else {
+//                        negativeSound.play();
                     }
                     game.setScreen(gameLoop);
                 } else {

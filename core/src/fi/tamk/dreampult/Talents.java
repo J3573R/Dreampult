@@ -76,4 +76,15 @@ public class Talents {
         this.pyjamaGlide = true;
         this.extraBounces = false;
     }
+
+    public void resetTalents() {
+        this.growBouncy = false;
+        this.growSlippery = false;
+
+        this.boostLaunch = false;
+        this.additionalLaunch = false;
+
+        this.extraBounces = false;
+        this.pyjamaGlide = false;
+    }
 }

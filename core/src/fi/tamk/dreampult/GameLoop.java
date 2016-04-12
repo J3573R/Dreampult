@@ -1,6 +1,7 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -139,6 +140,8 @@ public class GameLoop extends ScreenAdapter {
 
         endScreen = game.assets.manager.get("images/endScreen.png", Texture.class);
         theEnd = false;
+
+        loadPreferences();
     }
 
     /**
@@ -242,7 +245,7 @@ public class GameLoop extends ScreenAdapter {
             /**
              * Draw stuff
              */
-            Gdx.gl.glClearColor(131/255f, 182/255f, 255/255f, 1);
+            Gdx.gl.glClearColor(131 / 255f, 182 / 255f, 255 / 255f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             game.batch.begin();
@@ -308,6 +311,46 @@ public class GameLoop extends ScreenAdapter {
         while (accumultator >= timestep) {
             world.step(timestep, 8, 3);
             accumultator -= timestep;
+        }
+    }
+
+    public void savePreferences() {
+
+    }
+
+    public void loadPreferences() {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+
+        boolean growBouncy = prefs.getBoolean("growBouncy");
+        boolean growSlippery = prefs.getBoolean("growSlippery");
+        boolean boostLaunch = prefs.getBoolean("boostLaunch");
+        boolean additionalLaunch = prefs.getBoolean("additionalLaunch");
+        boolean extraBounces = prefs.getBoolean("extraBounces");
+        boolean pyjamaGlide = prefs.getBoolean("pyjamaGlide");
+
+        if(growBouncy) {
+            talents.enableGrowBouncy();
+            System.out.println("Grow Bouncy enabled");
+
+        } else if(growSlippery) {
+            talents.enableGrowSlippery();
+            System.out.println("Grow Slippery enabled");
+
+        } else if(boostLaunch) {
+            talents.enableBoostLaunch();
+            System.out.println("Boost Launch enabled");
+
+        } else if(additionalLaunch) {
+            talents.enableAdditionalLaunch();
+            System.out.println("Additional Launch enabled");
+
+        } else if(extraBounces) {
+            talents.enableExtraBounces();
+            System.out.println("Extra Bounces enabled");
+
+        } else if(pyjamaGlide) {
+            talents.enablePyjamaGlide();
+            System.out.println("Pyjama Glide enabled");
         }
     }
 

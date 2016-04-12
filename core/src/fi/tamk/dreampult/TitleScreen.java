@@ -1,6 +1,7 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -58,7 +59,15 @@ public class TitleScreen implements Screen {
     Locale engLocale;
 
     public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
+
         game = gam;
+
+        finLanguage = false;
+
+        finLocale = new Locale("fi", "FI");
+        engLocale = new Locale("en", "UK");
+
+        loadPreferences();
 
         this.camera = camera;
         userInterfaceCamera = fCamera;
@@ -79,8 +88,6 @@ public class TitleScreen implements Screen {
 
         soundPressed = false;
 
-        finLanguage = false;
-
         finRectangle = new Rectangle(760, 440, 100, 100);
         britRectangle = new Rectangle(860, 460, 100, 70);
 
@@ -90,8 +97,6 @@ public class TitleScreen implements Screen {
         secondLevelRectangle = new Rectangle(360, 180, 180, 120);
         thirdLevelRectangle = new Rectangle(540, 180, 180, 120);
 
-        finLocale = new Locale("fi", "FI");
-        engLocale = new Locale("en", "UK");
     }
 
     @Override
@@ -121,9 +126,13 @@ public class TitleScreen implements Screen {
                 finLanguage = true;
                 game.language(finLocale);
 
+                savePreferences();
+
             } else if (britRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
                 finLanguage = false;
                 game.language(engLocale);
+
+                savePreferences();
 
             } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");
@@ -189,6 +198,23 @@ public class TitleScreen implements Screen {
     @Override
     public void hide() {
 
+    }
+
+    public void savePreferences() {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+        prefs.putBoolean("finLanguage", finLanguage);
+        prefs.flush();
+
+    }
+
+    public void loadPreferences() {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+
+        finLanguage = prefs.getBoolean("finLanguage");
+
+        if(finLanguage) {
+            game.language(finLocale);
+        }
     }
 
     @Override

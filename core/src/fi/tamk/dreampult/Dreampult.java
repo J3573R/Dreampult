@@ -2,6 +2,7 @@ package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -23,12 +24,17 @@ public class Dreampult extends Game {
 
     Locale startLocale;
 
+    Preferences prefs;
+
+    Boolean finnish;
+
     /**
      * Create and initialize Screen.
      */
 	@Override
 	public void create () {
-        startLocale = new Locale("en", "UK");
+        loadPreferences();
+
         language(startLocale);
 
 		collection = new Collection();
@@ -42,6 +48,8 @@ public class Dreampult extends Game {
 
         assets.loadUi();
         assets.manager.finishLoading();
+
+        savePreferences();
 
         setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
 	}
@@ -67,6 +75,28 @@ public class Dreampult extends Game {
 		collection.hideScoreScreen();
 		setScreen( new GameLoop(this, assets.manager, GameCamera));
 	}
+
+    public void savePreferences() {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+
+        prefs.putBoolean("finLanguage", finnish);
+
+        prefs.flush();
+    }
+
+    public void loadPreferences() {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+
+        boolean finLanguage = prefs.getBoolean("finLanguage");
+
+        if(finLanguage) {
+            startLocale = new Locale("fi", "FI");
+            finnish = true;
+        } else {
+            startLocale = new Locale("en", "UK");
+            finnish = false;
+        }
+    }
 
 	@Override
 	public void render () {

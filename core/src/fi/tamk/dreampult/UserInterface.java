@@ -73,12 +73,12 @@ public class UserInterface {
         }
 
         if(!loop.collection.launch) {
-        /*batch.end();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.SKY);
-        shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
-        shapeRenderer.end();
-        batch.begin();*/
+//        /*batch.end();
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(Color.SKY);
+//        shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
+//        shapeRenderer.end();
+//        batch.begin();*/
 
             batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
         }
@@ -119,9 +119,9 @@ public class UserInterface {
             batch.begin();
             scoreTitle.draw(shapeRenderer, batch);
             restartButton.draw(shapeRenderer, batch);
-            //talentsButton.draw(shapeRenderer, batch);
+            talentsButton.draw(shapeRenderer, batch);
             mainMenuButton.draw(shapeRenderer, batch);
-            quitButton.draw(shapeRenderer, batch);
+            //quitButton.draw(shapeRenderer, batch);
             batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
@@ -147,7 +147,7 @@ public class UserInterface {
         float buttonHeight = background.height / 6;
         scoreTitle = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
         scoreTitle.setAlpha(0f);
-        //talentsButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
+        talentsButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
     }
 
     private void createPauseButton() {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import fi.tamk.dreampult.GameLoop;
+import fi.tamk.dreampult.TalentsScreen;
 
 /**
  * Created by Clown on 22.2.2016.
@@ -104,7 +105,8 @@ public class InputHandler extends InputAdapter {
         }
 
         if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
-            Gdx.app.exit();
+            //Gdx.app.exit();
+            loop.game.setScreen(new TalentsScreen(loop, loop.UserInterfaceCamera));
         }
 
 

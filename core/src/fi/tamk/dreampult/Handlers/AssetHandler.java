@@ -2,6 +2,7 @@ package fi.tamk.dreampult.Handlers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,6 +21,8 @@ public class AssetHandler {
         loadClothes();
         loadMap();
         loadAssets();
+        loadTalents();
+//        loadSoundEffects();
     }
 
     public void loadPlayer(){
@@ -51,6 +54,9 @@ public class AssetHandler {
         manager.load("images/ui/shootButton.png", Texture.class);
         manager.load("images/finFlag.png", Texture.class);
         manager.load("images/britFlag.png", Texture.class);
+//        manager.load("audio/soundEffects/positive.wav", Sound.class);
+//        manager.load("audio/soundEffects/negative.wav", Sound.class);
+
     }
     public void loadMap() {
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
@@ -78,5 +84,19 @@ public class AssetHandler {
         manager.load("images/objects/pigMonster/pigmonster_animationframes.png", Texture.class);
         manager.load("images/objects/bedmonster/bed.png", Texture.class);
         manager.load("images/objects/clock/alarmclock.png", Texture.class);
+    }
+
+    public void loadTalents() {
+        manager.load("images/icon.png", Texture.class);
+    }
+
+    public void loadSoundEffects() {
+        manager.load("audio/soundEffects/analogAlarm.wav", Sound.class);
+        manager.load("audio/soundEffects/catapultLaunch2.wav", Sound.class);
+        manager.load("audio/soundEffects/cowMoo.wav", Sound.class);
+        manager.load("audio/soundEffects/hitGround.wav", Sound.class);
+        manager.load("audio/soundEffects/pigOink.wav", Sound.class);
+        manager.load("audio/soundEffects/victory1.wav", Sound.class);
+        manager.load("audio/soundEffects/victory2.mp3", Sound.class);
     }
 }
