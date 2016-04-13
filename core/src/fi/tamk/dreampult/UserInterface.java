@@ -65,6 +65,7 @@ public class UserInterface {
 
     public void draw(SpriteBatch batch) {
         batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
+
         batch.draw(pauseTexture, pauseButton.getX(), pauseButton.getY(), pauseButton.getWidth(), pauseButton.getHeight());
         if(soundState) {
             batch.draw(soundOn, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());

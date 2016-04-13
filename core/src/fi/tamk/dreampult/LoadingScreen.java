@@ -3,6 +3,7 @@ package fi.tamk.dreampult;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -30,8 +31,11 @@ public class LoadingScreen implements Screen {
 
     public Texture background;
 
-    public Texture blankButton;
-    public Texture activeButton;
+    public Texture blankFalse;
+    public Texture blankTrue;
+
+    public Texture falseTexture;
+    public Texture trueTexture;
 
     public Rectangle truthRectangle;
     public Rectangle falseRectangle;
@@ -64,8 +68,11 @@ public class LoadingScreen implements Screen {
 
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
 
-        blankButton = game.assets.manager.get("images/ui/blankButton.png", Texture.class);
-        activeButton = game.assets.manager.get("images/ui/activeButton.png", Texture.class);
+        blankFalse = game.assets.manager.get("images/ui/blankFalse.png", Texture.class);
+        blankTrue = game.assets.manager.get("images/ui/blankTrue.png", Texture.class);
+
+        falseTexture = game.assets.manager.get("images/ui/falseTexture.png", Texture.class);
+        trueTexture = game.assets.manager.get("images/ui/trueTexture.png", Texture.class);
 
 //        positiveSound = game.assets.manager.get("audio/soundEffects/positive.wav", Sound.class);
 //        negativeSound= game.assets.manager.get("audio/soundEffects/negative.wav", Sound.class);
@@ -89,7 +96,11 @@ public class LoadingScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         truthButton = new Button(960 / 4 - 50, 125, 200, 100, positiveAnswer);
+        truthButton.setAlpha(0f);
+        truthButton.setTextColor(Color.BLACK);
         falseButton = new Button(960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
+        falseButton.setAlpha(0f);
+        falseButton.setTextColor(Color.BLACK);
     }
 
     @Override
@@ -148,13 +159,15 @@ public class LoadingScreen implements Screen {
         game.batch.draw(background, 0, 0, 16, 9);
         game.batch.setProjectionMatrix(fontCamera.combined);
 
-
         if(loaded) {
+            game.batch.draw(trueTexture, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
             truthButton.draw(shapeRenderer, game.batch);
+            game.batch.draw(falseTexture, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
             falseButton.draw(shapeRenderer, game.batch);
+
         } else {
-            game.batch.draw(blankButton, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
-            game.batch.draw(blankButton, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
+            game.batch.draw(blankTrue, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
+            game.batch.draw(blankFalse, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
         }
 
         GlyphLayout layout = new GlyphLayout(font.font, loading);
