@@ -114,13 +114,23 @@ public class TitleScreen implements Screen {
 
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
+            game.assets.loadObjects();
             if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Level loading started");
 
-                game.assets.loadObjects();
+
 
                 game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 1));
+
+            } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y)){
+                System.out.println("Level 2 loading started");
+
+                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 2));
+
+            } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y)){
+                System.out.println("Level 3 loading started");
+
+                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 3));
 
             } else if (finRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
                 finLanguage = true;

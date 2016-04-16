@@ -81,12 +81,6 @@ public class GameLoop extends ScreenAdapter {
         talents = new Talents();
         secondLaunch = false;
 
-        if(talents.isAdditionalLaunch()) {
-            retry = 1;
-        } else {
-            retry = 0;
-        }
-
         world = new World(new Vector2(0, -1f), true);
         collision = new CollisionHandler(this);
         world.setContactListener(collision);
@@ -101,9 +95,7 @@ public class GameLoop extends ScreenAdapter {
         hit = new HitEffect(this);
 
         gliding = false;
-        if(talents.isExtraBounces()) {
-            bounces += 2;
-        }
+
         this.map = map;
         map.initialize(this);
         inputHandler = new InputHandler(this);
@@ -116,6 +108,16 @@ public class GameLoop extends ScreenAdapter {
 
         endScreen = game.assets.manager.get("images/endScreen.png", Texture.class);
         theEnd = false;
+
+        if(talents.isAdditionalLaunch() && secondLaunch == false) {
+            retry = 1;
+        } else {
+            retry = 0;
+        }
+
+        if(talents.isExtraBounces()) {
+            bounces += 2;
+        }
 
         loadPreferences();
     }
@@ -145,6 +147,7 @@ public class GameLoop extends ScreenAdapter {
             }
 
             if(!collection.launch) {
+
                 float angle = catapult.spoonRotation;
                 Vector2 point = new Vector2(catapult.spoonPosition.x + 0.5f, catapult.spoonPosition.y + 2f);
                 Vector2 center = new Vector2(2, 0);

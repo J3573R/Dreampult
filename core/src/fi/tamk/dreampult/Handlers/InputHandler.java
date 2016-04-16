@@ -96,15 +96,15 @@ public class InputHandler extends InputAdapter {
             loop.ui.toggleSound();
         }
 
-        if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
+        if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn() && loop.collection.isPauseMenu()) {
             loop.game.restart(loop.map.getLevel());
         }
 
-        if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
+        if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn() && loop.collection.isPauseMenu()) {
             loop.game.MainMenu();
         }
 
-        if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
+        if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn() && loop.collection.isPauseMenu()) {
             //Gdx.app.exit();
             loop.game.setScreen(new TalentsScreen(loop, loop.UserInterfaceCamera));
         }

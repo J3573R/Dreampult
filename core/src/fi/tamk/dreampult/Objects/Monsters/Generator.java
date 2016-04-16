@@ -102,6 +102,21 @@ public class Generator {
             return mon;
         }
 
+        if(type.equals("cow")) {
+            CowMonster mon = new CowMonster(assets);
+            return mon;
+        }
+
+        if(type.equals("turtle")) {
+            TurtleMonster mon = new TurtleMonster(assets);
+            return mon;
+        }
+
+        if(type.equals("unicorn")) {
+            Unicorn mon = new Unicorn(assets);
+            return mon;
+        }
+
         return new PigMonster(assets);
     }
 
