@@ -10,7 +10,6 @@ import fi.tamk.dreampult.GameLoop;
  * Created by root on 9.3.2016.
  */
 public class BackgroundHandler {
-    GameLoop game;
 
     /**
      * Background texture.
@@ -26,6 +25,11 @@ public class BackgroundHandler {
      * Speed of scroll effect.
      */
     float speed;
+
+    /**
+     * Stabilize speed of scroll effect so backgrounds doesnt scroll in sync.
+     */
+    float speedStabilizer;
 
     /**
      * Calculate how many images we will need to make smooth scroll.
@@ -45,15 +49,14 @@ public class BackgroundHandler {
 
     /**
      * Initialize everything.
-     * @param game GameLoop access.
      * @param background Background texture.
      * @param imgWidth Width in loop world.
      * @param imgHeight Height in loop world.
      */
-    public BackgroundHandler(GameLoop game, Texture background, float imgWidth, float imgHeight){
-        this.game = game;
+    public BackgroundHandler(Texture background, float imgWidth, float imgHeight, float speedStabilizer){
         this.imgWidth = imgWidth;
         this.imgHeight = imgHeight;
+        this.speedStabilizer = speedStabilizer;
 
         this.background = background;
         position = new Vector2(0, 0);
@@ -65,11 +68,6 @@ public class BackgroundHandler {
      * @param batch
      */
     public void draw(SpriteBatch batch) {
-        // Move image according speed
-        move();
-        // Update accord GameCamera offset
-        updateOffset();
-
         for(int i = 0; i < imageAmount; i++) {
             batch.draw(background,
                         position.x + (imgWidth * i) + offset, // Images X position counted from image amount
@@ -82,20 +80,20 @@ public class BackgroundHandler {
     /**
      * Moving background position.
      */
-    private void move() {
+    public void move() {
         for(int i = 0; i < imageAmount; i++) {
             if(position.x <= imgWidth * -1) {
                 position.x = 0f;
             }
-            position.set(position.x - speed * Gdx.graphics.getDeltaTime(), position.y);
+            position.set(position.x - (speed * speedStabilizer) * Gdx.graphics.getDeltaTime(), position.y);
         }
     }
 
     /**
      * Updating offset according GameCamera position.
      */
-    public void updateOffset() {
-        offset = game.GameCamera.position.x - (16f / 2f);
+    public void updateOffset(float cameraX) {
+        offset = cameraX - (16f / 2f);
     }
 
     public void setSpeed(float speed) {

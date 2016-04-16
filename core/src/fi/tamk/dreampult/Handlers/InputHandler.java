@@ -97,7 +97,7 @@ public class InputHandler extends InputAdapter {
         }
 
         if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {
-            loop.game.restart();
+            loop.game.restart(loop.map.getLevel());
         }
 
         if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn()) {

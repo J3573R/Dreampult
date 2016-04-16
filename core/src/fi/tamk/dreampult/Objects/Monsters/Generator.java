@@ -1,9 +1,11 @@
 package fi.tamk.dreampult.Objects.Monsters;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import fi.tamk.dreampult.GameLoop;
+import com.badlogic.gdx.physics.box2d.World;
+import fi.tamk.dreampult.Collection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,13 +15,17 @@ import java.util.Random;
  * Created by Clown on 22.3.2016.
  */
 public class Generator {
-    GameLoop gameLoop;
+    AssetManager assets;
+
     ArrayList<Monster> monsters = new ArrayList<Monster>();
 
     float interval;
+    float increment;
 
     Vector2 rangeX;
     Vector2 rangeY;
+
+    public float startPoint;
 
     float traveled;
     Random random;
@@ -28,61 +34,43 @@ public class Generator {
 
     /**
      * Initialises generator.
-     * @param gameLoop
      */
-    public Generator(GameLoop gameLoop, String type, float interval, Vector2 rangeX, Vector2 rangeY) {
+    public Generator(AssetManager assets, String type, float interval, float increment, Vector2 rangeX, Vector2 rangeY) {
+        this.assets = assets;
         random = new Random();
 
-        this.gameLoop = gameLoop;
         this.interval = interval;
+        this.increment = increment;
         this.rangeX = rangeX;
         this.rangeY = rangeY;
         this.type = type;
 
         traveled = 5f;
+        startPoint = 0;
     }
 
     /**
      * Generates new patch of monsters.
      */
-    public void update() {
+    public void update(World world, Vector2 playerPosition, Vector2 cameraPosition, Collection collection) {
+        if(startGeneration(playerPosition)) {
+            if(traveled + interval < playerPosition.x) {
+                traveled = playerPosition.x;
 
-        if(traveled + interval < gameLoop.player.torso.body.getPosition().x) {
-            traveled = gameLoop.player.torso.body.getPosition().x;
+                Monster mon = parseType();
+                mon.initalizePosition(world, new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (cameraPosition.x + collection.SCREEN_WIDTH / 2),
+                        random.nextInt((int)rangeY.x) + rangeY.y), type);
 
-            Monster mon = parseType();
-            mon.initalizePosition(new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (gameLoop.GameCamera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
-                    random.nextInt((int)rangeY.x) + rangeY.y), type);
-
-            monsters.add(mon);
-        }
-
-        Iterator<Monster> iterator = monsters.iterator();
-        while(iterator.hasNext()) {
-            Monster monster = iterator.next();
-            if((monster.position.x + monster.width) < (gameLoop.GameCamera.position.x - gameLoop.collection.SCREEN_WIDTH / 2f)) {
-                iterator.remove();
+                monsters.add(mon);
+                setInterval(interval + increment);
             }
-        }
-    }
 
-    public void update(float addition) {
-
-        if(traveled + interval < gameLoop.player.torso.body.getPosition().x) {
-            traveled = gameLoop.player.torso.body.getPosition().x;
-
-            Monster mon = parseType();
-            mon.initalizePosition(new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (gameLoop.GameCamera.position.x + gameLoop.collection.SCREEN_WIDTH / 2),
-                    random.nextInt((int)rangeY.x) + rangeY.y), type);
-            monsters.add(mon);
-            setInterval(interval + addition);
-        }
-
-        Iterator<Monster> iterator = monsters.iterator();
-        while(iterator.hasNext()) {
-            Monster monster = iterator.next();
-            if((monster.position.x + monster.width) < (gameLoop.GameCamera.position.x - gameLoop.collection.SCREEN_WIDTH / 2f)) {
-                iterator.remove();
+            Iterator<Monster> iterator = monsters.iterator();
+            while(iterator.hasNext()) {
+                Monster monster = iterator.next();
+                if((monster.position.x + monster.width) < (cameraPosition.x - collection.SCREEN_WIDTH / 2f)) {
+                    iterator.remove();
+                }
             }
         }
     }
@@ -100,21 +88,33 @@ public class Generator {
 
     private Monster parseType(){
         if(type.equals("pig")) {
-            PigMonster mon = new PigMonster(gameLoop);
+            PigMonster mon = new PigMonster(assets);
             return mon;
         }
 
         if(type.equals("bed")) {
-            BedMonster mon = new BedMonster(gameLoop);
+            BedMonster mon = new BedMonster(assets);
             return mon;
         }
 
         if(type.equals("clock")) {
-            Clock mon = new Clock(gameLoop);
+            Clock mon = new Clock(assets);
             return mon;
         }
 
-        return new PigMonster(gameLoop);
+        return new PigMonster(assets);
+    }
+
+    private boolean startGeneration(Vector2 playerPosition) {
+        if(startPoint != 0) {
+            if((int) playerPosition.x * 0.8f / 60 > startPoint) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     public float getInterval() {

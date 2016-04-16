@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
+import fi.tamk.dreampult.Maps.Map;
+import fi.tamk.dreampult.Maps.Maps;
 import fi.tamk.dreampult.Objects.HitEffect;
 import fi.tamk.dreampult.Objects.Launching.Arrow;
 import fi.tamk.dreampult.Objects.Ground;
 import fi.tamk.dreampult.Objects.Launching.Catapult;
 import fi.tamk.dreampult.Objects.Launching.Meter;
-import fi.tamk.dreampult.Objects.Monsters.Generator;
 import fi.tamk.dreampult.Objects.Player;
 
 /**
@@ -41,19 +42,13 @@ public class GameLoop extends ScreenAdapter {
     public WorldHandler worldHandler;
     public InputHandler inputHandler;
     public CollisionHandler collision;
-    public Texture background;
-    public BackgroundHandler bg;
-    public BackgroundHandler bg2;
-    public BackgroundHandler bg3;
     public Meter meter;
     public Catapult catapult;
     public Talents talents;
 
     public UserInterface ui;
 
-    public Generator pigMonsters;
-    public Generator bedMonsters;
-    public Generator clock;
+    public Map map;
 
     public boolean gliding;
     public int bounces;
@@ -73,11 +68,10 @@ public class GameLoop extends ScreenAdapter {
     /**
      * Initialize variables for render.
      * @param game
-     * @param GameCamera
      */
-    public GameLoop(Dreampult game, AssetManager assets, OrthographicCamera GameCamera) {
-        fontHandler = new FontHandler(24);
+    public GameLoop(Dreampult game, AssetManager assets, Map map) {
 
+        fontHandler = new FontHandler(24);
         this.game = game;
         collection = game.collection;
         this.GameCamera = game.GameCamera;
@@ -100,11 +94,6 @@ public class GameLoop extends ScreenAdapter {
         worldHandler = new WorldHandler(this);
 
         player = new Player(world, this);
-        background = assets.get("images/background/bg2.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        pigMonsters = new Generator(this, "pig", 15, new Vector2(15, 0), new Vector2(20, 5));
-        bedMonsters = new Generator(this, "bed", 10, new Vector2(1, 0), new Vector2(1, 0));
-        clock = new Generator(this, "clock", 33, new Vector2(1, 1), new Vector2(1, 0));
         arrow = new Arrow(this);
         meter = new Meter(this);
         catapult = new Catapult(this);
@@ -115,26 +104,13 @@ public class GameLoop extends ScreenAdapter {
         if(talents.isExtraBounces()) {
             bounces += 2;
         }
-
-
-        bg = new BackgroundHandler( this,
-                                    this.assets.get("images/background/back_clouds.png", Texture.class),
-                                    30,
-                                    17);
-        bg2 = new BackgroundHandler(this,
-                                    this.assets.get("images/background/middle_clouds.png", Texture.class),
-                                    25,
-                                    14);
-        bg3 = new BackgroundHandler(this,
-                                    this.assets.get("images/background/front_clouds.png", Texture.class),
-                                    16,
-                                    9);
+        this.map = map;
+        map.initialize(this);
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
         debug = new Box2DDebugRenderer();
 
         ui = new UserInterface(this);
-        //slept = "Slept: 0h 0min";
         slept = game.myBundle.get("slept") + "0h 0min";
         game.collection.start();
 
@@ -161,21 +137,11 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(GameCamera.combined);
 
             arrow.update();
-            pigMonsters.update();
-            bedMonsters.update(2);
-            if(((int) player.torso.body.getPosition().x * 0.8f) / 60 > 8) {
-                clock.update(-1);
-            }
+            map.update();
             hit.update(Gdx.graphics.getDeltaTime());
 
             if (player.torso.body.getLinearVelocity().x < 0) {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
-            }
-
-            if (player.torso.body.getPosition().x >= 8) {
-                bg.setSpeed(player.torso.body.getLinearVelocity().x * 0.4f);
-                bg2.setSpeed(player.torso.body.getLinearVelocity().x * 0.6f);
-                bg3.setSpeed(player.torso.body.getLinearVelocity().x * 0.8f);
             }
 
             if(!collection.launch) {
@@ -222,8 +188,7 @@ public class GameLoop extends ScreenAdapter {
                         collection.launch = false;
                         catapult.reset();
                         arrow.show();
-                        bedMonsters.clearMonster();
-                        pigMonsters.clearMonster();
+                        map.clearMonsert();
                         meter.scale = 0;
                         secondLaunch = true;
                         retry -= 1;
@@ -233,13 +198,9 @@ public class GameLoop extends ScreenAdapter {
             }
             int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
             int minutes = (int) (player.torso.body.getPosition().x * 0.8f) % 60;
-            //slept = "Slept: " + hour +
-                    //"h " + minutes + "min";
             slept = game.myBundle.get("slept") + " " + hour + "h " + minutes + "min";
         } else {
-            bg.setSpeed(0);
-            bg2.setSpeed(0);
-            bg3.setSpeed(0);
+            map.stopBackground();
         }
 
             /**
@@ -250,14 +211,7 @@ public class GameLoop extends ScreenAdapter {
 
             game.batch.begin();
 
-            game.batch.draw(background,
-                            GameCamera.position.x - collection.SCREEN_WIDTH / 2,
-                            GameCamera.position.y - collection.SCREEN_HEIGHT / 2 - 0.5f,
-                            collection.SCREEN_WIDTH,
-                            collection.SCREEN_HEIGHT);
-            bg.draw(game.batch);
-            bg2.draw(game.batch);
-            bg3.draw(game.batch);
+            map.drawBackground(game.batch);
 
             meter.draw(game.batch);
 
@@ -267,9 +221,7 @@ public class GameLoop extends ScreenAdapter {
 
             player.draw(game.batch);
 
-            pigMonsters.draw(game.batch);
-            bedMonsters.draw(game.batch);
-            clock.draw(game.batch);
+            map.drawObjects(game.batch);
 
             if(hit.playing) {
                 hit.draw(game.batch);
@@ -279,7 +231,6 @@ public class GameLoop extends ScreenAdapter {
             fontHandler.draw(game.batch, slept, 900 / 2, 530);
             //fontHandler.draw(game.batch, "Bounces:" + bounces, 900 / 2, 20);
             fontHandler.draw(game.batch, game.myBundle.get("bounces") + " " + bounces, 900 / 2, 20);
-            //game.batch.setProjectionMatrix(GameCamera.combined);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
             ui.drawScoreScreen(game.batch);

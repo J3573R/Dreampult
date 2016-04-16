@@ -118,9 +118,9 @@ public class TitleScreen implements Screen {
             if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Level loading started");
 
-                game.assets.loadTestMap();
+                game.assets.loadObjects();
 
-                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera));
+                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 1));
 
             } else if (finRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
                 finLanguage = true;

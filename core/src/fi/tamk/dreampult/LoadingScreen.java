@@ -13,10 +13,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import com.badlogic.gdx.physics.box2d.World;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.QuestionHandler;
 import fi.tamk.dreampult.Helpers.Button;
 import fi.tamk.dreampult.Helpers.Question;
+import fi.tamk.dreampult.Maps.Map;
+import fi.tamk.dreampult.Maps.Maps;
 
 /**
  * Created by DV6-6B20 on 15.3.2016.
@@ -58,19 +61,34 @@ public class LoadingScreen implements Screen {
     Button truthButton;
     Button falseButton;
 
+    Map map;
+
+    int level;
+
 //    Sound positiveSound;
 //    Sound negativeSound;
 
-    public LoadingScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
-        game = gam;
+    public LoadingScreen(Dreampult game, OrthographicCamera camera, OrthographicCamera fCamera, int level) {
+        this.game = game;
         this.camera = camera;
         fontCamera = fCamera;
+        this.level = level;
+
+        switch (level) {
+            case 1:
+                game.assets.loadLevel1();
+                break;
+            case 2:
+                game.assets.loadLevel2();
+                break;
+            case 3:
+                game.assets.loadLevel3();
+                break;
+        }
 
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
-
         blankFalse = game.assets.manager.get("images/ui/blankFalse.png", Texture.class);
         blankTrue = game.assets.manager.get("images/ui/blankTrue.png", Texture.class);
-
         falseTexture = game.assets.manager.get("images/ui/falseTexture.png", Texture.class);
         trueTexture = game.assets.manager.get("images/ui/trueTexture.png", Texture.class);
 
@@ -114,13 +132,16 @@ public class LoadingScreen implements Screen {
         Vector3 touchPoint = new Vector3();
 
         if(loaded) {
+            Maps maps = new Maps();
+            this.map = maps.loadMap(level, game.assets.manager);
+
             loading = game.myBundle.get("loaded");
             if(Gdx.input.justTouched()) {
                 fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
                 if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
                     //System.out.println("Truth chosen");
-                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, camera);
+                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, map);
                     if(question.isTrue(true)){
 //                        positiveSound.play();
                         gameLoop.bounces += 1;
@@ -130,7 +151,7 @@ public class LoadingScreen implements Screen {
                     game.setScreen(gameLoop);
 
                 } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, camera);
+                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, map);
                     if(question.isTrue(false)){
 //                        positiveSound.play();
                         gameLoop.bounces += 1;

@@ -1,5 +1,6 @@
 package fi.tamk.dreampult.Objects.Monsters;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -15,11 +16,9 @@ public class PigMonster extends Monster {
 
     /**
      * Initiates Pig Monster. Load assets and set default position & size.
-     * @param gameLoop
      */
-    public PigMonster(GameLoop gameLoop) {
-        super(gameLoop);
-        this.sheet = gameLoop.assets.get("images/objects/pigMonster/pigmonster_animationframes.png", Texture.class);
+    public PigMonster(AssetManager assets) {
+        this.sheet = assets.get("images/objects/enemies/pig.png", Texture.class);
         position = new Vector2(3, 3);
         width = 2;
         height = 2;

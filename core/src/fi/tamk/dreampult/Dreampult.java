@@ -69,11 +69,12 @@ public class Dreampult extends Game {
         setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
     }
 
-	public void restart() {
+	public void restart(int level) {
 		collection.launch = false;
 		collection.hidePauseMenu();
 		collection.hideScoreScreen();
-		setScreen( new GameLoop(this, assets.manager, GameCamera));
+		//setScreen( new GameLoop(this, assets.manager, ));
+        setScreen(new LoadingScreen(this, GameCamera, UserInterfaceCamera, level));
 	}
 
     public void savePreferences() {

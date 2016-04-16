@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.GameLoop;
 
 /**
@@ -34,10 +31,6 @@ public class Monster {
 
     //public Monster() {}
 
-    public Monster(GameLoop loop) {
-        this.loop = loop;
-    }
-
     /**
      * Creates animation from sprite sheet.
      * @param FRAME_COLS
@@ -57,9 +50,9 @@ public class Monster {
         current = animation.getKeyFrame(stateTime, true);
     }
 
-    public void initalizePosition(Vector2 position, String userdata) {
+    public void initalizePosition(World world, Vector2 position, String userdata) {
         this.position = position;
-        body = createBodyDef();
+        body = createBodyDef(world);
         body.setUserData(userdata);
         createBodyFixture(1f);
     }
@@ -81,11 +74,11 @@ public class Monster {
         batch.draw(current, position.x, position.y, width, height);
     }
 
-    public Body createBodyDef() {
+    public Body createBodyDef(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(position.x + width / 2, position.y + height / 2);
-        return loop.world.createBody(bodyDef);
+        return world.createBody(bodyDef);
     }
 
     public void createBodyFixture(Float density) {

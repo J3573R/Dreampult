@@ -14,15 +14,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class AssetHandler {
     public AssetManager manager = new AssetManager();
 
-    public void loadTestMap() {
+    public void loadObjects() {
         loadPlayer();
         loadCatapult();
-        loadMonsters();
         loadClothes();
-        loadMap();
         loadAssets();
         loadTalents();
-//        loadSoundEffects();
     }
 
     public void loadPlayer(){
@@ -62,19 +59,11 @@ public class AssetHandler {
 //        manager.load("audio/soundEffects/negative.wav", Sound.class);
 
     }
-    public void loadMap() {
-        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("maps/mappi.tmx", TiledMap.class);
-    }
 
     public void loadAssets() {
         manager.load("images/launching/whiteArrow.png", Texture.class);
         manager.load("images/launching/meter.png", Texture.class);
         manager.load("images/launching/meterColor.png", Texture.class);
-        manager.load("images/background/back_clouds.png", Texture.class);
-        manager.load("images/background/middle_clouds.png", Texture.class);
-        manager.load("images/background/front_clouds.png", Texture.class);
-        manager.load("images/background/bg2.png", Texture.class);
         manager.load("images/player/hiteffect.png", Texture.class);
         manager.load("images/objects/star.png", Texture.class);
     }
@@ -85,10 +74,46 @@ public class AssetHandler {
         manager.load("images/launching/catapult/Catapult_spoon.png", Texture.class);
     }
 
-    public void loadMonsters() {
-        manager.load("images/objects/pigMonster/pigmonster_animationframes.png", Texture.class);
-        manager.load("images/objects/bedmonster/bed.png", Texture.class);
-        manager.load("images/objects/clock/alarmclock.png", Texture.class);
+
+    public void loadLevel1(){
+        manager.load("images/background/level1/layer1.png", Texture.class);
+        manager.load("images/background/level1/layer2.png", Texture.class);
+        manager.load("images/background/level1/layer3.png", Texture.class);
+        manager.load("images/background/level1/layer4.png", Texture.class);
+
+        manager.load("images/objects/enemies/pig.png", Texture.class);
+        manager.load("images/objects/enemies/clock.png", Texture.class);
+
+        manager.load("images/objects/allies/bed.png", Texture.class);
+    }
+
+    public void loadLevel2(){
+        manager.load("images/background/level2/layer1.png", Texture.class);
+        manager.load("images/background/level2/layer2.png", Texture.class);
+        manager.load("images/background/level2/layer3.png", Texture.class);
+        manager.load("images/background/level2/layer4.png", Texture.class);
+
+        manager.load("images/objects/enemies/pig.png", Texture.class);
+        manager.load("images/objects/enemies/turtle.png", Texture.class);
+        manager.load("images/objects/enemies/clock.png", Texture.class);
+
+        manager.load("images/objects/allies/unicorn.png", Texture.class);
+        manager.load("images/objects/allies/bed.png", Texture.class);
+    }
+
+    public void loadLevel3(){
+        manager.load("images/background/level3/layer1.png", Texture.class);
+        manager.load("images/background/level3/layer2.png", Texture.class);
+        manager.load("images/background/level3/layer3.png", Texture.class);
+        manager.load("images/background/level3/layer4.png", Texture.class);
+
+        manager.load("images/objects/enemies/pig.png", Texture.class);
+        manager.load("images/objects/enemies/turtle.png", Texture.class);
+        manager.load("images/objects/enemies/cow.png", Texture.class);
+        manager.load("images/objects/enemies/clock.png", Texture.class);
+
+        manager.load("images/objects/allies/unicorn.png", Texture.class);
+        manager.load("images/objects/allies/bed.png", Texture.class);
     }
 
     public void loadTalents() {
