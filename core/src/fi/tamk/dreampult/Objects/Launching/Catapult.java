@@ -43,9 +43,9 @@ public class Catapult {
                 1, 1, // srcX, srcY
                 spoon.getWidth(), spoon.getHeight(), // srcWidth, srcHeight
                 false, false); // flip x, flip y
-        //batch.draw(spoon, 0.2f, 0.2f, 2, 2);
+        //batch.drawShape(spoon, 0.2f, 0.2f, 2, 2);
         batch.draw(body, 1 + x, 0, 2, 2);
-        //batch.draw(, 1.5f, 0.5f, 1f, 1f);
+        //batch.drawShape(, 1.5f, 0.5f, 1f, 1f);
         batch.draw(wheel, 1.5f + x, 0.5f, // Texture, x, y
                  0.5f, 0.5f, // Origin x, Origin y
                 1f, 1f, // Width, Height

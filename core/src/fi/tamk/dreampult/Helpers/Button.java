@@ -3,6 +3,7 @@ package fi.tamk.dreampult.Helpers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,7 @@ public class Button {
     String buttonText;
     Vector2 buttonTextPosition;
     public Rectangle button;
+    public Texture buttonImage;
 
     Color textColor;
     Color buttonColor;
@@ -47,7 +49,7 @@ public class Button {
         buttonTextPosition = new Vector2(fontX, fontY);
     }
 
-    public void draw(ShapeRenderer shapeRenderer, SpriteBatch batch) {
+    public void drawShape(ShapeRenderer shapeRenderer, SpriteBatch batch) {
         batch.end();
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -55,6 +57,11 @@ public class Button {
         shapeRenderer.rect(button.getX(), button.getY(), button.getWidth(), button.getHeight());
         shapeRenderer.end();
         batch.begin();
+        fontHandler.font.draw(batch, buttonText, buttonTextPosition.x, buttonTextPosition.y);
+    }
+
+    public void drawImage(SpriteBatch batch) {
+        batch.draw(buttonImage, button.getX(), button.getY(), button.getWidth(), button.getHeight());
         fontHandler.font.draw(batch, buttonText, buttonTextPosition.x, buttonTextPosition.y);
     }
 
@@ -76,5 +83,10 @@ public class Button {
 
     public void setAlpha(float alpha) {
         buttonColor.set(Color.alpha(alpha));
+    }
+
+    public void setText(String text) {
+        buttonText = text;
+        createText();
     }
 }

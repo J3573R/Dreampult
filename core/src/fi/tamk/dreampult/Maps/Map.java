@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import fi.tamk.dreampult.GameLoop;
 import fi.tamk.dreampult.Handlers.BackgroundHandler;
-import fi.tamk.dreampult.Objects.Monsters.Generator;
-import fi.tamk.dreampult.Objects.Monsters.Monster;
-import fi.tamk.dreampult.Objects.Monsters.PigMonster;
+import fi.tamk.dreampult.Objects.Collision.Generator;
+import fi.tamk.dreampult.Objects.Collision.Objects;
 
 import java.util.ArrayList;
 
@@ -108,5 +107,11 @@ public class Map {
 
     public int getLevel() {
         return level;
+    }
+
+    public void dispose() {
+        for (Generator object : objects) {
+            object.dispose(loop.world);
+        }
     }
 }

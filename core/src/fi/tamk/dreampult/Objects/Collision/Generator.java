@@ -1,4 +1,4 @@
-package fi.tamk.dreampult.Objects.Monsters;
+package fi.tamk.dreampult.Objects.Collision;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -17,7 +17,7 @@ import java.util.Random;
 public class Generator {
     AssetManager assets;
 
-    ArrayList<Monster> monsters = new ArrayList<Monster>();
+    ArrayList<Objects> objects = new ArrayList<Objects>();
 
     float interval;
     float increment;
@@ -50,25 +50,29 @@ public class Generator {
     }
 
     /**
-     * Generates new patch of monsters.
+     * Generates new patch of objects.
      */
     public void update(World world, Vector2 playerPosition, Vector2 cameraPosition, Collection collection) {
         if(startGeneration(playerPosition)) {
             if(traveled + interval < playerPosition.x) {
                 traveled = playerPosition.x;
 
-                Monster mon = parseType();
+                Objects mon = parseType();
                 mon.initalizePosition(world, new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (cameraPosition.x + collection.SCREEN_WIDTH / 2),
                         random.nextInt((int)rangeY.x) + rangeY.y), type);
 
-                monsters.add(mon);
+                objects.add(mon);
                 setInterval(interval + increment);
             }
 
-            Iterator<Monster> iterator = monsters.iterator();
+            Iterator<Objects> iterator = objects.iterator();
             while(iterator.hasNext()) {
-                Monster monster = iterator.next();
-                if((monster.position.x + monster.width) < (cameraPosition.x - collection.SCREEN_WIDTH / 2f)) {
+                Objects object = iterator.next();
+                if((object.position.x + object.width) < (cameraPosition.x - collection.SCREEN_WIDTH / 2f)) {
+                    world.destroyBody(object.body);
+                    iterator.remove();
+                } else if (object.body.getUserData().equals("delete")) {
+                    world.destroyBody(object.body);
                     iterator.remove();
                 }
             }
@@ -76,48 +80,53 @@ public class Generator {
     }
 
     /**
-     * Draws monsters.
+     * Draws objects.
      * @param batch
      */
     public void draw(SpriteBatch batch) {
-        for(Monster monster : monsters) {
-            monster.update(Gdx.graphics.getDeltaTime());
-            monster.draw(batch);
+        for(Objects object : objects) {
+            object.update(Gdx.graphics.getDeltaTime());
+            object.draw(batch);
         }
     }
 
-    private Monster parseType(){
+    private Objects parseType(){
         if(type.equals("pig")) {
-            PigMonster mon = new PigMonster(assets);
-            return mon;
+            Pig object = new Pig(assets);
+            return object;
         }
 
         if(type.equals("bed")) {
-            BedMonster mon = new BedMonster(assets);
-            return mon;
+            Bed object = new Bed(assets);
+            return object;
         }
 
         if(type.equals("clock")) {
-            Clock mon = new Clock(assets);
-            return mon;
+            Clock object = new Clock(assets);
+            return object;
         }
 
         if(type.equals("cow")) {
-            CowMonster mon = new CowMonster(assets);
-            return mon;
+            Cow object = new Cow(assets);
+            return object;
         }
 
         if(type.equals("turtle")) {
-            TurtleMonster mon = new TurtleMonster(assets);
-            return mon;
+            Turtle object = new Turtle(assets);
+            return object;
         }
 
         if(type.equals("unicorn")) {
-            Unicorn mon = new Unicorn(assets);
-            return mon;
+            Unicorn object = new Unicorn(assets);
+            return object;
         }
 
-        return new PigMonster(assets);
+        if(type.equals("star")) {
+            Star object = new Star(assets);
+            return object;
+        }
+
+        return new Pig(assets);
     }
 
     private boolean startGeneration(Vector2 playerPosition) {
@@ -141,7 +150,13 @@ public class Generator {
     }
 
     public void clearMonster(){
-        monsters = new ArrayList<Monster>();
+        objects = new ArrayList<Objects>();
+    }
+
+    public void dispose(World world){
+        for ( Objects object : objects){
+            world.destroyBody(object.body);
+        }
     }
 
 }

@@ -1,5 +1,8 @@
 package fi.tamk.dreampult;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+
 /**
  * Created by Clown on 7.4.2016.
  */
@@ -15,12 +18,47 @@ public class Talents {
     private boolean pyjamaGlide = false;
 
     public Talents() {
-        //enableExtraBounces();
-        //enablePyjamaGlide();
-        //enableBoostLaunch();
-        //enableAdditionalLaunch();
-        //enableGrowBouncy();
-        //enableGrowSlippery();
+        Preferences prefs = Gdx.app.getPreferences("Dreampult_Talents");
+        if(prefs.getBoolean("growBouncy", false)) {
+            enableGrowBouncy();
+        } else if (prefs.getBoolean("growSlippery", false)) {
+            enableGrowSlippery();
+        }
+
+        if(prefs.getBoolean("boostLaunch", false)) {
+            enableBoostLaunch();
+        } else if (prefs.getBoolean("additionalLaunch", false)) {
+            enableAdditionalLaunch();
+        }
+
+        if(prefs.getBoolean("extraBounces", false)) {
+            enableExtraBounces();
+        } else if (prefs.getBoolean("pyjamaGlide", false)) {
+            enablePyjamaGlide();
+        }
+    }
+
+    public void save() {
+        Preferences prefs = Gdx.app.getPreferences("Dreampult_Talents");
+        prefs.putBoolean("growBouncy", isGrowBouncy());
+        prefs.putBoolean("growSlippery", isGrowSlippery());
+        prefs.putBoolean("boostLaunch", isBoostLaunch());
+        prefs.putBoolean("additionalLaunch", isAdditionalLaunch());
+        prefs.putBoolean("extraBounces", isExtraBounces());
+        prefs.putBoolean("pyjamaGlide", isPyjamaGlide());
+        prefs.flush();
+    }
+
+    public void reset() {
+        this.growBouncy = false;
+        this.growSlippery = false;
+
+        this.boostLaunch = false;
+        this.additionalLaunch = false;
+
+        this.extraBounces = false;
+        this.pyjamaGlide = false;
+        save();
     }
 
     public boolean isGrowBouncy() {
@@ -75,16 +113,5 @@ public class Talents {
     public void enablePyjamaGlide() {
         this.pyjamaGlide = true;
         this.extraBounces = false;
-    }
-
-    public void resetTalents() {
-        this.growBouncy = false;
-        this.growSlippery = false;
-
-        this.boostLaunch = false;
-        this.additionalLaunch = false;
-
-        this.extraBounces = false;
-        this.pyjamaGlide = false;
     }
 }

@@ -1,17 +1,16 @@
-package fi.tamk.dreampult.Objects.Monsters;
+package fi.tamk.dreampult.Objects.Collision;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import fi.tamk.dreampult.GameLoop;
 
 /**
  * Created by Clown on 22.3.2016.
  */
-public class Clock extends Monster {
+public class Clock extends Objects {
 
 
     /**
-     * Initiates Pig Monster. Load assets and set default position & size.
+     * Initiates Pig Objects. Load assets and set default position & size.
      */
     public Clock(AssetManager assets) {
         this.sheet = assets.get("images/objects/enemies/clock.png", Texture.class);

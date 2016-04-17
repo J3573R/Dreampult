@@ -1,7 +1,6 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -55,7 +54,7 @@ public class TalentsScreen extends ScreenAdapter {
 
         talents = game.talents;
 
-        loadPreferences();
+        //loadPreferences();
     }
 
     @Override
@@ -71,6 +70,7 @@ public class TalentsScreen extends ScreenAdapter {
 
                 if(!talents.isGrowBouncy()) {
                     talents.enableGrowBouncy();
+                    talents.save();
                     System.out.println("Grow Bouncy enabled.");
                 }
 
@@ -79,6 +79,7 @@ public class TalentsScreen extends ScreenAdapter {
 
                 if(!talents.isGrowSlippery()) {
                     talents.enableGrowSlippery();
+                    talents.save();
                     System.out.println("Grow Slippery enabled.");
                 }
 
@@ -87,6 +88,7 @@ public class TalentsScreen extends ScreenAdapter {
 
                 if(!talents.isBoostLaunch()) {
                     talents.enableBoostLaunch();
+                    talents.save();
                     System.out.println("Boost Launch enabled.");
                 }
 
@@ -95,6 +97,7 @@ public class TalentsScreen extends ScreenAdapter {
 
                 if(!talents.isAdditionalLaunch()) {
                     talents.enableAdditionalLaunch();
+                    talents.save();
                     System.out.println("Additional Launch enabled.");
                 }
 
@@ -103,6 +106,7 @@ public class TalentsScreen extends ScreenAdapter {
 
                 if(!talents.isExtraBounces()) {
                     talents.enableExtraBounces();
+                    talents.save();
                     System.out.println("Extra Bounces enabled.");
                 }
 
@@ -111,15 +115,18 @@ public class TalentsScreen extends ScreenAdapter {
 
                 if(!talents.isPyjamaGlide()) {
                     talents.enablePyjamaGlide();
+                    talents.save();
                     System.out.println("Pyjama Glide enabled.");
                 }
 
             } else if (resetButton.button.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Reset button pressed");
-                resetProgress();
+                //resetProgress();
+                talents.reset();
 
             } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
-                savePreferences();
+                //savePreferences();
+                talents.save();
                 loop.game.MainMenu();
             }
 
@@ -149,8 +156,8 @@ public class TalentsScreen extends ScreenAdapter {
         loop.game.batch.draw(talentIcon, 120, 400, 100, 100);
         loop.game.batch.draw(talentIcon, 240, 400, 100, 100);
 
-        resetButton.draw(shapeRenderer, loop.game.batch);
-        returnButton.draw(shapeRenderer, loop.game.batch);
+        resetButton.drawShape(shapeRenderer, loop.game.batch);
+        returnButton.drawShape(shapeRenderer, loop.game.batch);
 
         loop.game.batch.end();
 
@@ -213,60 +220,6 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
-    }
-
-    public void savePreferences() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-        prefs.putBoolean("growBouncy", talents.isGrowBouncy());
-        prefs.putBoolean("growSlippery", talents.isGrowSlippery());
-        prefs.putBoolean("boostLaunch", talents.isBoostLaunch());
-        prefs.putBoolean("additionalLaunch", talents.isAdditionalLaunch());
-        prefs.putBoolean("extraBounces", talents.isExtraBounces());
-        prefs.putBoolean("pyjamaGlide", talents.isPyjamaGlide());
-        prefs.flush();
-    }
-
-    public void loadPreferences() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-        boolean growBouncy = prefs.getBoolean("growBouncy");
-        boolean growSlippery = prefs.getBoolean("growSlippery");
-        boolean boostLaunch = prefs.getBoolean("boostLaunch");
-        boolean additionalLaunch = prefs.getBoolean("additionalLaunch");
-        boolean extraBounces = prefs.getBoolean("extraBounces");
-        boolean pyjamaGlide = prefs.getBoolean("pyjamaGlide");
-
-        if(growBouncy) {
-            talents.enableGrowBouncy();
-
-        } else if(growSlippery) {
-            talents.enableGrowSlippery();
-
-        } else if(boostLaunch) {
-            talents.enableBoostLaunch();
-
-        } else if(additionalLaunch) {
-            talents.enableAdditionalLaunch();
-
-        } else if(extraBounces) {
-            talents.enableExtraBounces();
-
-        } else if(pyjamaGlide) {
-            talents.enablePyjamaGlide();
-        }
-    }
-
-    public void resetProgress() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
-        prefs.putBoolean("growBouncy", false);
-        prefs.putBoolean("growSlippery", false);
-        prefs.putBoolean("boostLaunch", false);
-        prefs.putBoolean("additionalLaunch", false);
-        prefs.putBoolean("extraBounces", false);
-        prefs.putBoolean("pyjamaGlide", false);
-        prefs.flush();
-
-        talents.resetTalents();
     }
 
     @Override

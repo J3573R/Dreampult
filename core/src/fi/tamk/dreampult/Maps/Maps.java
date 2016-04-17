@@ -3,11 +3,8 @@ package fi.tamk.dreampult.Maps;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import fi.tamk.dreampult.Dreampult;
-import fi.tamk.dreampult.GameLoop;
-import fi.tamk.dreampult.Handlers.AssetHandler;
 import fi.tamk.dreampult.Handlers.BackgroundHandler;
-import fi.tamk.dreampult.Objects.Monsters.Generator;
+import fi.tamk.dreampult.Objects.Collision.Generator;
 
 import java.util.ArrayList;
 
@@ -45,8 +42,13 @@ public class Maps {
                 assets.get("images/background/level1/layer1.png", Texture.class),
                 16, 9, 0.5f));
 
-        objects.add(new Generator(assets, "pig", 15, 0, new Vector2(15, 0), new Vector2(20, 5)));
+        objects.add(new Generator(assets, "pig", 15, 0, new Vector2(15, 0), new Vector2(25, 5)));
+        objects.add(new Generator(assets, "pig", 25, -1, new Vector2(15, 0), new Vector2(50, 30)));
+
         objects.add(new Generator(assets, "bed", 10, 2, new Vector2(1, 0), new Vector2(1, 0)));
+        objects.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(50, 10)));
+        objects.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(50, 20)));
+
         Generator clock = new Generator(assets, "clock", 33, -1, new Vector2(1, 1), new Vector2(1, 0));
         clock.startPoint = 8;
         objects.add(clock);
@@ -55,7 +57,7 @@ public class Maps {
     }
 
     private Map Level2(AssetManager assets){
-        Map level1 = new Map(1);
+        Map level1 = new Map(2);
         ArrayList<BackgroundHandler> backgrounds = level1.getBackgrounds();
         ArrayList<Generator> objects = level1.getObjects();
 
@@ -72,9 +74,18 @@ public class Maps {
                 assets.get("images/background/level2/layer1.png", Texture.class),
                 16, 9, 0.5f));
 
-        objects.add(new Generator(assets, "pig", 15, 0, new Vector2(15, 0), new Vector2(20, 5)));
+        objects.add(new Generator(assets, "pig", 15, 0, new Vector2(15, 0), new Vector2(25, 5)));
+        objects.add(new Generator(assets, "pig", 25, -1, new Vector2(15, 0), new Vector2(50, 30)));
+
         objects.add(new Generator(assets, "turtle", 15, 0, new Vector2(15, 0), new Vector2(20, 5)));
+        Generator turtle = new Generator(assets, "turtle", 15, 2, new Vector2(1, 0), new Vector2(1, 0));
+        turtle.startPoint = 3;
+        objects.add(turtle);
+
         objects.add(new Generator(assets, "bed", 10, 2, new Vector2(1, 0), new Vector2(1, 0)));
+        objects.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(50, 10)));
+        objects.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(50, 20)));
+
         Generator clock = new Generator(assets, "clock", 33, -1, new Vector2(1, 1), new Vector2(1, 0));
         clock.startPoint = 8;
         objects.add(clock);
@@ -83,7 +94,7 @@ public class Maps {
     }
 
     private Map Level3(AssetManager assets){
-        Map level1 = new Map(1);
+        Map level1 = new Map(3);
         ArrayList<BackgroundHandler> backgrounds = level1.getBackgrounds();
         ArrayList<Generator> objects = level1.getObjects();
 
@@ -100,9 +111,17 @@ public class Maps {
                 assets.get("images/background/level3/layer1.png", Texture.class),
                 16, 9, 0.5f));
 
-        objects.add(new Generator(assets, "bed", 10, 2, new Vector2(1, 0), new Vector2(1, 0)));
+        objects.add(new Generator(assets, "cow", 30, 0, new Vector2(15, 0), new Vector2(50, 30)));
+        objects.add(new Generator(assets, "cow", 10, 0, new Vector2(15, 0), new Vector2(30, 10)));
+
         objects.add(new Generator(assets, "turtle", 15, 0, new Vector2(15, 0), new Vector2(20, 5)));
-        objects.add(new Generator(assets, "cow", 15, 0, new Vector2(15, 0), new Vector2(20, 5)));
+        Generator turtle = new Generator(assets, "turtle", 15, 2, new Vector2(1, 0), new Vector2(1, 0));
+        turtle.startPoint = 3;
+        objects.add(turtle);
+
+        objects.add(new Generator(assets, "bed", 10, 2, new Vector2(1, 0), new Vector2(1, 0)));
+        objects.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(50, 10)));
+        objects.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(50, 20)));
         Generator clock = new Generator(assets, "clock", 33, -1, new Vector2(1, 1), new Vector2(1, 0));
         clock.startPoint = 8;
         objects.add(clock);

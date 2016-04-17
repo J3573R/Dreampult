@@ -1,7 +1,5 @@
-package fi.tamk.dreampult.Objects.Monsters;
+package fi.tamk.dreampult.Objects.Collision;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +11,7 @@ import fi.tamk.dreampult.GameLoop;
 /**
  * Created by Clown on 22.3.2016.
  */
-public class Monster {
+public class Objects {
     GameLoop loop;
 
     Animation animation;
@@ -29,7 +27,7 @@ public class Monster {
     float hitboxOffsetX = 0;
     float hitboxOffsetY = 0;
 
-    //public Monster() {}
+    //public Objects() {}
 
     /**
      * Creates animation from sprite sheet.

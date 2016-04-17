@@ -1,7 +1,6 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,16 +41,22 @@ public class UserInterface {
     public Button mainMenuButton;
     public Button quitButton;
     public Button talentsButton;
+    public Button starButton;
 
     Texture shootTexture;
+
+    Unlocks unlocks;
 
     public UserInterface(GameLoop loop) {
         this.loop = loop;
         shapeRenderer = new ShapeRenderer();
 
+        unlocks = new Unlocks();
+
         createPauseButton();
         createSoundButton();
         createShootButton();
+        createStar();
 
         pauseMenu = this.loop.assets.get("images/ui/pause_menu.png");
 
@@ -72,6 +77,8 @@ public class UserInterface {
         } else {
             batch.draw(soundOff, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());
         }
+
+        starButton.drawImage(batch);
 
         if(!loop.collection.launch) {
 //        /*batch.end();
@@ -98,10 +105,10 @@ public class UserInterface {
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
             batch.begin();
-            title.draw(shapeRenderer, batch);
-            restartButton.draw(shapeRenderer, batch);
-            mainMenuButton.draw(shapeRenderer, batch);
-            quitButton.draw(shapeRenderer, batch);
+            title.drawShape(shapeRenderer, batch);
+            restartButton.drawShape(shapeRenderer, batch);
+            mainMenuButton.drawShape(shapeRenderer, batch);
+            quitButton.drawShape(shapeRenderer, batch);
             batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
@@ -118,11 +125,11 @@ public class UserInterface {
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
             batch.begin();
-            scoreTitle.draw(shapeRenderer, batch);
-            restartButton.draw(shapeRenderer, batch);
-            talentsButton.draw(shapeRenderer, batch);
-            mainMenuButton.draw(shapeRenderer, batch);
-            //quitButton.draw(shapeRenderer, batch);
+            scoreTitle.drawShape(shapeRenderer, batch);
+            restartButton.drawShape(shapeRenderer, batch);
+            talentsButton.drawShape(shapeRenderer, batch);
+            mainMenuButton.drawShape(shapeRenderer, batch);
+            //quitButton.drawShape(shapeRenderer, batch);
             batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
@@ -168,6 +175,11 @@ public class UserInterface {
         shootTexture = this.loop.assets.get("images/ui/shootButton.png", Texture.class);
         shootButton = new Circle();
         shootButton.set(880, 80, 60);
+    }
+
+    private void createStar() {
+        starButton = new Button(800, 460, 80, 80, String.valueOf(unlocks.getStars()));
+        starButton.buttonImage = loop.assets.get("images/objects/allies/star.png", Texture.class);
     }
 
     public void toggleSound() {

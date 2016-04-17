@@ -40,11 +40,7 @@ public class Dreampult extends Game {
 		collection = new Collection();
 		batch = new SpriteBatch();
 
-        GameCamera = new OrthographicCamera();
-        GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
-
-        UserInterfaceCamera = new OrthographicCamera();
-        UserInterfaceCamera.setToOrtho(false, 960, 540);
+        initCamera();
 
         assets.loadUi();
         assets.manager.finishLoading();
@@ -59,10 +55,7 @@ public class Dreampult extends Game {
     }
 
     public void MainMenu() {
-        GameCamera = new OrthographicCamera();
-        GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
-        UserInterfaceCamera = new OrthographicCamera();
-        UserInterfaceCamera.setToOrtho(false, 960, 540);
+        initCamera();
         collection.launch = false;
         collection.hidePauseMenu();
         collection.hideScoreScreen();
@@ -73,7 +66,7 @@ public class Dreampult extends Game {
 		collection.launch = false;
 		collection.hidePauseMenu();
 		collection.hideScoreScreen();
-		//setScreen( new GameLoop(this, assets.manager, ));
+        initCamera();
         setScreen(new LoadingScreen(this, GameCamera, UserInterfaceCamera, level));
 	}
 
@@ -97,6 +90,13 @@ public class Dreampult extends Game {
             startLocale = new Locale("en", "UK");
             finnish = false;
         }
+    }
+
+    public void initCamera(){
+        GameCamera = new OrthographicCamera();
+        GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
+        UserInterfaceCamera = new OrthographicCamera();
+        UserInterfaceCamera.setToOrtho(false, 960, 540);
     }
 
 	@Override

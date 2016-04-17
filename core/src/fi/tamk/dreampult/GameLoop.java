@@ -9,9 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Maps.Map;
 import fi.tamk.dreampult.Maps.Maps;
+import fi.tamk.dreampult.Objects.Collision.Objects;
 import fi.tamk.dreampult.Objects.HitEffect;
 import fi.tamk.dreampult.Objects.Launching.Arrow;
 import fi.tamk.dreampult.Objects.Ground;
@@ -232,21 +234,22 @@ public class GameLoop extends ScreenAdapter {
 
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             fontHandler.draw(game.batch, slept, 900 / 2, 530);
-            //fontHandler.draw(game.batch, "Bounces:" + bounces, 900 / 2, 20);
+            //fontHandler.drawShape(game.batch, "Bounces:" + bounces, 900 / 2, 20);
             fontHandler.draw(game.batch, game.myBundle.get("bounces") + " " + bounces, 900 / 2, 20);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
             ui.drawScoreScreen(game.batch);
 
             //if(theEnd) {
-            //    game.batch.draw(endScreen, 0, 0, 16, 9);
+            //    game.batch.drawShape(endScreen, 0, 0, 16, 9);
 
             //    game.batch.setProjectionMatrix(fontCamera.combined);
-                //fontHandler.draw(game.batch, slept, 900/ 2, 530); <-- Proper coordinates needed
+                //fontHandler.drawShape(game.batch, slept, 900/ 2, 530); <-- Proper coordinates needed
             //}
 
             game.batch.end();
             //debug.render(world, GameCamera.combined);
+        System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     /**
@@ -310,6 +313,6 @@ public class GameLoop extends ScreenAdapter {
 
     @Override
     public void dispose() {
-
+        map.dispose();
     }
 }

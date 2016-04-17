@@ -21,6 +21,9 @@ public class FontHandler {
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 50;
         parameter.color = Color.WHITE;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 2;
+
         font = generator.generateFont(parameter);
         generator.dispose();
     }
@@ -30,6 +33,8 @@ public class FontHandler {
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
         parameter.color = Color.WHITE;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 2;
 
         font = generator.generateFont(parameter);
         generator.dispose();
@@ -40,6 +45,8 @@ public class FontHandler {
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
         parameter.color = color;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 2;
 
         font = generator.generateFont(parameter);
         generator.dispose();

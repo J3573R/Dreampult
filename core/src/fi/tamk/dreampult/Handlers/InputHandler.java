@@ -96,16 +96,25 @@ public class InputHandler extends InputAdapter {
             loop.ui.toggleSound();
         }
 
-        if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn() && loop.collection.isPauseMenu()) {
+        if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y)
+                && !loop.collection.isGameOn()
+                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+            loop.dispose();
+            System.out.println(loop.map.getLevel());
             loop.game.restart(loop.map.getLevel());
         }
 
-        if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn() && loop.collection.isPauseMenu()) {
+        if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y)
+                && !loop.collection.isGameOn()
+                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+            loop.dispose();
             loop.game.MainMenu();
         }
 
-        if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y) && !loop.collection.isGameOn() && loop.collection.isPauseMenu()) {
-            //Gdx.app.exit();
+        if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y)
+                && !loop.collection.isGameOn()
+                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+            loop.dispose();
             loop.game.setScreen(new TalentsScreen(loop, loop.UserInterfaceCamera));
         }
 
