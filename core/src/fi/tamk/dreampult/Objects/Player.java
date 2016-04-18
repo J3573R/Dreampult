@@ -123,7 +123,6 @@ public class Player {
      * @param batch
      */
     public void draw(SpriteBatch batch) {
-
         rightArm.draw(batch);
         rightLeg.draw(batch);
         torso.draw(batch);

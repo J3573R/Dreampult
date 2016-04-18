@@ -67,6 +67,13 @@ public class GameLoop extends ScreenAdapter {
     public Texture endScreen;
     public boolean theEnd;
 
+    float angle;
+    Vector2 point;
+    Vector2 center;
+    float rotatedX;
+    float rotatedY;
+    Vector2 zeroVel = new Vector2(0,0);
+
     /**
      * Initialize variables for render.
      * @param game
@@ -82,6 +89,8 @@ public class GameLoop extends ScreenAdapter {
         this.assets = assets;
         talents = new Talents();
         secondLaunch = false;
+        point = new Vector2();
+        center = new Vector2();
 
         world = new World(new Vector2(0, -1f), true);
         collision = new CollisionHandler(this);
@@ -131,9 +140,7 @@ public class GameLoop extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if ( game.collection.isGameOn() ) {
-            /**
-             * Do Stuff
-             */
+
             doPhysicsStep(delta);
 
             worldHandler.moveCamera();
@@ -149,19 +156,18 @@ public class GameLoop extends ScreenAdapter {
             }
 
             if(!collection.launch) {
+                angle = catapult.spoonRotation;
+                point.set(catapult.spoonPosition.x + 0.5f, catapult.spoonPosition.y + 2f);
+                center.set(2, 0);
 
-                float angle = catapult.spoonRotation;
-                Vector2 point = new Vector2(catapult.spoonPosition.x + 0.5f, catapult.spoonPosition.y + 2f);
-                Vector2 center = new Vector2(2, 0);
-                float rotatedX = (float) (Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y - center.y) + center.x);
-                float rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
+                rotatedX = (float) (Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y - center.y) + center.x);
+                rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
 
                 if(secondLaunch) {
                     rotatedX = player.torso.body.getPosition().x;
                 }
 
                 player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
-                Vector2 zeroVel = new Vector2(0, 0);
                 player.setBodypartVelocity(zeroVel);
 
             } else {
@@ -208,9 +214,7 @@ public class GameLoop extends ScreenAdapter {
             map.stopBackground();
         }
 
-            /**
-             * Draw stuff
-             */
+            // Draw stuff
             Gdx.gl.glClearColor(131 / 255f, 182 / 255f, 255 / 255f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -240,16 +244,9 @@ public class GameLoop extends ScreenAdapter {
             ui.drawPauseMenu(game.batch);
             ui.drawScoreScreen(game.batch);
 
-            //if(theEnd) {
-            //    game.batch.drawShape(endScreen, 0, 0, 16, 9);
-
-            //    game.batch.setProjectionMatrix(fontCamera.combined);
-                //fontHandler.drawShape(game.batch, slept, 900/ 2, 530); <-- Proper coordinates needed
-            //}
-
             game.batch.end();
             //debug.render(world, GameCamera.combined);
-        System.out.println(Gdx.graphics.getFramesPerSecond());
+        //System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     /**
@@ -314,5 +311,6 @@ public class GameLoop extends ScreenAdapter {
     @Override
     public void dispose() {
         map.dispose();
+        System.gc();
     }
 }

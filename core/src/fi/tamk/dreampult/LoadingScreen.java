@@ -60,8 +60,12 @@ public class LoadingScreen implements Screen {
     Button falseButton;
 
     Map map;
+    Maps maps;
+    GlyphLayout layout;
 
     int level;
+
+    Vector3 touchPoint;
 
 //    Sound positiveSound;
 //    Sound negativeSound;
@@ -71,6 +75,7 @@ public class LoadingScreen implements Screen {
         this.camera = camera;
         fontCamera = fCamera;
         this.level = level;
+        maps = new Maps();
 
         switch (level) {
             case 1:
@@ -98,6 +103,8 @@ public class LoadingScreen implements Screen {
         loaded = false;
 
         loading = game.myBundle.get("loading");
+        layout = new GlyphLayout(font.font, loading);
+
 
         truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
         falseRectangle = new Rectangle(960 / 3 * 2 - 50, 125, 200, 100);
@@ -105,6 +112,7 @@ public class LoadingScreen implements Screen {
         questionHandler = new QuestionHandler(game);
 
         question = questionHandler.anyItem();
+        question.initializeLayout(font);
 
         positiveAnswer = game.myBundle.get("true");
         negativeAnswer = game.myBundle.get("false");
@@ -117,6 +125,8 @@ public class LoadingScreen implements Screen {
         falseButton = new Button(960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
         falseButton.setAlpha(0f);
         falseButton.setTextColor(Color.BLACK);
+
+        touchPoint = new Vector3();
     }
 
     @Override
@@ -127,13 +137,11 @@ public class LoadingScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        Vector3 touchPoint = new Vector3();
-
         if(loaded) {
-            Maps maps = new Maps();
-            this.map = maps.loadMap(level, game.assets.manager);
 
+            this.map = maps.loadMap(level, game.assets.manager);
             loading = game.myBundle.get("loaded");
+
             if(Gdx.input.justTouched()) {
                 fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -189,7 +197,7 @@ public class LoadingScreen implements Screen {
             game.batch.draw(blankFalse, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
         }
 
-        GlyphLayout layout = new GlyphLayout(font.font, loading);
+        layout.setText(font.font, loading);
 
         game.batch.end();
 
@@ -207,8 +215,6 @@ public class LoadingScreen implements Screen {
         game.batch.begin();
 
         font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
-
-        question.initializeLayout(font);
 
         game.batch.end();
 

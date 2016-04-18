@@ -33,6 +33,11 @@ public class Question {
         font = fontHandler;
     }
 
+    public void setText(String text){
+        this.text = text;
+        layout.setText(font.font, text);
+    }
+
     public void draw(SpriteBatch batch){
         //GlyphLayout layout = new GlyphLayout(fontHandler.font, text);
         font.font.draw(batch, text, 960 / 2 - layout.width / 2, 300);

@@ -3,6 +3,7 @@ package fi.tamk.dreampult;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -68,6 +69,7 @@ public class Dreampult extends Game {
 		collection.hideScoreScreen();
         initCamera();
         setScreen(new LoadingScreen(this, GameCamera, UserInterfaceCamera, level));
+        System.gc();
 	}
 
     public void savePreferences() {
@@ -101,6 +103,15 @@ public class Dreampult extends Game {
 
 	@Override
 	public void render () {
-		super.render();
-	}
+        super.render();
+        Gdx.app.log("Java Heap", String.valueOf(Gdx.app.getJavaHeap()));
+        //Gdx.app.log("Native Heap", String.valueOf(Gdx.app.getNativeHeap()));
+    }
+
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
+        System.gc();
+    }
+
+
 }

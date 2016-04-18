@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Pool;
 import fi.tamk.dreampult.GameLoop;
 
 /**
@@ -87,5 +88,11 @@ public class Objects {
         polygonShape.setAsBox((width - hitboxOffsetX) / 2, (height  - hitboxOffsetY) / 2, new Vector2(0, 0), 0);
         def.shape = polygonShape;
         this.body.createFixture(def);
+        polygonShape.dispose();
+    }
+
+    public void reset() {
+        //sheet.dispose();
+        //current.getTexture().dispose();
     }
 }

@@ -106,7 +106,6 @@ public class TitleScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
         //game.batch.setProjectionMatrix(camera.combined);
         game.batch.setProjectionMatrix(userInterfaceCamera.combined);
 

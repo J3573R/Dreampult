@@ -55,6 +55,7 @@ public class Generator {
     public void update(World world, Vector2 playerPosition, Vector2 cameraPosition, Collection collection) {
         if(startGeneration(playerPosition)) {
             if(traveled + interval < playerPosition.x) {
+                System.out.println("INIT");
                 traveled = playerPosition.x;
 
                 Objects mon = parseType();
@@ -154,6 +155,7 @@ public class Generator {
     }
 
     public void dispose(World world){
+        System.out.println("DISPOSED");
         for ( Objects object : objects){
             world.destroyBody(object.body);
         }

@@ -13,6 +13,13 @@ import java.util.ArrayList;
  */
 public class Maps {
 
+    boolean ready;
+    Map level;
+
+    public Maps() {
+        ready = false;
+    }
+
     public Map loadMap(int level, AssetManager assets) {
         if(level == 1) {
             return Level1(assets);
@@ -25,35 +32,40 @@ public class Maps {
     }
 
     private Map Level1(AssetManager assets){
-        Map level1 = new Map(1);
-        ArrayList<BackgroundHandler> backgrounds = level1.getBackgrounds();
-        ArrayList<Generator> objects = level1.getObjects();
+        if(ready == false) {
+            Map level1 = new Map(1);
+            ArrayList<BackgroundHandler> backgrounds = level1.getBackgrounds();
+            ArrayList<Generator> objects = level1.getObjects();
 
-        level1.setStaticBackground(assets.get("images/background/level1/layer4.png", Texture.class));
+            level1.setStaticBackground(assets.get("images/background/level1/layer4.png", Texture.class));
 
-        backgrounds.add(new BackgroundHandler(
-                assets.get("images/background/level1/layer3.png", Texture.class),
-                16, 9, 0.3f));
-        backgrounds.add(new BackgroundHandler(
-                assets.get("images/background/level1/layer2.png", Texture.class),
-                16, 9, 0.4f));
+            backgrounds.add(new BackgroundHandler(
+                    assets.get("images/background/level1/layer3.png", Texture.class),
+                    16, 9, 0.3f));
+            backgrounds.add(new BackgroundHandler(
+                    assets.get("images/background/level1/layer2.png", Texture.class),
+                    16, 9, 0.4f));
 
-        backgrounds.add(new BackgroundHandler(
-                assets.get("images/background/level1/layer1.png", Texture.class),
-                16, 9, 0.5f));
+            backgrounds.add(new BackgroundHandler(
+                    assets.get("images/background/level1/layer1.png", Texture.class),
+                    16, 9, 0.5f));
 
-        objects.add(new Generator(assets, "pig", 15, 0, new Vector2(15, 0), new Vector2(25, 5)));
-        objects.add(new Generator(assets, "pig", 25, -1, new Vector2(15, 0), new Vector2(50, 30)));
+            objects.add(new Generator(assets, "pig", 15, 0, new Vector2(15, 0), new Vector2(25, 5)));
+            objects.add(new Generator(assets, "pig", 25, -1, new Vector2(15, 0), new Vector2(50, 30)));
 
-        objects.add(new Generator(assets, "bed", 10, 2, new Vector2(1, 0), new Vector2(1, 0)));
-        objects.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(50, 10)));
-        objects.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(50, 20)));
+            objects.add(new Generator(assets, "bed", 10, 2, new Vector2(1, 0), new Vector2(1, 0)));
+            objects.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(50, 10)));
+            objects.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(50, 20)));
 
-        Generator clock = new Generator(assets, "clock", 33, -1, new Vector2(1, 1), new Vector2(1, 0));
-        clock.startPoint = 8;
-        objects.add(clock);
-
-        return level1;
+            Generator clock = new Generator(assets, "clock", 33, -1, new Vector2(1, 1), new Vector2(1, 0));
+            clock.startPoint = 8;
+            objects.add(clock);
+            level = level1;
+            ready = true;
+            return level1;
+        } else {
+            return level;
+        }
     }
 
     private Map Level2(AssetManager assets){

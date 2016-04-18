@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Map {
     GameLoop loop;
     int level;
+    Vector2 cameraPosition;
 
     private ArrayList<Generator> objects;
     private ArrayList<BackgroundHandler> backgrounds;
@@ -24,6 +25,7 @@ public class Map {
 
     public Map(int level) {
         this.level = level;
+        cameraPosition = new Vector2();
         objects = new ArrayList<Generator>();
         backgrounds = new ArrayList<BackgroundHandler>();
     }
@@ -33,12 +35,12 @@ public class Map {
     }
 
     public void update(){
+        cameraPosition.set(loop.GameCamera.position.x, loop.GameCamera.position.y);
         for ( Generator object : objects ) {
             object.update(
                     loop.world,
                     loop.player.torso.body.getPosition(),
-                    new Vector2(loop.GameCamera.position.x,
-                    loop.GameCamera.position.y),
+                    cameraPosition,
                     loop.collection
             );
         }

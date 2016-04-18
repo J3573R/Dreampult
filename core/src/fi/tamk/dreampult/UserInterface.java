@@ -104,6 +104,7 @@ public class UserInterface {
             shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
+            shapeRenderer.dispose();
             batch.begin();
             title.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);
@@ -124,6 +125,7 @@ public class UserInterface {
             shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
+            shapeRenderer.dispose();
             batch.begin();
             scoreTitle.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);

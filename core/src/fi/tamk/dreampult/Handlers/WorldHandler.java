@@ -189,6 +189,8 @@ public class WorldHandler {
         groundBox.setAsBox(width / 2 , height / 2 );
 
         wall.createFixture(groundBox, 0.0f);
+
+        groundBox.dispose();
     }
 
     public void createObject(Rectangle rect, String userData) {
@@ -220,6 +222,8 @@ public class WorldHandler {
         fixtureDef.shape = groundBox;
 
         wall.createFixture(fixtureDef);
+
+        groundBox.dispose();
     }
 
     /**
