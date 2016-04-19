@@ -29,9 +29,10 @@ public class Button {
 
     public GlyphLayout layout;
 
-    public Button(float x, float y, float width, float height, String text) {
+    public Button(FontHandler fontHandler, float x, float y, float width, float height, String text) {
 
-        fontHandler = new FontHandler(32, Color.WHITE);
+        this.fontHandler = fontHandler;
+        fontHandler.GenerateFont(32, Color.WHITE);
         buttonColor = Color.valueOf("008CBA");
 
         button = new Rectangle();

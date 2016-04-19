@@ -41,7 +41,7 @@ public class LoadingScreen implements Screen {
     public Rectangle truthRectangle;
     public Rectangle falseRectangle;
 
-    FontHandler font;
+    FontHandler fontHandler;
 
     String loading;
 
@@ -67,6 +67,8 @@ public class LoadingScreen implements Screen {
 
     Vector3 touchPoint;
 
+    GameLoop gameLoop;
+
 //    Sound positiveSound;
 //    Sound negativeSound;
 
@@ -76,6 +78,7 @@ public class LoadingScreen implements Screen {
         fontCamera = fCamera;
         this.level = level;
         maps = new Maps();
+        this.fontHandler = game.fontHandler;
 
         switch (level) {
             case 1:
@@ -98,12 +101,12 @@ public class LoadingScreen implements Screen {
 //        positiveSound = game.assets.manager.get("audio/soundEffects/positive.wav", Sound.class);
 //        negativeSound= game.assets.manager.get("audio/soundEffects/negative.wav", Sound.class);
 
-        font = new FontHandler(40);
+        fontHandler.GenerateFont(40, Color.BLACK);
 
         loaded = false;
 
         loading = game.myBundle.get("loading");
-        layout = new GlyphLayout(font.font, loading);
+        layout = new GlyphLayout(fontHandler.font, loading);
 
 
         truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
@@ -112,17 +115,17 @@ public class LoadingScreen implements Screen {
         questionHandler = new QuestionHandler(game);
 
         question = questionHandler.anyItem();
-        question.initializeLayout(font);
+        question.initializeLayout(fontHandler);
 
         positiveAnswer = game.myBundle.get("true");
         negativeAnswer = game.myBundle.get("false");
 
         shapeRenderer = new ShapeRenderer();
 
-        truthButton = new Button(960 / 4 - 50, 125, 200, 100, positiveAnswer);
+        truthButton = new Button(game.fontHandler, 960 / 4 - 50, 125, 200, 100, positiveAnswer);
         truthButton.setAlpha(0f);
         truthButton.setTextColor(Color.BLACK);
-        falseButton = new Button(960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
+        falseButton = new Button(game.fontHandler, 960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
         falseButton.setAlpha(0f);
         falseButton.setTextColor(Color.BLACK);
 
@@ -131,49 +134,52 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void show() {
-
+        game.assets.loadObjects();
     }
 
     @Override
     public void render(float delta) {
-
         if(loaded) {
 
-            this.map = maps.loadMap(level, game.assets.manager);
-            loading = game.myBundle.get("loaded");
+            if(gameLoop.ready) {
+                loading = game.myBundle.get("loaded");
+                if (Gdx.input.justTouched()) {
+                    fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            if(Gdx.input.justTouched()) {
-                fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-                if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    //System.out.println("Truth chosen");
-                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, map);
-                    if(question.isTrue(true)){
+                    if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        //System.out.println("Truth chosen");
+                        if (question.isTrue(true)) {
 //                        positiveSound.play();
-                        gameLoop.bounces += 1;
-                    } else {
+                            gameLoop.bounces += 1;
+                        } else {
 //                        negativeSound.play();
-                    }
-                    game.setScreen(gameLoop);
+                        }
+                        game.setScreen(gameLoop);
+                        game.collection.start();
 
-                } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    GameLoop gameLoop = new GameLoop(game, game.assets.manager, map);
-                    if(question.isTrue(false)){
+                    } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        if (question.isTrue(false)) {
 //                        positiveSound.play();
-                        gameLoop.bounces += 1;
-                    } else {
+                            gameLoop.bounces += 1;
+                        } else {
 //                        negativeSound.play();
+                        }
+                        game.setScreen(gameLoop);
+                        game.collection.start();
+                    } else {
+                        System.out.println(touchPoint.x + " : " + touchPoint.y);
+                        System.out.println(question);
                     }
-                    game.setScreen(gameLoop);
-                } else {
-                    System.out.println(touchPoint.x + " : " + touchPoint.y);
-                    System.out.println(question);
                 }
             }
-        }
-
-        if(game.assets.manager.update()) {
-            loaded = true;
+        } else {
+            if(game.assets.manager.update()) {
+                this.map = maps.loadMap(level, game.assets.manager);
+                gameLoop = new GameLoop(game, game.assets.manager, map);
+                if(gameLoop.ready) {
+                    loaded = true;
+                }
+            }
         }
 
         game.batch.setProjectionMatrix(camera.combined);
@@ -197,7 +203,7 @@ public class LoadingScreen implements Screen {
             game.batch.draw(blankFalse, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
         }
 
-        layout.setText(font.font, loading);
+        layout.setText(fontHandler.font, loading);
 
         game.batch.end();
 
@@ -214,7 +220,7 @@ public class LoadingScreen implements Screen {
 
         game.batch.begin();
 
-        font.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
+        fontHandler.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
 
         game.batch.end();
 

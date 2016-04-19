@@ -104,7 +104,6 @@ public class UserInterface {
             shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
-            shapeRenderer.dispose();
             batch.begin();
             title.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);
@@ -125,7 +124,6 @@ public class UserInterface {
             shapeRenderer.rect(background.getX(), background.getY(), background.getWidth(), background.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
-            shapeRenderer.dispose();
             batch.begin();
             scoreTitle.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);
@@ -145,19 +143,19 @@ public class UserInterface {
     private void createPauseMenu() {
         float buttonWidth = 200;
         float buttonHeight = background.height / 6;
-        title = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight + 20, buttonWidth, buttonHeight, loop.game.myBundle.get("pause"));
+        title = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight + 20, buttonWidth, buttonHeight, loop.game.myBundle.get("pause"));
         title.setAlpha(0f);
-        restartButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, loop.game.myBundle.get("restart"));
-        mainMenuButton = new Button(middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, loop.game.myBundle.get("mainMenu"));
-        quitButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, loop.game.myBundle.get("quit"));
+        restartButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, loop.game.myBundle.get("restart"));
+        mainMenuButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, loop.game.myBundle.get("mainMenu"));
+        quitButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, loop.game.myBundle.get("quit"));
     }
 
     public void createScoreScreen() {
         float buttonWidth = 200;
         float buttonHeight = background.height / 6;
-        scoreTitle = new Button(middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
+        scoreTitle = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
         scoreTitle.setAlpha(0f);
-        talentsButton = new Button(middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
+        talentsButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
     }
 
     private void createPauseButton() {
@@ -180,7 +178,7 @@ public class UserInterface {
     }
 
     private void createStar() {
-        starButton = new Button(800, 460, 80, 80, String.valueOf(unlocks.getStars()));
+        starButton = new Button(loop.fontHandler, 800, 460, 80, 80, String.valueOf(unlocks.getStars()));
         starButton.buttonImage = loop.assets.get("images/objects/allies/star.png", Texture.class);
     }
 

@@ -31,8 +31,6 @@ public class TitleScreen implements Screen {
 
     public Texture background;
 
-    public FontHandler font;
-
     public boolean soundPressed;
 
     public Texture levelOne;
@@ -84,8 +82,6 @@ public class TitleScreen implements Screen {
         finFlag = game.assets.manager.get("images/finFlag.png", Texture.class);
         britFlag = game.assets.manager.get("images/britFlag.png", Texture.class);
 
-        font = new FontHandler();
-
         soundPressed = false;
 
         finRectangle = new Rectangle(760, 440, 100, 100);
@@ -113,11 +109,8 @@ public class TitleScreen implements Screen {
 
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            game.assets.loadObjects();
             if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Level loading started");
-
-
 
                 game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 1));
 
@@ -168,6 +161,7 @@ public class TitleScreen implements Screen {
         game.batch.draw(levelOne, 180, 180, 180, 120);
         game.batch.draw(lockedLevel, 360, 180, 180, 120);
         game.batch.draw(lockedLevel, 540, 180, 180, 120);
+
 
         if(soundPressed) {
             game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),

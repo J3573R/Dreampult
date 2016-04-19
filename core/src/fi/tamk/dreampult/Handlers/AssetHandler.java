@@ -158,12 +158,6 @@ public class AssetHandler {
         manager.unload("images/objects/allies/bed.png");
     }
 
-    public void unloadLevels(){
-        unloadLevel1();
-        unloadLevel2();
-        unloadLevel3();
-    }
-
     public void loadTalents() {
         manager.load("images/icon.png", Texture.class);
     }

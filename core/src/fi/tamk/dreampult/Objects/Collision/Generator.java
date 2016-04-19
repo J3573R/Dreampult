@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Pool;
 import fi.tamk.dreampult.Collection;
 
 import java.util.ArrayList;
@@ -55,7 +56,6 @@ public class Generator {
     public void update(World world, Vector2 playerPosition, Vector2 cameraPosition, Collection collection) {
         if(startGeneration(playerPosition)) {
             if(traveled + interval < playerPosition.x) {
-                System.out.println("INIT");
                 traveled = playerPosition.x;
 
                 Objects mon = parseType();
@@ -126,7 +126,6 @@ public class Generator {
             Star object = new Star(assets);
             return object;
         }
-
         return new Pig(assets);
     }
 

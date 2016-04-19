@@ -49,8 +49,8 @@ public class TalentsScreen extends ScreenAdapter {
         RectangleFive = new Rectangle(120, 400, 100, 100);
         RectangleSix = new Rectangle(240, 400, 100, 100);
 
-        resetButton = new Button(550, 0, 200, 100, "Reset");
-        returnButton = new Button(760, 0, 200, 100, "Main Menu");
+        resetButton = new Button(loop.fontHandler, 550, 0, 200, 100, "Reset");
+        returnButton = new Button(loop.fontHandler, 760, 0, 200, 100, "Main Menu");
 
         talents = game.talents;
 

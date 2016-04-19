@@ -11,9 +11,11 @@ import com.badlogic.gdx.utils.I18NBundle;
 import java.util.Locale;
 
 import fi.tamk.dreampult.Handlers.AssetHandler;
+import fi.tamk.dreampult.Handlers.FontHandler;
 
 public class Dreampult extends Game {
     public AssetHandler assets = new AssetHandler();
+    public FontHandler fontHandler;
 
 	public SpriteBatch batch;
     public OrthographicCamera GameCamera;
@@ -28,6 +30,10 @@ public class Dreampult extends Game {
     Preferences prefs;
 
     Boolean finnish;
+
+    public Dreampult() {
+        fontHandler = new FontHandler();
+    }
 
     /**
      * Create and initialize Screen.

@@ -74,13 +74,15 @@ public class GameLoop extends ScreenAdapter {
     float rotatedY;
     Vector2 zeroVel = new Vector2(0,0);
 
+    boolean ready;
+
     /**
      * Initialize variables for render.
      * @param game
      */
     public GameLoop(Dreampult game, AssetManager assets, Map map) {
-
-        fontHandler = new FontHandler(24);
+        ready = false;
+        fontHandler = game.fontHandler;
         this.game = game;
         collection = game.collection;
         this.GameCamera = game.GameCamera;
@@ -115,7 +117,6 @@ public class GameLoop extends ScreenAdapter {
 
         ui = new UserInterface(this);
         slept = game.myBundle.get("slept") + "0h 0min";
-        game.collection.start();
 
         endScreen = game.assets.manager.get("images/endScreen.png", Texture.class);
         theEnd = false;
@@ -131,6 +132,7 @@ public class GameLoop extends ScreenAdapter {
         }
 
         loadPreferences();
+        ready = true;
     }
 
     /**
@@ -306,6 +308,10 @@ public class GameLoop extends ScreenAdapter {
             talents.enablePyjamaGlide();
             System.out.println("Pyjama Glide enabled");
         }
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 
     @Override

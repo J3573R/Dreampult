@@ -12,7 +12,7 @@ import fi.tamk.dreampult.GameLoop;
 /**
  * Created by Clown on 22.3.2016.
  */
-public class Objects {
+public class Objects implements Pool.Poolable {
     GameLoop loop;
 
     Animation animation;
