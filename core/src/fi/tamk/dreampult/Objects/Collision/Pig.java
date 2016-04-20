@@ -18,6 +18,11 @@ public class Pig extends Objects {
         position = new Vector2(3, 3);
         width = 2;
         height = 2;
+        minSpawnTime = 0;
+        maxSpawnTime = 1;
+        maxSpawnHeight = 0;
+        minSpawnHeight = 1;
+
         create(6, 2);
     }
 }

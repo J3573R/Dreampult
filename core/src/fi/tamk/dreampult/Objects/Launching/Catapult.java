@@ -62,7 +62,13 @@ public class Catapult {
         }
     }
 
-    public void reset() {
+    public void reset(){
+        x = 0;
+        spoonRotation = 0.2f;
+        spoonPosition.set(0.2f, 0.2f);
+    }
+
+    public void setPosition() {
         x = gameLoop.player.torso.body.getPosition().x;
         spoonRotation = 0.2f;
     }

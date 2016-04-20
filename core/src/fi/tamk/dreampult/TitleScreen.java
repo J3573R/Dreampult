@@ -3,18 +3,13 @@ package fi.tamk.dreampult;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.Locale;
-
-import fi.tamk.dreampult.Handlers.FontHandler;
-import fi.tamk.dreampult.Helpers.Button;
 
 /**
  * Created by DV6-6B20 on 25.2.2016.
@@ -23,7 +18,7 @@ public class TitleScreen implements Screen {
 
     public Dreampult game;
 
-    public OrthographicCamera camera;
+    public OrthographicCamera GameCamera;
 
     public OrthographicCamera userInterfaceCamera;
 
@@ -34,7 +29,11 @@ public class TitleScreen implements Screen {
     public boolean soundPressed;
 
     public Texture levelOne;
-    public Texture lockedLevel;
+    public Texture levelTwo;
+    public Texture levelTree;
+
+    public Texture lockedLevelTwo;
+    public Texture lockedLevelTree;
 
     public Texture soundOn;
     public Texture soundOff;
@@ -56,25 +55,25 @@ public class TitleScreen implements Screen {
     Locale finLocale;
     Locale engLocale;
 
-    public TitleScreen(Dreampult gam, OrthographicCamera camera, OrthographicCamera fCamera) {
-
-        game = gam;
-
+    public TitleScreen(Dreampult game) {
+        this.game = game;
         finLanguage = false;
-
         finLocale = new Locale("fi", "FI");
         engLocale = new Locale("en", "UK");
-
-        loadPreferences();
-
-        this.camera = camera;
-        userInterfaceCamera = fCamera;
+        //loadPreferences();
+        game.loadPreferences();
+        this.GameCamera = game.GameCamera;
+        this.userInterfaceCamera = game.UserInterfaceCamera;
 
         logo = game.assets.manager.get("images/dreampult_logo.png", Texture.class);
         background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
 
-        levelOne = game.assets.manager.get("images/levelOne.png", Texture.class);
-        lockedLevel = game.assets.manager.get("images/lockedLevel.png", Texture.class);
+        levelOne = game.assets.manager.get("images/title/level1_open.png", Texture.class);
+        levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
+        levelTree = game.assets.manager.get("images/title/level3_open.png", Texture.class);
+
+        lockedLevelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
+        lockedLevelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
 
         soundOn = game.assets.manager.get("images/ui/soundOn.png", Texture.class);
         soundOff = game.assets.manager.get("images/ui/soundOff.png", Texture.class);
@@ -92,7 +91,6 @@ public class TitleScreen implements Screen {
         firstLevelRectangle = new Rectangle(180, 180, 180, 120);
         secondLevelRectangle = new Rectangle(360, 180, 180, 120);
         thirdLevelRectangle = new Rectangle(540, 180, 180, 120);
-
     }
 
     @Override
@@ -102,7 +100,7 @@ public class TitleScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        //game.batch.setProjectionMatrix(camera.combined);
+        //game.batch.setProjectionMatrix(GameCamera.combined);
         game.batch.setProjectionMatrix(userInterfaceCamera.combined);
 
         Vector3 touchPoint = new Vector3();
@@ -112,29 +110,32 @@ public class TitleScreen implements Screen {
             if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Level loading started");
 
-                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 1));
+                game.setScreen(game.loadingScreen);
+                game.loadingScreen.reset(1);
 
             } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y)){
                 System.out.println("Level 2 loading started");
 
-                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 2));
+                game.setScreen(game.loadingScreen);
+                game.loadingScreen.reset(2);
 
             } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y)){
                 System.out.println("Level 3 loading started");
 
-                game.setScreen(new LoadingScreen(game, camera, userInterfaceCamera, 3));
+                game.setScreen(game.loadingScreen);
+                game.loadingScreen.reset(3);
 
             } else if (finRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
                 finLanguage = true;
-                game.language(finLocale);
 
-                savePreferences();
+                game.setLocale(finLocale);
+                game.savePreferences();
 
             } else if (britRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
                 finLanguage = false;
-                game.language(engLocale);
 
-                savePreferences();
+                game.setLocale(engLocale);
+                game.savePreferences();
 
             } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");
@@ -159,8 +160,8 @@ public class TitleScreen implements Screen {
         game.batch.draw(logo, 180, 300, 540, 240);
 
         game.batch.draw(levelOne, 180, 180, 180, 120);
-        game.batch.draw(lockedLevel, 360, 180, 180, 120);
-        game.batch.draw(lockedLevel, 540, 180, 180, 120);
+        game.batch.draw(levelTwo, 360, 180, 180, 120);
+        game.batch.draw(levelTree, 540, 180, 180, 120);
 
 
         if(soundPressed) {
@@ -201,23 +202,6 @@ public class TitleScreen implements Screen {
     @Override
     public void hide() {
 
-    }
-
-    public void savePreferences() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-        prefs.putBoolean("finLanguage", finLanguage);
-        prefs.flush();
-
-    }
-
-    public void loadPreferences() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
-        finLanguage = prefs.getBoolean("finLanguage");
-
-        if(finLanguage) {
-            game.language(finLocale);
-        }
     }
 
     @Override

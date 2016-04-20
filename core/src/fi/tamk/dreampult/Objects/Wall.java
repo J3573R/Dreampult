@@ -9,7 +9,7 @@ import fi.tamk.dreampult.GameLoop;
 /**
  * Created by Clown on 22.2.2016.
  */
-public class Ground {
+public class Wall {
     GameLoop game;
 
     public Body body;
@@ -18,7 +18,7 @@ public class Ground {
      * Initialize ground few pixels under the screen.
      * @param gameLoop
      */
-    public Ground(GameLoop gameLoop) {
+    public Wall(GameLoop gameLoop) {
         this.game = gameLoop;
         body = createBodyDef();
         createBodyFixture();

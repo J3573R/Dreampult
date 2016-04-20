@@ -88,6 +88,24 @@ public class Player {
                 true);
     }
 
+    public void setTransform(float x, float y, float rotation) {
+        head.body.setTransform(x , x, 0);
+        torso.body.setTransform(x, y, rotation);
+        rightArm.body.setTransform(x, y, 0);
+        leftArm.body.setTransform(x, y, 0);
+        rightLeg.body.setTransform(x, y, 0);
+        leftLeg.body.setTransform(x, y, 0);
+    }
+
+    public void reset() {
+        head.resetPosition();
+        torso.resetPosition();
+        rightArm.resetPosition();
+        leftArm.resetPosition();
+        rightLeg.resetPosition();
+        rightLeg.resetPosition();
+    }
+
     /**
      * Create and attatch limb to body.
      * @param bodyOriginX X position from body to attatch.

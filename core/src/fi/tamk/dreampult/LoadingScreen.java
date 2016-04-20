@@ -26,9 +26,9 @@ public class LoadingScreen implements Screen {
 
     public Dreampult game;
 
-    public OrthographicCamera camera;
+    public OrthographicCamera GameCamera;
 
-    public OrthographicCamera fontCamera;
+    public OrthographicCamera UserInterfaceCamera;
 
     public Texture background;
 
@@ -67,18 +67,39 @@ public class LoadingScreen implements Screen {
 
     Vector3 touchPoint;
 
-    GameLoop gameLoop;
-
 //    Sound positiveSound;
 //    Sound negativeSound;
 
-    public LoadingScreen(Dreampult game, OrthographicCamera camera, OrthographicCamera fCamera, int level) {
+    public LoadingScreen(Dreampult game) {
         this.game = game;
-        this.camera = camera;
-        fontCamera = fCamera;
-        this.level = level;
+        this.GameCamera = game.GameCamera;
+        this.UserInterfaceCamera = game.UserInterfaceCamera;
         maps = new Maps();
         this.fontHandler = game.fontHandler;
+
+        loading = game.myBundle.get("loading");
+        fontHandler.GenerateFont(32, Color.WHITE);
+        layout = new GlyphLayout(fontHandler.font, loading);
+
+        truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
+        falseRectangle = new Rectangle(960 / 3 * 2 - 50, 125, 200, 100);
+
+        questionHandler = new QuestionHandler(game);
+
+        shapeRenderer = new ShapeRenderer();
+
+        truthButton = new Button(fontHandler);
+        falseButton = new Button(fontHandler);
+
+        touchPoint = new Vector3();
+    }
+
+    public void reset(int level) {
+        this.level = level;
+        loaded = false;
+        loading = game.myBundle.get("loading");
+        positiveAnswer = game.myBundle.get("true");
+        negativeAnswer = game.myBundle.get("false");
 
         switch (level) {
             case 1:
@@ -98,38 +119,27 @@ public class LoadingScreen implements Screen {
         falseTexture = game.assets.manager.get("images/ui/falseTexture.png", Texture.class);
         trueTexture = game.assets.manager.get("images/ui/trueTexture.png", Texture.class);
 
-//        positiveSound = game.assets.manager.get("audio/soundEffects/positive.wav", Sound.class);
-//        negativeSound= game.assets.manager.get("audio/soundEffects/negative.wav", Sound.class);
-
-        fontHandler.GenerateFont(40, Color.BLACK);
-
-        loaded = false;
-
         loading = game.myBundle.get("loading");
-        layout = new GlyphLayout(fontHandler.font, loading);
-
-
-        truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);
-        falseRectangle = new Rectangle(960 / 3 * 2 - 50, 125, 200, 100);
-
-        questionHandler = new QuestionHandler(game);
+        layout.setText(fontHandler.font, loading);
 
         question = questionHandler.anyItem();
         question.initializeLayout(fontHandler);
+        truthButton.setButton(960 / 4 - 50, 125, 200, 100, positiveAnswer);
+        falseButton.setButton(960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
+        truthButton.createText();
+        falseButton.createText();
 
-        positiveAnswer = game.myBundle.get("true");
-        negativeAnswer = game.myBundle.get("false");
-
-        shapeRenderer = new ShapeRenderer();
-
-        truthButton = new Button(game.fontHandler, 960 / 4 - 50, 125, 200, 100, positiveAnswer);
-        truthButton.setAlpha(0f);
         truthButton.setTextColor(Color.BLACK);
-        falseButton = new Button(game.fontHandler, 960 / 3 * 2 - 50, 125, 200, 100, negativeAnswer);
-        falseButton.setAlpha(0f);
         falseButton.setTextColor(Color.BLACK);
 
-        touchPoint = new Vector3();
+        truthButton.setAlpha(0f);
+        falseButton.setAlpha(0f);
+
+        game.GameCamera.position.set(8, 4.5f, 0);
+        game.GameCamera.update();
+        game.UserInterfaceCamera.position.set(480, 270, 0);
+        game.UserInterfaceCamera.update();
+
     }
 
     @Override
@@ -141,48 +151,51 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         if(loaded) {
 
-            if(gameLoop.ready) {
+            if(game.gameLoop.ready) {
                 loading = game.myBundle.get("loaded");
+                layout.setText(fontHandler.font, loading);
+
                 if (Gdx.input.justTouched()) {
-                    fontCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                    UserInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
                     if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
                         //System.out.println("Truth chosen");
                         if (question.isTrue(true)) {
 //                        positiveSound.play();
-                            gameLoop.bounces += 1;
+                            game.gameLoop.bounces += 1;
                         } else {
 //                        negativeSound.play();
                         }
-                        game.setScreen(gameLoop);
+                        game.setScreen(game.gameLoop);
                         game.collection.start();
 
                     } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
                         if (question.isTrue(false)) {
 //                        positiveSound.play();
-                            gameLoop.bounces += 1;
+                            game.gameLoop.bounces += 1;
                         } else {
 //                        negativeSound.play();
                         }
-                        game.setScreen(gameLoop);
+                        game.setScreen(game.gameLoop);
                         game.collection.start();
                     } else {
-                        System.out.println(touchPoint.x + " : " + touchPoint.y);
-                        System.out.println(question);
+                        //System.out.println(touchPoint.x + " : " + touchPoint.y);
+                        //System.out.println(question);
                     }
                 }
             }
         } else {
             if(game.assets.manager.update()) {
                 this.map = maps.loadMap(level, game.assets.manager);
-                gameLoop = new GameLoop(game, game.assets.manager, map);
-                if(gameLoop.ready) {
+                game.gameLoop.reset(map);
+                game.talentsScreen.init();
+                if(game.gameLoop.ready) {
                     loaded = true;
                 }
             }
         }
 
-        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(GameCamera.combined);
 
         Gdx.gl.glClearColor(0, 0.2f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -190,7 +203,7 @@ public class LoadingScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(background, 0, 0, 16, 9);
-        game.batch.setProjectionMatrix(fontCamera.combined);
+        game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
 
         if(loaded) {
             game.batch.draw(trueTexture, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
@@ -209,7 +222,7 @@ public class LoadingScreen implements Screen {
 
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setProjectionMatrix(fontCamera.combined);
+        shapeRenderer.setProjectionMatrix(UserInterfaceCamera.combined);
         shapeRenderer.setColor(0, 0, 0, 0.5f);
         shapeRenderer.rect(960 / 2 - (layout.width / 2) * 1.1f,
                 400 - (layout.height * 1.5f),
@@ -226,7 +239,7 @@ public class LoadingScreen implements Screen {
 
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setProjectionMatrix(fontCamera.combined);
+        shapeRenderer.setProjectionMatrix(UserInterfaceCamera.combined);
         shapeRenderer.setColor(0, 0, 0, 0.5f);
         shapeRenderer.rect(960 / 2 - (question.layout.width / 2) * 1.05f,
                                         300 - (question.layout.height * 1.5f),

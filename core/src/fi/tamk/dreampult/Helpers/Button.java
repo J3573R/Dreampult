@@ -29,16 +29,26 @@ public class Button {
 
     public GlyphLayout layout;
 
-    public Button(FontHandler fontHandler, float x, float y, float width, float height, String text) {
-
+    public Button(FontHandler fontHandler){
         this.fontHandler = fontHandler;
-        fontHandler.GenerateFont(32, Color.WHITE);
+        button = new Rectangle();
+        buttonColor = Color.valueOf("008CBA");
+    }
+
+    public Button(FontHandler fontHandler, float x, float y, float width, float height, String text) {
+        this.fontHandler = fontHandler;
+        //fontHandler.GenerateFont(32, Color.WHITE);
         buttonColor = Color.valueOf("008CBA");
 
         button = new Rectangle();
         button.set(x, y, width, height);
         this.buttonText = text;
         createText();
+    }
+
+    public void setButton(float x, float y, float width, float height, String text){
+        button.set(x, y, width, height);
+        this.buttonText = text;
     }
 
     public void createText() {

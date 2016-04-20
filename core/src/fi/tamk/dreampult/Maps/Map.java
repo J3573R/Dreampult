@@ -3,12 +3,14 @@ package fi.tamk.dreampult.Maps;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import fi.tamk.dreampult.GameLoop;
 import fi.tamk.dreampult.Handlers.BackgroundHandler;
 import fi.tamk.dreampult.Objects.Collision.Generator;
 import fi.tamk.dreampult.Objects.Collision.Objects;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Clown on 16.4.2016.
@@ -20,6 +22,7 @@ public class Map {
 
     private ArrayList<Generator> objects;
     private ArrayList<BackgroundHandler> backgrounds;
+    public ArrayList<Vector2> reservedPositions = new ArrayList<>();
 
     private Texture staticBackground;
 
@@ -70,9 +73,9 @@ public class Map {
         }
     }
 
-    public void clearMonsert(){
+    public void clearMonsters(World world){
         for ( Generator object : objects) {
-            object.clearMonster();
+            object.dispose(world);
         }
     }
 
@@ -112,6 +115,7 @@ public class Map {
     }
 
     public void dispose() {
+
         for (Generator object : objects) {
             object.dispose(loop.world);
         }

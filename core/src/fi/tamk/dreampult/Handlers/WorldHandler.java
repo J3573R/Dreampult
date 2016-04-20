@@ -96,7 +96,7 @@ public class WorldHandler {
     public void createTiledMap() {
         tiledMap = loop.assets.get("maps/mappi.tmx", TiledMap.class);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/100f);
-        transformWallsToBodies("object-maa", "wall");
+        transformWallsToBodies("object-maa", "ground");
         transformWallsToBodies("object-paprika", "collectable");
         transformWallsToObjects("BounceObject", "cloud");
     }
@@ -105,22 +105,23 @@ public class WorldHandler {
      * Move GameCamera if not near edge of loop world.
      */
     public void moveCamera() {
-        float x = loop.player.torso.body.getPosition().x;
-        float y = loop.player.torso.body.getPosition().y;
+        if(loop.collection.launch) {
+            float x = loop.player.torso.body.getPosition().x;
+            float y = loop.player.torso.body.getPosition().y;
 
-        cameraLeft = x - cameraHalfWidth;
-        cameraRight = x + cameraHalfWidth;
-        cameraBottom = y - cameraHalfHeight;
-        cameraTop = y + cameraHalfHeight;
+            cameraLeft = x - cameraHalfWidth;
+            cameraRight = x + cameraHalfWidth;
+            cameraBottom = y - cameraHalfHeight;
+            cameraTop = y + cameraHalfHeight;
 
-        if(cameraLeft > mapLeft) {
-            camera.position.x = x;
+            if(cameraLeft > mapLeft) {
+                camera.position.x = x;
+            }
+
+            if(cameraTop < mapTop && cameraBottom > mapBottom) {
+                camera.position.y = y;
+            }
         }
-
-        if(cameraTop < mapTop && cameraBottom > mapBottom) {
-            camera.position.y = y;
-        }
-
         camera.update();
     }
 

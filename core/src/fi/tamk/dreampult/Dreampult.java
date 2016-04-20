@@ -31,9 +31,10 @@ public class Dreampult extends Game {
 
     Boolean finnish;
 
-    public Dreampult() {
-        fontHandler = new FontHandler();
-    }
+    public TitleScreen titleScreen;
+    public LoadingScreen loadingScreen;
+    public GameLoop gameLoop;
+    public TalentsScreen talentsScreen;
 
     /**
      * Create and initialize Screen.
@@ -42,39 +43,47 @@ public class Dreampult extends Game {
 	public void create () {
         loadPreferences();
 
-        language(startLocale);
+        setLocale(startLocale);
 
 		collection = new Collection();
 		batch = new SpriteBatch();
 
-        initCamera();
+        GameCamera = new OrthographicCamera();
+        GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
+        UserInterfaceCamera = new OrthographicCamera();
+        UserInterfaceCamera.setToOrtho(false, 960, 540);
 
         assets.loadUi();
         assets.manager.finishLoading();
 
-        savePreferences();
+        fontHandler = new FontHandler();
+        titleScreen = new TitleScreen(this);
+        loadingScreen = new LoadingScreen(this);
+        gameLoop = new GameLoop(this, assets.manager);
+        talentsScreen = new TalentsScreen(gameLoop);
 
-        setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
+        setScreen(titleScreen);
 	}
 
-    public void language(Locale locale) {
+    public void setLocale(Locale locale) {
         myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        savePreferences();
     }
 
+
     public void MainMenu() {
-        initCamera();
         collection.launch = false;
         collection.hidePauseMenu();
         collection.hideScoreScreen();
-        setScreen(new TitleScreen(this, GameCamera, UserInterfaceCamera));
+        setScreen(titleScreen);
     }
 
 	public void restart(int level) {
 		collection.launch = false;
 		collection.hidePauseMenu();
 		collection.hideScoreScreen();
-        initCamera();
-        setScreen(new LoadingScreen(this, GameCamera, UserInterfaceCamera, level));
+        setScreen(loadingScreen);
+        loadingScreen.reset(level);
         System.gc();
 	}
 
@@ -100,18 +109,13 @@ public class Dreampult extends Game {
         }
     }
 
-    public void initCamera(){
-        GameCamera = new OrthographicCamera();
-        GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
-        UserInterfaceCamera = new OrthographicCamera();
-        UserInterfaceCamera.setToOrtho(false, 960, 540);
-    }
-
 	@Override
 	public void render () {
         super.render();
-        Gdx.app.log("Java Heap", String.valueOf(Gdx.app.getJavaHeap()));
+        //Gdx.app.log("Java Heap", String.valueOf(Gdx.app.getJavaHeap()));
         //Gdx.app.log("Native Heap", String.valueOf(Gdx.app.getNativeHeap()));
+        Gdx.app.log("FPS:", String.valueOf(Gdx.graphics.getFramesPerSecond())
+        );
     }
 
     public void setScreen(Screen screen) {

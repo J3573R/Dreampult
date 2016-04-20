@@ -115,12 +115,13 @@ public class InputHandler extends InputAdapter {
                 && !loop.collection.isGameOn()
                 && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
             loop.dispose();
-            loop.game.setScreen(new TalentsScreen(loop, loop.UserInterfaceCamera));
+            loop.game.setScreen(loop.game.talentsScreen);
         }
 
 
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();
+            loop.ui.shootButtonUp();
             float speed = loop.meter.scale * 15;
             if(loop.talents.isBoostLaunch()) {
                 speed *= 2;
@@ -158,6 +159,7 @@ public class InputHandler extends InputAdapter {
         loop.UserInterfaceCamera.unproject(touchPos);
 
         if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
+            loop.ui.shootButtonDown();
             loop.meter.show();
             loop.arrow.pause();
         }

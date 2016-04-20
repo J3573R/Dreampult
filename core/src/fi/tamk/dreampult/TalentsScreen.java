@@ -34,27 +34,34 @@ public class TalentsScreen extends ScreenAdapter {
 
     Talents talents;
 
-    public TalentsScreen(GameLoop game, OrthographicCamera uiCamera){
+    boolean initialized;
+
+    public TalentsScreen(GameLoop game){
         loop = game;
-        talentIcon = loop.assets.get("images/icon.png", Texture.class);
-        shapeRenderer = new ShapeRenderer();
-        userInterfaceCamera = uiCamera;
+        userInterfaceCamera = game.UserInterfaceCamera;
+        initialized = false;
+    }
 
-        RectangleOne = new Rectangle(120, 0, 100, 100);
-        RectangleTwo = new Rectangle(240, 0, 100, 100);
+    public void init() {
+        if(!initialized) {
+            talentIcon = loop.assets.get("images/icon.png", Texture.class);
+            shapeRenderer = new ShapeRenderer();
 
-        RectangleThree = new Rectangle(120, 200, 100, 100);
-        RectangleFour = new Rectangle(240, 200, 100, 100);
+            RectangleOne = new Rectangle(120, 0, 100, 100);
+            RectangleTwo = new Rectangle(240, 0, 100, 100);
 
-        RectangleFive = new Rectangle(120, 400, 100, 100);
-        RectangleSix = new Rectangle(240, 400, 100, 100);
+            RectangleThree = new Rectangle(120, 200, 100, 100);
+            RectangleFour = new Rectangle(240, 200, 100, 100);
 
-        resetButton = new Button(loop.fontHandler, 550, 0, 200, 100, "Reset");
-        returnButton = new Button(loop.fontHandler, 760, 0, 200, 100, "Main Menu");
+            RectangleFive = new Rectangle(120, 400, 100, 100);
+            RectangleSix = new Rectangle(240, 400, 100, 100);
 
-        talents = game.talents;
+            resetButton = new Button(loop.fontHandler, 550, 0, 200, 100, "Reset");
+            returnButton = new Button(loop.fontHandler, 760, 0, 200, 100, "Main Menu");
 
-        //loadPreferences();
+            talents = loop.talents;
+            initialized = true;
+        }
     }
 
     @Override

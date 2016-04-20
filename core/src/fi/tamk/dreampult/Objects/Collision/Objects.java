@@ -25,6 +25,11 @@ public class Objects implements Pool.Poolable {
     float height;
     Body body;
 
+    float minSpawnTime;
+    float maxSpawnTime;
+    float maxSpawnHeight;
+    float minSpawnHeight;
+
     float hitboxOffsetX = 0;
     float hitboxOffsetY = 0;
 
@@ -94,5 +99,16 @@ public class Objects implements Pool.Poolable {
     public void reset() {
         //sheet.dispose();
         //current.getTexture().dispose();
+    }
+
+    public void setSpawnVariables(float minSpawnTime, float maxSpawnTime, float minSpawnHeight, float maxSpawnHeight){
+
+    }
+
+    public boolean positionReserved(Vector2 position) {
+        if(this.position.equals(position)) {
+            return true;
+        }
+        return false;
     }
 }

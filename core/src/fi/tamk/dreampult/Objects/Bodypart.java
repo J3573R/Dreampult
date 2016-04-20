@@ -28,6 +28,8 @@ public class Bodypart {
 
     Clothes clothes;
 
+    public Vector2 originalPosition;
+
     public Bodypart(GameLoop game) {
         this.game = game;
 
@@ -44,6 +46,13 @@ public class Bodypart {
         this.width = width;
         this.height = height;
         this.img = img;
+        originalPosition = body.getPosition();
+    }
+
+    public void resetPosition() {
+        body.getPosition().set(originalPosition);
+        body.setLinearVelocity(0, 0);
+        body.setAngularVelocity(0);
     }
 
     /**

@@ -63,6 +63,11 @@ public class BackgroundHandler {
         imageAmount = (int) Math.ceil((double) (16 / imgWidth)) + 1;
     }
 
+    public void reset() {
+        position.set(0, 0);
+        offset = 0;
+    }
+
     /**
      * Drawing background.
      * @param batch

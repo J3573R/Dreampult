@@ -19,6 +19,8 @@ public class Generator {
     AssetManager assets;
 
     ArrayList<Objects> objects = new ArrayList<Objects>();
+    ArrayList<String> objectTypes = new ArrayList<>();
+    ArrayList<Vector2> reservedPositions;
 
     float interval;
     float increment;
@@ -48,6 +50,15 @@ public class Generator {
 
         traveled = 5f;
         startPoint = 0;
+        this.reservedPositions = reservedPositions;
+    }
+
+    public void setReservedPositions(ArrayList<Vector2> reservedPositions){
+        this.reservedPositions = reservedPositions;
+    }
+
+    public void addObjectType(String type) {
+        objectTypes.add(type);
     }
 
     /**
@@ -55,29 +66,60 @@ public class Generator {
      */
     public void update(World world, Vector2 playerPosition, Vector2 cameraPosition, Collection collection) {
         if(startGeneration(playerPosition)) {
-            if(traveled + interval < playerPosition.x) {
+            if (traveled + interval < playerPosition.x) {
+                reservedPositions.clear();
                 traveled = playerPosition.x;
+                float randomX = (random.nextInt((int) rangeX.x) + rangeX.y) + (cameraPosition.x + collection.SCREEN_WIDTH / 2);
+                float randomY = (random.nextInt((int) rangeY.x) + rangeY.y);
+                Vector2 position = new Vector2(randomX, randomY);
+                while(true) {
+                    if(reservedPositions.contains(position)) {
+                        randomX = (random.nextInt((int) rangeX.x) + rangeX.y) + (cameraPosition.x + collection.SCREEN_WIDTH / 2);
+                        randomY = (random.nextInt((int) rangeY.x) + rangeY.y);
+                        position.set(randomX, randomY);
+                    } else {
+                        Objects mon = parseType();
+                        mon.initalizePosition(world, position, type);
+                        objects.add(mon);
+                        setInterval(interval + increment);
 
-                Objects mon = parseType();
-                mon.initalizePosition(world, new Vector2((random.nextInt((int)rangeX.x) + rangeX.y) + (cameraPosition.x + collection.SCREEN_WIDTH / 2),
-                        random.nextInt((int)rangeY.x) + rangeY.y), type);
+                        reservedPositions.add(position);
 
-                objects.add(mon);
-                setInterval(interval + increment);
+                        for(int i = 0; i < mon.width; i++){
+                            float x = position.x + i;
+                            for (int j = 0; j < mon.height; j++) {
+                                float y = position.y + j;
+                                reservedPositions.add(new Vector2(x, y));
+                            }
+                        }
+                        break;
+                    }
+                }
             }
+        }
 
-            Iterator<Objects> iterator = objects.iterator();
+        Iterator<Objects> iterator = objects.iterator();
             while(iterator.hasNext()) {
                 Objects object = iterator.next();
                 if((object.position.x + object.width) < (cameraPosition.x - collection.SCREEN_WIDTH / 2f)) {
                     world.destroyBody(object.body);
+                    /*Vector2 position = new Vector2(object.position.x, object.position.y);
+                    reservedPositions.remove(position);
+                    for(int i = 0; i < object.width; i++){
+                        position.x += i;
+                        for (int j = 0; j < object.height; j++) {
+                            position.y += j;
+                            reservedPositions.remove(position);
+                        }
+                    }*/
                     iterator.remove();
                 } else if (object.body.getUserData().equals("delete")) {
                     world.destroyBody(object.body);
+                    //reservedPositions.remove(new Vector2(object.position.x, object.position.y));
                     iterator.remove();
                 }
             }
-        }
+        //System.out.println(reservedPositions);
     }
 
     /**
@@ -154,9 +196,12 @@ public class Generator {
     }
 
     public void dispose(World world){
-        System.out.println("DISPOSED");
-        for ( Objects object : objects){
+        Iterator<Objects> iterator = objects.iterator();
+        reservedPositions.clear();
+        while(iterator.hasNext()) {
+            Objects object = iterator.next();
             world.destroyBody(object.body);
+            iterator.remove();
         }
     }
 

@@ -81,13 +81,6 @@ public class UserInterface {
         starButton.drawImage(batch);
 
         if(!loop.collection.launch) {
-//        /*batch.end();
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(Color.SKY);
-//        shapeRenderer.circle(shootButton.x, shootButton.y, shootButton.radius);
-//        shapeRenderer.end();
-//        batch.begin();*/
-
             batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
         }
         batch.setProjectionMatrix(loop.GameCamera.combined);
@@ -172,9 +165,17 @@ public class UserInterface {
     }
 
     private void createShootButton() {
-        shootTexture = this.loop.assets.get("images/ui/shootButton.png", Texture.class);
+        shootTexture = this.loop.assets.get("images/launching/Launch_button.png", Texture.class);
         shootButton = new Circle();
         shootButton.set(880, 80, 60);
+    }
+
+    public void shootButtonDown(){
+        shootTexture = this.loop.assets.get("images/launching/Launch_button_down.png", Texture.class);
+    }
+
+    public void shootButtonUp() {
+        shootTexture = this.loop.assets.get("images/launching/Launch_button.png", Texture.class);
     }
 
     private void createStar() {

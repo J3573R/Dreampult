@@ -41,7 +41,11 @@ public class AssetHandler {
         manager.load("images/ui/pause_button.png", Texture.class);
         manager.load("images/ui/pause_menu.png", Texture.class);
         manager.load("images/menu_tausta.png", Texture.class);
-        manager.load("images/levelOne.png", Texture.class);
+        manager.load("images/title/level1_open.png", Texture.class);
+        manager.load("images/title/level2_open.png", Texture.class);
+        manager.load("images/title/level2_locked.png", Texture.class);
+        manager.load("images/title/level3_open.png", Texture.class);
+        manager.load("images/title/level3_locked.png", Texture.class);
         manager.load("images/lockedLevel.png", Texture.class);
         manager.load("images/ui/soundOff.png", Texture.class);
         manager.load("images/ui/soundOn.png", Texture.class);
@@ -52,7 +56,8 @@ public class AssetHandler {
         manager.load("images/ui/truePressed.png", Texture.class);
         manager.load("images/ui/falsePressed.png", Texture.class);
         manager.load("images/endScreen.png", Texture.class);
-        manager.load("images/ui/shootButton.png", Texture.class);
+        manager.load("images/launching/Launch_button.png", Texture.class);
+        manager.load("images/launching/Launch_button_down.png", Texture.class);
         manager.load("images/finFlag.png", Texture.class);
         manager.load("images/britFlag.png", Texture.class);
 //        manager.load("audio/soundEffects/positive.wav", Sound.class);

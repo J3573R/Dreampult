@@ -39,6 +39,12 @@ public class Meter {
         show = false;
     }
 
+    public void reset() {
+        scale = 0;
+        show = false;
+        direction = UP;
+    }
+
     /**
      * Draw meter and fill it accord time.
      * @param batch

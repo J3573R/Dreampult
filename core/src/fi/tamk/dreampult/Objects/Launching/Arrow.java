@@ -42,6 +42,11 @@ public class Arrow {
         start();
     }
 
+    public void reset() {
+        rotation = 0;
+        show = true;
+    }
+
     /**
      * Create arrows body definition.
      * @return
