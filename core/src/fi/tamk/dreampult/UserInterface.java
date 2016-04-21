@@ -146,7 +146,7 @@ public class UserInterface {
     }
 
     private void createPauseButton() {
-        pauseTexture = this.loop.assets.get("images/ui/pause_button.png");
+        pauseTexture = this.loop.assets.get("images/ui/pause.png");
         pauseButton = new Rectangle();
         pauseButton.set(880, 460, 80, 80);
     }

@@ -22,7 +22,7 @@ public class Map {
 
     private ArrayList<Generator> objects;
     private ArrayList<BackgroundHandler> backgrounds;
-    public ArrayList<Vector2> reservedPositions = new ArrayList<>();
+    public ArrayList<Vector2> reservedPositions = new ArrayList<Vector2>();
 
     private Texture staticBackground;
 

@@ -36,13 +36,12 @@ public class TitleScreen implements Screen {
     public Texture soundOn;
     public Texture soundOff;
 
-    public Texture finFlag;
-    public Texture britFlag;
+    public Texture finActive;
+    public Texture britActive;
 
     boolean finLanguage;
 
-    public Rectangle finRectangle;
-    public Rectangle britRectangle;
+    public Rectangle flagRectangle;
 
     public Rectangle soundRectangle;
 
@@ -52,6 +51,8 @@ public class TitleScreen implements Screen {
 
     Locale finLocale;
     Locale engLocale;
+
+    Vector3 touchPoint;
 
     public TitleScreen(Dreampult game) {
         this.game = game;
@@ -75,15 +76,14 @@ public class TitleScreen implements Screen {
         soundOn = game.assets.manager.get("images/ui/soundOn.png", Texture.class);
         soundOff = game.assets.manager.get("images/ui/soundOff.png", Texture.class);
 
-        finFlag = game.assets.manager.get("images/finFlag.png", Texture.class);
-        britFlag = game.assets.manager.get("images/britFlag.png", Texture.class);
+        finActive = game.assets.manager.get("images/finActive.png", Texture.class);
+        britActive = game.assets.manager.get("images/britActive.png", Texture.class);
 
         soundPressed = false;
 
-        finRectangle = new Rectangle(760, 440, 100, 100);
-        britRectangle = new Rectangle(860, 460, 100, 70);
+        flagRectangle = new Rectangle(840, 0, 120, 60);
 
-        soundRectangle = new Rectangle(0, 440, 100, 100);
+        soundRectangle = new Rectangle(0, 0, 100, 100);
 
         firstLevelRectangle = new Rectangle(180, 80, 180, 120);
         secondLevelRectangle = new Rectangle(360, 80, 180, 120);
@@ -100,7 +100,7 @@ public class TitleScreen implements Screen {
         //game.batch.setProjectionMatrix(GameCamera.combined);
         game.batch.setProjectionMatrix(userInterfaceCamera.combined);
 
-        Vector3 touchPoint = new Vector3();
+
 
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -122,13 +122,13 @@ public class TitleScreen implements Screen {
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(3);
 
-            } else if (finRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
+            } else if (flagRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
                 finLanguage = true;
 
                 game.setLocale(finLocale);
                 game.savePreferences();
 
-            } else if (britRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
+            } else if (flagRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
                 finLanguage = false;
 
                 game.setLocale(engLocale);
@@ -168,11 +168,9 @@ public class TitleScreen implements Screen {
         }
 
         if(finLanguage) {
-            game.batch.draw(finFlag, finRectangle.getX(), finRectangle.getY(), 100, 100);
-            game.batch.draw(britFlag, britRectangle.getX(), britRectangle.getY(), 50, 20);
+            game.batch.draw(finActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
         } else {
-            game.batch.draw(finFlag, finRectangle.getX(), finRectangle.getY(), 50, 50);
-            game.batch.draw(britFlag, britRectangle.getX(), britRectangle.getY(), 100, 70);
+            game.batch.draw(britActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
         }
 
         game.batch.end();

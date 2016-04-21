@@ -37,6 +37,7 @@ public class AssetHandler {
     }
 
     public void loadUi() {
+        manager.load("images/ui/pause.png", Texture.class);
         manager.load("images/ui/pause_button.png", Texture.class);
         manager.load("images/ui/pause_menu.png", Texture.class);
         manager.load("images/title/Menuscreen.png", Texture.class);
@@ -57,10 +58,10 @@ public class AssetHandler {
         manager.load("images/endScreen.png", Texture.class);
         manager.load("images/launching/Launch_button.png", Texture.class);
         manager.load("images/launching/Launch_button_down.png", Texture.class);
-        manager.load("images/finFlag.png", Texture.class);
-        manager.load("images/britFlag.png", Texture.class);
         manager.load("images/ui/text_button.png", Texture.class);
         manager.load("images/ui/text_button_grey.png", Texture.class);
+        manager.load("images/finActive.png", Texture.class);
+        manager.load("images/britActive.png", Texture.class);
 //        manager.load("audio/soundEffects/positive.wav", Sound.class);
 //        manager.load("audio/soundEffects/negative.wav", Sound.class);
 
@@ -165,7 +166,13 @@ public class AssetHandler {
     }
 
     public void loadTalents() {
-        manager.load("images/icon.png", Texture.class);
+        manager.load("images/talents/catapult1.png", Texture.class);
+        manager.load("images/talents/jumps1.png", Texture.class);
+        manager.load("images/talents/bouncy1.png", Texture.class);
+        manager.load("images/talents/rainbow1.png", Texture.class);
+        manager.load("images/talents/shirt1.png", Texture.class);
+        manager.load("images/talents/slippery1.png", Texture.class);
+        manager.load("images/talents/talentScreen_bg.png", Texture.class);
     }
 
     public void loadSoundEffects() {

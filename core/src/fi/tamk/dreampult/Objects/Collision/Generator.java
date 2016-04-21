@@ -19,7 +19,7 @@ public class Generator {
     AssetManager assets;
 
     ArrayList<Objects> objects = new ArrayList<Objects>();
-    ArrayList<String> objectTypes = new ArrayList<>();
+    ArrayList<String> objectTypes = new ArrayList<String>();
     ArrayList<Vector2> reservedPositions;
 
     float interval;

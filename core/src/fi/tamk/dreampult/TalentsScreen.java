@@ -19,15 +19,22 @@ public class TalentsScreen extends ScreenAdapter {
     public OrthographicCamera userInterfaceCamera;
 
     public Texture talentIcon;
+    public Texture bouncyIcon;
+    public Texture catapultIcon;
+    public Texture jumpsIcon;
+    public Texture rainbowIcon;
+    public Texture shirtIcon;
+    public Texture slipperyIcon;
+    public Texture background;
 
     public ShapeRenderer shapeRenderer;
 
-    public Rectangle RectangleOne;
-    public Rectangle RectangleTwo;
-    public Rectangle RectangleThree;
-    public Rectangle RectangleFour;
-    public Rectangle RectangleFive;
-    public Rectangle RectangleSix;
+    public Rectangle bouncyRectangle;
+    public Rectangle slipperyRectangle;
+    public Rectangle boostRectangle;
+    public Rectangle launchRectangle;
+    public Rectangle extraRectangle;
+    public Rectangle pyjamaRectangle;
 
     Button resetButton;
     Button returnButton;
@@ -44,17 +51,25 @@ public class TalentsScreen extends ScreenAdapter {
 
     public void init() {
         if(!initialized) {
-            talentIcon = loop.assets.get("images/icon.png", Texture.class);
+            bouncyIcon = loop.assets.get("images/talents/bouncy1.png", Texture.class);
+            catapultIcon = loop.assets.get("images/talents/catapult1.png", Texture.class);
+            jumpsIcon = loop.assets.get("images/talents/jumps1.png", Texture.class);
+            rainbowIcon = loop.assets.get("images/talents/rainbow1.png", Texture.class);
+            shirtIcon = loop.assets.get("images/talents/shirt1.png", Texture.class);
+            slipperyIcon = loop.assets.get("images/talents/slippery1.png", Texture.class);
+            background = loop.assets.get("images/talents/talentScreen_bg.png", Texture.class);
+
             shapeRenderer = new ShapeRenderer();
 
-            RectangleOne = new Rectangle(120, 0, 100, 100);
-            RectangleTwo = new Rectangle(240, 0, 100, 100);
+            bouncyRectangle = new Rectangle(80, 10, 150, 150);
+            slipperyRectangle = new Rectangle(250, 10, 150, 150);
 
-            RectangleThree = new Rectangle(120, 200, 100, 100);
-            RectangleFour = new Rectangle(240, 200, 100, 100);
+            boostRectangle = new Rectangle(80, 170, 150, 150);
+            launchRectangle = new Rectangle(250, 170, 150, 150);
 
-            RectangleFive = new Rectangle(120, 400, 100, 100);
-            RectangleSix = new Rectangle(240, 400, 100, 100);
+            pyjamaRectangle = new Rectangle(80, 330, 150, 150);
+            extraRectangle = new Rectangle(250, 330, 150, 150);
+
 
             resetButton = new Button(loop.fontHandler, 550, 0, 200, 100, "Reset");
             returnButton = new Button(loop.fontHandler, 760, 0, 200, 100, "Main Menu");
@@ -72,7 +87,7 @@ public class TalentsScreen extends ScreenAdapter {
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            if (RectangleOne.contains(touchPoint.x, touchPoint.y)) {
+            if (bouncyRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle One touched");
 
                 if(!talents.isGrowBouncy()) {
@@ -81,7 +96,7 @@ public class TalentsScreen extends ScreenAdapter {
                     System.out.println("Grow Bouncy enabled.");
                 }
 
-            } else if (RectangleTwo.contains(touchPoint.x, touchPoint.y)) {
+            } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Two touched");
 
                 if(!talents.isGrowSlippery()) {
@@ -90,7 +105,7 @@ public class TalentsScreen extends ScreenAdapter {
                     System.out.println("Grow Slippery enabled.");
                 }
 
-            } else if (RectangleThree.contains(touchPoint.x, touchPoint.y)) {
+            } else if (boostRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Three touched");
 
                 if(!talents.isBoostLaunch()) {
@@ -99,7 +114,7 @@ public class TalentsScreen extends ScreenAdapter {
                     System.out.println("Boost Launch enabled.");
                 }
 
-            } else if (RectangleFour.contains(touchPoint.x, touchPoint.y)) {
+            } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Four touched");
 
                 if(!talents.isAdditionalLaunch()) {
@@ -108,7 +123,7 @@ public class TalentsScreen extends ScreenAdapter {
                     System.out.println("Additional Launch enabled.");
                 }
 
-            } else if (RectangleFive.contains(touchPoint.x, touchPoint.y)) {
+            } else if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Five touched");
 
                 if(!talents.isExtraBounces()) {
@@ -117,7 +132,7 @@ public class TalentsScreen extends ScreenAdapter {
                     System.out.println("Extra Bounces enabled.");
                 }
 
-            } else if (RectangleSix.contains(touchPoint.x, touchPoint.y)) {
+            } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Six touched");
 
                 if(!talents.isPyjamaGlide()) {
@@ -141,7 +156,7 @@ public class TalentsScreen extends ScreenAdapter {
 
         loop.game.batch.setProjectionMatrix(userInterfaceCamera.combined);
 
-        Gdx.gl.glClearColor(255/255f, 182/255f, 193/255f, 1);
+        Gdx.gl.glClearColor(255 / 255f, 182 / 255f, 193 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
@@ -154,14 +169,16 @@ public class TalentsScreen extends ScreenAdapter {
 
         loop.game.batch.begin();
 
-        loop.game.batch.draw(talentIcon, 120, 0, 100, 100);
-        loop.game.batch.draw(talentIcon, 240, 0, 100, 100);
+        loop.game.batch.draw(background, 0, 0, 960, 540);
 
-        loop.game.batch.draw(talentIcon, 120, 200, 100, 100);
-        loop.game.batch.draw(talentIcon, 240, 200, 100, 100);
+        loop.game.batch.draw(bouncyIcon, bouncyRectangle.getX(), bouncyRectangle.getY(), bouncyRectangle.getWidth(), bouncyRectangle.getHeight());
+        loop.game.batch.draw(slipperyIcon, slipperyRectangle.getX(), slipperyRectangle.getY(), slipperyRectangle.getWidth(), slipperyRectangle.getHeight());
 
-        loop.game.batch.draw(talentIcon, 120, 400, 100, 100);
-        loop.game.batch.draw(talentIcon, 240, 400, 100, 100);
+        loop.game.batch.draw(rainbowIcon, boostRectangle.getX(), boostRectangle.getY(), boostRectangle.getWidth(), boostRectangle.getHeight());
+        loop.game.batch.draw(catapultIcon, launchRectangle.getX(), launchRectangle.getY(), launchRectangle.getWidth(), launchRectangle.getHeight());
+
+        loop.game.batch.draw(jumpsIcon, extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
+        loop.game.batch.draw(shirtIcon, pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
 
         resetButton.drawShape(shapeRenderer, loop.game.batch);
         returnButton.drawShape(shapeRenderer, loop.game.batch);
@@ -173,7 +190,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.75f);
-            shapeRenderer.rect(120, 0, 100, 100);
+            shapeRenderer.rect(bouncyRectangle.getX(), bouncyRectangle.getY(), bouncyRectangle.getWidth(), bouncyRectangle.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
@@ -183,7 +200,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.75f);
-            shapeRenderer.rect(240, 0, 100, 100);
+            shapeRenderer.rect(slipperyRectangle.getX(), slipperyRectangle.getY(), slipperyRectangle.getWidth(), slipperyRectangle.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
@@ -193,7 +210,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.75f);
-            shapeRenderer.rect(120, 200, 100, 100);
+            shapeRenderer.rect(boostRectangle.getX(), boostRectangle.getY(), boostRectangle.getWidth(), boostRectangle.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
@@ -203,7 +220,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.75f);
-            shapeRenderer.rect(240, 200, 100, 100);
+            shapeRenderer.rect(launchRectangle.getX(), launchRectangle.getY(), launchRectangle.getWidth(), launchRectangle.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
@@ -213,7 +230,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.75f);
-            shapeRenderer.rect(120, 400, 100, 100);
+            shapeRenderer.rect(extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
@@ -223,7 +240,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
             shapeRenderer.setColor(0, 0, 0, 0.75f);
-            shapeRenderer.rect(240, 400, 100, 100);
+            shapeRenderer.rect(pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
             shapeRenderer.setColor(1, 0, 0, 1);
             shapeRenderer.end();
         }
