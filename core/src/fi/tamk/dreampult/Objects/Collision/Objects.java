@@ -25,11 +25,6 @@ public class Objects implements Pool.Poolable {
     float height;
     Body body;
 
-    float minSpawnTime;
-    float maxSpawnTime;
-    float maxSpawnHeight;
-    float minSpawnHeight;
-
     float hitboxOffsetX = 0;
     float hitboxOffsetY = 0;
 

@@ -74,10 +74,9 @@ public class InputHandler extends InputAdapter {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if(loop.game.collection.isGameOn() && loop.game.collection.launch && timer < 0.5f && loop.bounces > 0) {
-            System.out.println("BOUNCE");
-            //Vector2 force = loop.player.torso.body.getLinearVelocity();
-            Vector2 force = new Vector2(15, 15);
-            loop.player.torso.body.setLinearVelocity(force);
+            loop.player.setBodypartVelocity(new Vector2(0, 0));
+            Vector2 vel = new Vector2(30, 30);
+            loop.player.torso.body.setLinearVelocity(vel);
             loop.bounces -= 1;
         }
 
@@ -88,9 +87,11 @@ public class InputHandler extends InputAdapter {
             if(loop.game.collection.isGameOn()) {
                 loop.game.collection.pause();
                 loop.game.collection.showPauseMenu();
+                loop.tutorial.hide();
             } else {
                 loop.game.collection.start();
                 loop.game.collection.hidePauseMenu();
+                loop.tutorial.show();
             }
         }else if(loop.ui.soundButton.contains(touchPos.x, touchPos.y)) {
             loop.ui.toggleSound();

@@ -72,6 +72,8 @@ public class AssetHandler {
         manager.load("images/launching/meter.png", Texture.class);
         manager.load("images/launching/meterColor.png", Texture.class);
         manager.load("images/player/hiteffect.png", Texture.class);
+        manager.load("images/player/hiteffect2.png", Texture.class);
+        manager.load("images/player/rainbow_frames.png", Texture.class);
         manager.load("images/objects/allies/star.png", Texture.class);
         manager.load("images/objects/allies/unicorn.png", Texture.class);
     }

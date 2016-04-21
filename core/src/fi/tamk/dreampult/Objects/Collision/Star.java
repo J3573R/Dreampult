@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
  * Created by Clown on 17.4.2016.
  */
 public class Star extends Objects {
-
     public Star(AssetManager assets) {
         this.sheet = assets.get("images/objects/allies/star.png", Texture.class);
         width = 1;

@@ -24,18 +24,17 @@ public class CollisionHandler implements ContactListener {
         if(a != null && b != null) {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("pig")) ||
                (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
-
+                playAnimation(contact);
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 game.player.setBodypartVelocity(new Vector2(0, 0));
-                playAnimation(contact);
                 vel.set(15, -15);
                 game.player.torso.body.setLinearVelocity(vel);
             }
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("cow")) ||
                     (a.equalsIgnoreCase("cow") && b.equalsIgnoreCase("torso"))) {
-                Vector2 vel = game.player.torso.body.getLinearVelocity();
                 playAnimation(contact);
+                Vector2 vel = game.player.torso.body.getLinearVelocity();
                 game.player.torso.body.setAngularVelocity(-360);
                 vel.set(vel.x, -20);
                 game.player.torso.body.setLinearVelocity(vel);
@@ -43,8 +42,8 @@ public class CollisionHandler implements ContactListener {
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("turtle")) ||
                     (a.equalsIgnoreCase("turtle") && b.equalsIgnoreCase("torso"))) {
-                Vector2 vel = game.player.torso.body.getLinearVelocity();
                 playAnimation(contact);
+                Vector2 vel = game.player.torso.body.getLinearVelocity();
                 vel.set(vel.x / 100, vel.y / 100);
                 game.player.torso.body.setAngularVelocity(180);
                 game.player.torso.body.setLinearVelocity(vel);
@@ -52,10 +51,10 @@ public class CollisionHandler implements ContactListener {
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("unicorn")) ||
                     (a.equalsIgnoreCase("unicorn") && b.equalsIgnoreCase("torso"))) {
+                playAnimation(contact);
                 game.player.setBodypartVelocity(new Vector2(0, 0));
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
-                playAnimation(contact);
-                vel.set(50, 10);
+                vel.set(70, 10);
                 game.player.torso.body.setLinearVelocity(vel);
             }
 
@@ -70,6 +69,7 @@ public class CollisionHandler implements ContactListener {
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("clock")) ||
                     (a.equalsIgnoreCase("clock") && b.equalsIgnoreCase("torso"))) {
+                playAnimation(contact);
                 game.retry = 0;
                 Vector2 vel = new Vector2(0, 0);
                 game.player.torso.body.setLinearVelocity(vel);
@@ -100,15 +100,30 @@ public class CollisionHandler implements ContactListener {
     public void playAnimation(Contact contact) {
         String a = (String) contact.getFixtureA().getBody().getUserData();
         String b = (String) contact.getFixtureB().getBody().getUserData();
+        System.out.println(a);
+        System.out.println(b);
 
-        if(a.equalsIgnoreCase("pig") || a.equalsIgnoreCase("bed")) {
+
+        if(a.equalsIgnoreCase("pig") || a.equalsIgnoreCase("clock")
+                || a.equalsIgnoreCase("cow") || a.equalsIgnoreCase("turtle")) {
             Body body = contact.getFixtureA().getBody();
             game.hit.play(new Vector2(body.getPosition()));
         }
 
-        if(b.equalsIgnoreCase("pig") || b.equalsIgnoreCase("bed")) {
+        if(b.equalsIgnoreCase("pig") || b.equalsIgnoreCase("bed")
+                || b.equalsIgnoreCase("cow") || b.equalsIgnoreCase("turtle")) {
             Body body = contact.getFixtureB().getBody();
             game.hit.play(new Vector2(body.getPosition()));
+        }
+
+        if(a.equalsIgnoreCase("bed") || a.equalsIgnoreCase("unicorn")) {
+            Body body = contact.getFixtureA().getBody();
+            game.bounce.play(new Vector2(body.getPosition()));
+        }
+
+        if(b.equalsIgnoreCase("bed") || b.equalsIgnoreCase("unicorn")) {
+            Body body = contact.getFixtureB().getBody();
+            game.bounce.play(new Vector2(body.getPosition()));
         }
     }
 

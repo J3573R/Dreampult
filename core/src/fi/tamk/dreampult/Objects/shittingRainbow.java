@@ -5,40 +5,34 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 30.3.2016.
+ * Created by Clown on 21.4.2016.
  */
-public class HitEffect {
+public class ShittingRainbow {
 
     Animation animation;
     Texture sheet;
     TextureRegion[] frames;
     TextureRegion current;
     float stateTime;
-    Vector2 position;
     float width;
     float height;
 
-    boolean positive;
+    GameLoop loop;
 
-    public boolean playing;
+    float timer = 0;
 
-    public HitEffect(GameLoop loop, boolean positive) {
-        this.positive = positive;
-        if(positive) {
-            this.sheet = loop.assets.get("images/player/hiteffect2.png", Texture.class);
-        } else {
-            this.sheet = loop.assets.get("images/player/hiteffect.png", Texture.class);
-        }
+    public ShittingRainbow(GameLoop loop) {
+        this.sheet = loop.assets.get("images/player/rainbow_frames.png", Texture.class);
+        this.loop = loop;
         stateTime = 0;
-        width = 2;
-        height = 2;
-        position = new Vector2(0, 0);
-        create(3, 1);
-        playing = false;
+        width = 4;
+        height = 1;
+        create(2, 4);
     }
 
     public void create(int FRAME_COLS, int FRAME_ROWS) {
@@ -55,25 +49,28 @@ public class HitEffect {
         current = animation.getKeyFrame(stateTime, true);
     }
 
-    public void play(Vector2 position) {
-        this.position = position;
-        stateTime = 0;
-        playing = true;
+    public void play() {
+        timer = 3;
     }
 
     public void update(float delta) {
-        if(animation.isAnimationFinished(stateTime)) {
-            playing = false;
+        if(timer > 0) {
+            timer -= Gdx.graphics.getDeltaTime();
+            current = animation.getKeyFrame(stateTime, true);
+            stateTime += delta;
         }
-        current = animation.getKeyFrame(stateTime, false);
-        stateTime += delta;
+    }
+    public void draw(SpriteBatch batch) {
+        if(timer > 0) {
+            batch.draw(current,
+                    loop.player.torso.body.getPosition().x - 4,
+                    loop.player.torso.body.getPosition().y - 0.8f,
+                    0, 0,
+                    width, height,
+                    1, 1,
+                    0);
+        }
     }
 
-    /**
-     * Draws animation frame.
-     * @param batch
-     */
-    public void draw(SpriteBatch batch) {
-        batch.draw(current, position.x - 1f, position.y - 1f, width, height);
-    }
+
 }

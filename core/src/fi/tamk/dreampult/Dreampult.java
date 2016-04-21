@@ -114,8 +114,7 @@ public class Dreampult extends Game {
         super.render();
         //Gdx.app.log("Java Heap", String.valueOf(Gdx.app.getJavaHeap()));
         //Gdx.app.log("Native Heap", String.valueOf(Gdx.app.getNativeHeap()));
-        Gdx.app.log("FPS:", String.valueOf(Gdx.graphics.getFramesPerSecond())
-        );
+        //Gdx.app.log("FPS:", String.valueOf(Gdx.graphics.getFramesPerSecond()));
     }
 
     public void setScreen(Screen screen) {

@@ -15,6 +15,7 @@ import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Maps.Map;
 import fi.tamk.dreampult.Objects.HitEffect;
 import fi.tamk.dreampult.Objects.Launching.Arrow;
+import fi.tamk.dreampult.Objects.ShittingRainbow;
 import fi.tamk.dreampult.Objects.Wall;
 import fi.tamk.dreampult.Objects.Launching.Catapult;
 import fi.tamk.dreampult.Objects.Launching.Meter;
@@ -40,6 +41,8 @@ public class GameLoop extends ScreenAdapter {
     public Wall ground;
     public Wall roof;
     public HitEffect hit;
+    public HitEffect bounce;
+    public ShittingRainbow shittingRainbow;
 
     public Box2DDebugRenderer debug;
     public WorldHandler worldHandler;
@@ -115,8 +118,10 @@ public class GameLoop extends ScreenAdapter {
         catapult = new Catapult(this);
         ground = new Wall(this);
         roof = new Wall(this);
-        hit = new HitEffect(this);
+        hit = new HitEffect(this, false);
+        bounce = new HitEffect(this, true);
         ui = new UserInterface(this);
+        shittingRainbow = new ShittingRainbow(this);
         debug = new Box2DDebugRenderer();
         layout = new GlyphLayout();
 
@@ -194,6 +199,12 @@ public class GameLoop extends ScreenAdapter {
             arrow.update();
             map.update();
             hit.update(Gdx.graphics.getDeltaTime());
+            bounce.update(Gdx.graphics.getDeltaTime());
+            shittingRainbow.update(Gdx.graphics.getDeltaTime());
+
+            if(player.torso.body.getLinearVelocity().x > 20) {
+                shittingRainbow.play();
+            }
 
             if (player.torso.body.getLinearVelocity().x < 0) {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
@@ -268,6 +279,8 @@ public class GameLoop extends ScreenAdapter {
 
             map.drawBackground(game.batch);
 
+            shittingRainbow.draw(game.batch);
+
             meter.draw(game.batch);
 
             arrow.draw(game.batch);
@@ -281,6 +294,10 @@ public class GameLoop extends ScreenAdapter {
             if(hit.playing) {
                 hit.draw(game.batch);
             }
+            if(bounce.playing) {
+                bounce.draw(game.batch);
+            }
+
 
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             layout.setText(fontHandler.font, slept);
