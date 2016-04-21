@@ -69,7 +69,6 @@ public class UserInterface {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
 
         batch.draw(pauseTexture, pauseButton.getX(), pauseButton.getY(), pauseButton.getWidth(), pauseButton.getHeight());
         if(soundState) {
@@ -83,12 +82,10 @@ public class UserInterface {
         if(!loop.collection.launch) {
             batch.draw(shootTexture, shootButton.x - shootButton.radius, shootButton.y - shootButton.radius, (shootButton.radius * 2), (shootButton.radius * 2));
         }
-        batch.setProjectionMatrix(loop.GameCamera.combined);
     }
 
     public void drawPauseMenu(SpriteBatch batch) {
         if(loop.collection.isPauseMenu()) {
-            batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
             batch.end();
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -102,13 +99,11 @@ public class UserInterface {
             restartButton.drawShape(shapeRenderer, batch);
             mainMenuButton.drawShape(shapeRenderer, batch);
             quitButton.drawShape(shapeRenderer, batch);
-            batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
 
     public void drawScoreScreen(SpriteBatch batch) {
         if(loop.collection.isScoreScreen()) {
-            batch.setProjectionMatrix(loop.UserInterfaceCamera.combined);
             batch.end();
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -123,7 +118,6 @@ public class UserInterface {
             talentsButton.drawShape(shapeRenderer, batch);
             mainMenuButton.drawShape(shapeRenderer, batch);
             //quitButton.drawShape(shapeRenderer, batch);
-            batch.setProjectionMatrix(loop.GameCamera.combined);
         }
     }
 

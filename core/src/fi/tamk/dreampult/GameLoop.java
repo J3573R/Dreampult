@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
+import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Maps.Map;
 import fi.tamk.dreampult.Objects.HitEffect;
 import fi.tamk.dreampult.Objects.Launching.Arrow;
@@ -47,6 +48,7 @@ public class GameLoop extends ScreenAdapter {
     public Meter meter;
     public Catapult catapult;
     public Talents talents;
+    public Popup tutorial;
 
     public UserInterface ui;
 
@@ -118,6 +120,9 @@ public class GameLoop extends ScreenAdapter {
         debug = new Box2DDebugRenderer();
         layout = new GlyphLayout();
 
+        tutorial = new Popup(fontHandler);
+        tutorial.bg = game.assets.manager.get("images/ui/text_button_grey.png", Texture.class);
+
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
         endScreen = game.assets.manager.get("images/endScreen.png", Texture.class);
@@ -163,6 +168,10 @@ public class GameLoop extends ScreenAdapter {
         if(talents.isExtraBounces()) {
             bounces += 2;
         }
+
+        tutorial.setText("Hold the button to begin!");
+        tutorial.setPosition(collection.REAL_WIDTH / 2, collection.REAL_HEIGHT / 2);
+        tutorial.show();
         ready = true;
     }
 
@@ -281,6 +290,8 @@ public class GameLoop extends ScreenAdapter {
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
             ui.drawScoreScreen(game.batch);
+            tutorial.draw(game.batch);
+            game.batch.setProjectionMatrix(GameCamera.combined);
 
             game.batch.end();
             //debug.render(world, GameCamera.combined);

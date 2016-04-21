@@ -122,6 +122,7 @@ public class InputHandler extends InputAdapter {
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();
             loop.ui.shootButtonUp();
+            loop.tutorial.hide();
             float speed = loop.meter.scale * 15;
             if(loop.talents.isBoostLaunch()) {
                 speed *= 2;
@@ -160,6 +161,7 @@ public class InputHandler extends InputAdapter {
 
         if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.ui.shootButtonDown();
+            loop.tutorial.setText("Release the button to launch!");
             loop.meter.show();
             loop.arrow.pause();
         }

@@ -85,9 +85,9 @@ public class TitleScreen implements Screen {
 
         soundRectangle = new Rectangle(0, 440, 100, 100);
 
-        firstLevelRectangle = new Rectangle(180, 180, 180, 120);
-        secondLevelRectangle = new Rectangle(360, 180, 180, 120);
-        thirdLevelRectangle = new Rectangle(540, 180, 180, 120);
+        firstLevelRectangle = new Rectangle(180, 80, 180, 120);
+        secondLevelRectangle = new Rectangle(360, 80, 180, 120);
+        thirdLevelRectangle = new Rectangle(540, 80, 180, 120);
     }
 
     @Override
@@ -154,9 +154,9 @@ public class TitleScreen implements Screen {
 
         game.batch.draw(background, 0, 0, 960, 540);
 
-        game.batch.draw(levelOne, 180, 80, 180, 130);
-        game.batch.draw(levelTwo, 360, 80, 180, 130);
-        game.batch.draw(levelTree, 540, 80, 180, 130);
+        game.batch.draw(levelOne, firstLevelRectangle.x, firstLevelRectangle.y, 180, 130);
+        game.batch.draw(levelTwo, secondLevelRectangle.x, secondLevelRectangle.y, 180, 130);
+        game.batch.draw(levelTree, thirdLevelRectangle.x, thirdLevelRectangle.y, 180, 130);
 
 
         if(soundPressed) {

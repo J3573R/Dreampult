@@ -59,6 +59,8 @@ public class AssetHandler {
         manager.load("images/launching/Launch_button_down.png", Texture.class);
         manager.load("images/finFlag.png", Texture.class);
         manager.load("images/britFlag.png", Texture.class);
+        manager.load("images/ui/text_button.png", Texture.class);
+        manager.load("images/ui/text_button_grey.png", Texture.class);
 //        manager.load("audio/soundEffects/positive.wav", Sound.class);
 //        manager.load("audio/soundEffects/negative.wav", Sound.class);
 
