@@ -202,7 +202,7 @@ public class GameLoop extends ScreenAdapter {
             bounce.update(Gdx.graphics.getDeltaTime());
             shittingRainbow.update(Gdx.graphics.getDeltaTime());
 
-            if(player.torso.body.getLinearVelocity().x > 20) {
+            if(player.torso.body.getLinearVelocity().x > 25) {
                 shittingRainbow.play();
             }
 
