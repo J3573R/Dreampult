@@ -43,9 +43,15 @@ public class TalentsScreen extends ScreenAdapter {
 
     boolean initialized;
 
+    public Texture img;
+
+    Vector3 touchPoint;
+
     public TalentsScreen(GameLoop game){
         loop = game;
         userInterfaceCamera = game.UserInterfaceCamera;
+        touchPoint = new Vector3();
+        img = loop.assets.get("images/ui/text_button.png", Texture.class);
         initialized = false;
     }
 
@@ -70,9 +76,11 @@ public class TalentsScreen extends ScreenAdapter {
             pyjamaRectangle = new Rectangle(80, 330, 150, 150);
             extraRectangle = new Rectangle(250, 330, 150, 150);
 
+            resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, loop.game.myBundle.get("reset"));
+            returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, loop.game.myBundle.get("mainMenu"));
 
-            resetButton = new Button(loop.fontHandler, 550, 0, 200, 100, "Reset");
-            returnButton = new Button(loop.fontHandler, 760, 0, 200, 100, "Main Menu");
+            resetButton.buttonImage = img;
+            returnButton.buttonImage = img;
 
             talents = loop.talents;
             initialized = true;
@@ -81,8 +89,6 @@ public class TalentsScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-
-        Vector3 touchPoint = new Vector3();
 
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -180,8 +186,20 @@ public class TalentsScreen extends ScreenAdapter {
         loop.game.batch.draw(jumpsIcon, extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
         loop.game.batch.draw(shirtIcon, pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
 
-        resetButton.drawShape(shapeRenderer, loop.game.batch);
-        returnButton.drawShape(shapeRenderer, loop.game.batch);
+        resetButton.setText(loop.game.myBundle.get("reset"));
+
+        if(loop.game.titleScreen.finLanguage) {
+            resetButton.button.setWidth(240);
+            resetButton.button.setX(530);
+        } else {
+            resetButton.button.setWidth(280);
+            resetButton.button.setX(510);
+        }
+
+        returnButton.setText(loop.game.myBundle.get("mainMenu"));
+
+        resetButton.drawImage(loop.game.batch);
+        returnButton.drawImage(loop.game.batch);
 
         loop.game.batch.end();
 
