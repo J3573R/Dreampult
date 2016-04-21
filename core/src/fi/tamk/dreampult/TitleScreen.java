@@ -88,6 +88,8 @@ public class TitleScreen implements Screen {
         firstLevelRectangle = new Rectangle(180, 80, 180, 120);
         secondLevelRectangle = new Rectangle(360, 80, 180, 120);
         thirdLevelRectangle = new Rectangle(540, 80, 180, 120);
+
+        touchPoint = new Vector3();
     }
 
     @Override
@@ -99,8 +101,6 @@ public class TitleScreen implements Screen {
     public void render(float delta) {
         //game.batch.setProjectionMatrix(GameCamera.combined);
         game.batch.setProjectionMatrix(userInterfaceCamera.combined);
-
-
 
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));

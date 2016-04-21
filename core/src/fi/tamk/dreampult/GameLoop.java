@@ -287,10 +287,11 @@ public class GameLoop extends ScreenAdapter {
             fontHandler.draw(game.batch, slept, 940 / 2 - (int)layout.width / 2, 530);
             layout.setText(fontHandler.font, game.myBundle.get("bounces") + " " + bounces);
             fontHandler.draw(game.batch, game.myBundle.get("bounces") + " " + bounces, 940 / 2 - (int)layout.width / 2, 40);
+            tutorial.draw(game.batch);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
             ui.drawScoreScreen(game.batch);
-            tutorial.draw(game.batch);
+
             game.batch.setProjectionMatrix(GameCamera.combined);
 
             game.batch.end();
