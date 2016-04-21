@@ -37,10 +37,9 @@ public class AssetHandler {
     }
 
     public void loadUi() {
-        manager.load("images/dreampult_logo.png", Texture.class);
         manager.load("images/ui/pause_button.png", Texture.class);
         manager.load("images/ui/pause_menu.png", Texture.class);
-        manager.load("images/menu_tausta.png", Texture.class);
+        manager.load("images/title/Menuscreen.png", Texture.class);
         manager.load("images/title/level1_open.png", Texture.class);
         manager.load("images/title/level2_open.png", Texture.class);
         manager.load("images/title/level2_locked.png", Texture.class);

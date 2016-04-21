@@ -113,7 +113,7 @@ public class LoadingScreen implements Screen {
                 break;
         }
 
-        background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
+        background = game.assets.manager.get("images/title/Menuscreen.png", Texture.class);
         blankFalse = game.assets.manager.get("images/ui/blankFalse.png", Texture.class);
         blankTrue = game.assets.manager.get("images/ui/blankTrue.png", Texture.class);
         falseTexture = game.assets.manager.get("images/ui/falseTexture.png", Texture.class);

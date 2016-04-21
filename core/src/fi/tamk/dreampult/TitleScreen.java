@@ -22,8 +22,6 @@ public class TitleScreen implements Screen {
 
     public OrthographicCamera userInterfaceCamera;
 
-    public Texture logo;
-
     public Texture background;
 
     public boolean soundPressed;
@@ -65,8 +63,7 @@ public class TitleScreen implements Screen {
         this.GameCamera = game.GameCamera;
         this.userInterfaceCamera = game.UserInterfaceCamera;
 
-        logo = game.assets.manager.get("images/dreampult_logo.png", Texture.class);
-        background = game.assets.manager.get("images/menu_tausta.png", Texture.class);
+        background = game.assets.manager.get("images/title/Menuscreen.png", Texture.class);
 
         levelOne = game.assets.manager.get("images/title/level1_open.png", Texture.class);
         levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
@@ -157,11 +154,9 @@ public class TitleScreen implements Screen {
 
         game.batch.draw(background, 0, 0, 960, 540);
 
-        game.batch.draw(logo, 180, 300, 540, 240);
-
-        game.batch.draw(levelOne, 180, 180, 180, 120);
-        game.batch.draw(levelTwo, 360, 180, 180, 120);
-        game.batch.draw(levelTree, 540, 180, 180, 120);
+        game.batch.draw(levelOne, 180, 80, 180, 130);
+        game.batch.draw(levelTwo, 360, 80, 180, 130);
+        game.batch.draw(levelTree, 540, 80, 180, 130);
 
 
         if(soundPressed) {
@@ -206,7 +201,6 @@ public class TitleScreen implements Screen {
 
     @Override
     public void dispose() {
-        logo.dispose();
         background.dispose();
     }
 }
