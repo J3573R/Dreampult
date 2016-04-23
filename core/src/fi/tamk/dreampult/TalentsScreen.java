@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import fi.tamk.dreampult.Handlers.FontHandler;
 import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
 
@@ -18,6 +19,7 @@ import fi.tamk.dreampult.Helpers.Button;
 public class TalentsScreen extends ScreenAdapter {
     public GameLoop loop;
     public OrthographicCamera userInterfaceCamera;
+    public FontHandler font;
 
     public Texture bouncyIcon;
     public Texture catapultIcon;
@@ -47,12 +49,34 @@ public class TalentsScreen extends ScreenAdapter {
 
     Vector3 touchPoint;
 
+    public Texture emptyBox;
+
+    boolean talentSelected;
+    boolean bounceSelected;
+    boolean slipSelected;
+    boolean boostSelected;
+    boolean additionalSelected;
+    boolean extraSelected;
+    boolean glideSelected;
+
+    I18NBundle bundle;
+
     public TalentsScreen(GameLoop game){
         loop = game;
 
         userInterfaceCamera = game.UserInterfaceCamera;
+        font = loop.fontHandler;
+
         touchPoint = new Vector3();
         img = loop.assets.get("images/ui/text_button.png", Texture.class);
+
+        talentSelected = false;
+        bounceSelected = false;
+        slipSelected = false;
+        boostSelected = false;
+        additionalSelected = false;
+        extraSelected = false;
+        glideSelected = false;
         initialized = false;
     }
 
@@ -65,6 +89,7 @@ public class TalentsScreen extends ScreenAdapter {
             shirtIcon = loop.assets.get("images/talents/shirt1.png", Texture.class);
             slipperyIcon = loop.assets.get("images/talents/slippery1.png", Texture.class);
             background = loop.assets.get("images/talents/talentScreen_bg.png", Texture.class);
+            emptyBox = loop.assets.get("images/talents/box.png", Texture.class);
 
             shapeRenderer = new ShapeRenderer();
 
@@ -100,6 +125,13 @@ public class TalentsScreen extends ScreenAdapter {
                 if(!talents.isGrowBouncy()) {
                     talents.enableGrowBouncy();
                     talents.save();
+                    talentSelected = true;
+                    bounceSelected = true;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
                     System.out.println("Grow Bouncy enabled.");
                 }
 
@@ -109,6 +141,13 @@ public class TalentsScreen extends ScreenAdapter {
                 if(!talents.isGrowSlippery()) {
                     talents.enableGrowSlippery();
                     talents.save();
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = true;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
                     System.out.println("Grow Slippery enabled.");
                 }
 
@@ -118,6 +157,13 @@ public class TalentsScreen extends ScreenAdapter {
                 if(!talents.isBoostLaunch()) {
                     talents.enableBoostLaunch();
                     talents.save();
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = true;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
                     System.out.println("Boost Launch enabled.");
                 }
 
@@ -127,6 +173,13 @@ public class TalentsScreen extends ScreenAdapter {
                 if(!talents.isAdditionalLaunch()) {
                     talents.enableAdditionalLaunch();
                     talents.save();
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = true;
+                    extraSelected = false;
+                    glideSelected = false;
                     System.out.println("Additional Launch enabled.");
                 }
 
@@ -136,6 +189,13 @@ public class TalentsScreen extends ScreenAdapter {
                 if(!talents.isExtraBounces()) {
                     talents.enableExtraBounces();
                     talents.save();
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = true;
+                    glideSelected = false;
                     System.out.println("Extra Bounces enabled.");
                 }
 
@@ -145,6 +205,13 @@ public class TalentsScreen extends ScreenAdapter {
                 if(!talents.isPyjamaGlide()) {
                     talents.enablePyjamaGlide();
                     talents.save();
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = true;
                     System.out.println("Pyjama Glide enabled.");
                 }
 
@@ -152,10 +219,24 @@ public class TalentsScreen extends ScreenAdapter {
                 System.out.println("Reset button pressed");
                 //resetProgress();
                 talents.reset();
+                talentSelected = false;
+                bounceSelected = false;
+                slipSelected = false;
+                boostSelected = false;
+                additionalSelected = false;
+                extraSelected = false;
+                glideSelected = false;
 
             } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
                 //savePreferences();
                 talents.save();
+                talentSelected = false;
+                bounceSelected = false;
+                slipSelected = false;
+                boostSelected = false;
+                additionalSelected = false;
+                extraSelected = false;
+                glideSelected = false;
                 loop.game.MainMenu();
             }
 
@@ -193,6 +274,36 @@ public class TalentsScreen extends ScreenAdapter {
 
         resetButton.drawImage(loop.game.batch);
         returnButton.drawImage(loop.game.batch);
+
+        if(talentSelected) {
+            loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
+
+            if(bounceSelected) {
+                font.draw(loop.game.batch, "Your character becomes", 465, 470);
+                font.draw(loop.game.batch, "bouncier", 465, 440);
+
+            } else if (slipSelected) {
+                font.draw(loop.game.batch, "Your character becomes", 465, 470);
+                font.draw(loop.game.batch, "slipperier", 465, 440);
+
+            } else if (boostSelected) {
+                font.draw(loop.game.batch, "Launch power is", 465, 470);
+                font.draw(loop.game.batch, "increased", 465, 440);
+
+            } else if (additionalSelected) {
+                font.draw(loop.game.batch, "You gain an additional", 465, 470);
+                font.draw(loop.game.batch, "launch", 465, 440);
+
+            } else if (extraSelected) {
+                font.draw(loop.game.batch, "The amount of bounces", 465, 470);
+                font.draw(loop.game.batch, "gained is increased", 465, 440);
+
+            } else if (glideSelected) {
+                font.draw(loop.game.batch, "Press above or below", 465, 470);
+                font.draw(loop.game.batch, "your character to", 465, 440);
+                font.draw(loop.game.batch, "enable gliding", 465, 410);
+            }
+        }
 
         loop.game.batch.end();
 

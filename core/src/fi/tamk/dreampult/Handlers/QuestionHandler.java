@@ -18,17 +18,17 @@ public class QuestionHandler {
     public QuestionHandler(Dreampult game){
         this.game = game;
 
-        questions.add(new Question(game.localization.myBundle.get("questionOne"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionTwo"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionThree"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionFour"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionFive"), false));
-        questions.add(new Question(game.localization.myBundle.get("questionSix"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionSeven"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionEight"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionNine"), false));
-        questions.add(new Question(game.localization.myBundle.get("questionTen"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionEleven"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionOneOne"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneTwo"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneThree"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneFour"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneFive"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionOneSix"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneSeven"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneEight"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneNine"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionOneTen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneEleven"), false));
 //        questions.add(new Question("One of the phases of a dream is called REM", true));
 //        questions.add(new Question("Your pulse becomes faster during REM", true));
 //        questions.add(new Question("Things are stored in memory while sleeping", true));

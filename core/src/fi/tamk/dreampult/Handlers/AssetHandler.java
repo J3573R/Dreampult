@@ -155,6 +155,7 @@ public class AssetHandler {
         manager.load("images/talents/shirt1.png", Texture.class);
         manager.load("images/talents/slippery1.png", Texture.class);
         manager.load("images/talents/talentScreen_bg.png", Texture.class);
+        manager.load("images/talents/box.png", Texture.class);
     }
 
     public void loadSoundEffects() {
