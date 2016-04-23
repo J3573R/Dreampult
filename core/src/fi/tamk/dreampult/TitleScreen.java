@@ -115,6 +115,8 @@ public class TitleScreen implements Screen {
 
             } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
                 game.localization.changeLang();
+                game.loadingScreen.questionHandler.clearQuestions();
+                game.loadingScreen.questionHandler.initializeQuestions();
 
             }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");

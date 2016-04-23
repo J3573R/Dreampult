@@ -18,6 +18,12 @@ public class QuestionHandler {
     public QuestionHandler(Dreampult game){
         this.game = game;
 
+        initializeQuestions();
+
+        //"baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab" <-- Maximum length for a question
+    }
+
+    public void initializeQuestions() {
         questions.add(new Question(game.localization.myBundle.get("questionOneOne"), true));
         questions.add(new Question(game.localization.myBundle.get("questionOneTwo"), true));
         questions.add(new Question(game.localization.myBundle.get("questionOneThree"), true));
@@ -29,18 +35,61 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionOneNine"), false));
         questions.add(new Question(game.localization.myBundle.get("questionOneTen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionOneEleven"), false));
-//        questions.add(new Question("One of the phases of a dream is called REM", true));
-//        questions.add(new Question("Your pulse becomes faster during REM", true));
-//        questions.add(new Question("Things are stored in memory while sleeping", true));
-//        questions.add(new Question("Brain cell structure changes during sleep", true));
-//        questions.add(new Question("Sleeping too little has no negative effects", false));
-//        questions.add(new Question("A short nap can help remembering things", true));
-//        questions.add(new Question("A teen needs more sleep than an adult", true));
-//        questions.add(new Question("Caffeine can make falling asleep harder", true));
-//        questions.add(new Question("Sugar has no effect on sleeping", false));
-//        questions.add(new Question("Maintaining a sleep pattern is important", true));
-//        questions.add(new Question("Sleeping for 4 hours is enough for a teen", false));
-        //"baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab" <-- Maximum length for a question
+        questions.add(new Question(game.localization.myBundle.get("questionOneTwelve"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneThirteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneFourteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneFifteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneSixteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneSeventeen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneEighteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionOneNineteen"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionOneTwenty"), false));
+
+        questions.add(new Question(game.localization.myBundle.get("questionTwoOne"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoTwo"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoThree"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoFour"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoFive"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoSix"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoSeven"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoEight"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoNine"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoTen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoEleven"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoTwelve"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoThirteen"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoFourteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoFifteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoSixteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoSeventeen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoEighteen"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoNineteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoTwenty"), true));
+
+        questions.add(new Question(game.localization.myBundle.get("questionThreeOne"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeTwo"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeThree"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeFour"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeFive"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeSix"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeSeven"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeEight"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeNine"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeTen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeEleven"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeTwelve"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeThirteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeFourteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeFifteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeSixteen"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeSeventeen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeEighteen"), true));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeNineteen"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeTwenty"), false));
+    }
+
+    public void clearQuestions() {
+        questions.clear();
     }
 
     public Question anyItem() {
