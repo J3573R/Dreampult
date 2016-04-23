@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
 
 /**
@@ -47,9 +48,12 @@ public class UserInterface {
 
     Unlocks unlocks;
 
+    I18NBundle bundle;
+
     public UserInterface(GameLoop loop) {
         this.loop = loop;
         shapeRenderer = new ShapeRenderer();
+        bundle = loop.game.localization.myBundle;
 
         unlocks = new Unlocks();
 
@@ -115,16 +119,16 @@ public class UserInterface {
             shapeRenderer.end();
             batch.begin();
             scoreTitle.drawShape(shapeRenderer, batch);
-            restartButton.drawShape(shapeRenderer, batch);
             talentsButton.drawShape(shapeRenderer, batch);
+            restartButton.drawShape(shapeRenderer, batch);
             mainMenuButton.drawShape(shapeRenderer, batch);
-            //quitButton.drawShape(shapeRenderer, batch);
+            quitButton.drawShape(shapeRenderer, batch);
         }
     }
 
     private void createBackground() {
         background = new Rectangle();
-        background.set(960 / 2 - 300 / 2, 560 / 2 - 400 / 2, 300, 400);
+        background.set(960 / 2 - 350 / 2, 560 / 2 - 300 / 2, 300, 350);
     }
 
     private void createPauseMenu() {
@@ -135,40 +139,51 @@ public class UserInterface {
                 background.x + centeredX,
                 background.y + background.height - buttonHeight,
                 buttonWidth, buttonHeight,
-                loop.game.myBundle.get("pause"));
+                bundle.get("pause"));
         title.setAlpha(0f);
 
         resumeButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 5 * 4,
+                background.y + (background.height - buttonHeight) / 9 * 7,
                 buttonWidth,
-                buttonHeight, loop.game.myBundle.get("resume"));
+                buttonHeight,
+                bundle.get("resume"));
 
         restartButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 5 * 3,
+                background.y + (background.height - buttonHeight) / 9 * 5,
                 buttonWidth, buttonHeight,
-                loop.game.myBundle.get("restart"));
+                loop.game.localization.myBundle.get("restart"));
 
         mainMenuButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 5 * 2,
+                background.y + (background.height - buttonHeight) / 9 * 3,
                 buttonWidth, buttonHeight,
-                loop.game.myBundle.get("mainMenu"));
+                bundle.get("mainMenu"));
 
         quitButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 5,
+                background.y + (background.height - buttonHeight) / 9,
                 buttonWidth, buttonHeight,
-                loop.game.myBundle.get("quit"));
+                bundle.get("quit"));
     }
 
     public void createScoreScreen() {
         float buttonWidth = 200;
-        float buttonHeight = background.height / 6;
-        //scoreTitle = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
-        //scoreTitle.setAlpha(0f);
-        //talentsButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
+        float buttonHeight = 50;
+        float centeredX = background.width / 2 - buttonWidth / 2;
+        scoreTitle = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + background.height - buttonHeight,
+                buttonWidth, buttonHeight,
+                bundle.get("woke"));
+        scoreTitle.setAlpha(0f);
+
+        talentsButton = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + (background.height - buttonHeight) / 9 * 7,
+                buttonWidth, buttonHeight,
+                bundle.get("talents"));
     }
 
     private void createPauseButton() {

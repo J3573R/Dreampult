@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
 
 /**
@@ -46,8 +47,12 @@ public class TalentsScreen extends ScreenAdapter {
 
     Vector3 touchPoint;
 
+    I18NBundle bundle;
+
     public TalentsScreen(GameLoop game){
         loop = game;
+        bundle = game.game.localization.myBundle;
+
         userInterfaceCamera = game.UserInterfaceCamera;
         touchPoint = new Vector3();
         img = loop.assets.get("images/ui/text_button.png", Texture.class);
@@ -75,8 +80,8 @@ public class TalentsScreen extends ScreenAdapter {
             pyjamaRectangle = new Rectangle(80, 330, 150, 150);
             extraRectangle = new Rectangle(250, 330, 150, 150);
 
-            resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, loop.game.myBundle.get("reset"));
-            returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, loop.game.myBundle.get("mainMenu"));
+            resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, bundle.get("reset"));
+            returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, bundle.get("mainMenu"));
 
             resetButton.buttonImage = img;
             returnButton.buttonImage = img;
@@ -185,17 +190,9 @@ public class TalentsScreen extends ScreenAdapter {
         loop.game.batch.draw(jumpsIcon, extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
         loop.game.batch.draw(shirtIcon, pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
 
-        resetButton.setText(loop.game.myBundle.get("reset"));
+        resetButton.setText(bundle.get("reset"));
 
-        if(loop.game.titleScreen.finLanguage) {
-            resetButton.button.setWidth(240);
-            resetButton.button.setX(530);
-        } else {
-            resetButton.button.setWidth(280);
-            resetButton.button.setX(510);
-        }
-
-        returnButton.setText(loop.game.myBundle.get("mainMenu"));
+        returnButton.setText(bundle.get("mainMenu"));
 
         resetButton.drawImage(loop.game.batch);
         returnButton.drawImage(loop.game.batch);

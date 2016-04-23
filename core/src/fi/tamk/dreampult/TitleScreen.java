@@ -39,8 +39,6 @@ public class TitleScreen implements Screen {
     public Texture finActive;
     public Texture britActive;
 
-    boolean finLanguage;
-
     public Rectangle flagRectangle;
 
     public Rectangle soundRectangle;
@@ -49,18 +47,11 @@ public class TitleScreen implements Screen {
     public Rectangle secondLevelRectangle;
     public Rectangle thirdLevelRectangle;
 
-    Locale finLocale;
-    Locale engLocale;
-
     Vector3 touchPoint;
 
     public TitleScreen(Dreampult game) {
         this.game = game;
-        finLanguage = game.finnish;
-        finLocale = new Locale("fi", "FI");
-        engLocale = new Locale("en", "UK");
-        //loadPreferences();
-        game.loadPreferences();
+
         this.GameCamera = game.GameCamera;
         this.userInterfaceCamera = game.UserInterfaceCamera;
 
@@ -122,23 +113,10 @@ public class TitleScreen implements Screen {
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(3);
 
-            } else if (flagRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
-                game.finnish = true;
-                finLanguage = true;
-                System.out.println(finLanguage);
+            } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
+                game.localization.changeLang();
 
-                game.setLocale(finLocale);
-                game.savePreferences(finLanguage);
-
-            } else if (flagRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
-                game.finnish = false;
-                finLanguage = false;
-                System.out.println(finLanguage);
-
-                game.setLocale(engLocale);
-                game.savePreferences(finLanguage);
-
-            } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
+            }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");
                 soundPressed = true;
 
@@ -171,7 +149,7 @@ public class TitleScreen implements Screen {
                             soundRectangle.getWidth(), soundRectangle.getHeight());
         }
 
-        if(finLanguage) {
+        if(game.localization.getLang().getLanguage().contains("fi")) {
             game.batch.draw(finActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
         } else {
             game.batch.draw(britActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());

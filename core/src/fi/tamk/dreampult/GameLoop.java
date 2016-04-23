@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Maps.Map;
@@ -82,6 +83,8 @@ public class GameLoop extends ScreenAdapter {
     boolean ready;
     boolean initialized;
 
+    I18NBundle bundle;
+
     /**
      * Initialize variables for render.
      * @param game
@@ -96,9 +99,9 @@ public class GameLoop extends ScreenAdapter {
         this.GameCamera = game.GameCamera;
         this.UserInterfaceCamera = game.UserInterfaceCamera;
         this.assets = assets;
+        this.bundle = game.localization.myBundle;
 
-        slept = game.myBundle.get("slept") + "0h 0min";
-        loadPreferences();
+        slept = game.localization.myBundle.get("slept") + "0h 0min";
     }
 
     public void init(){
@@ -174,7 +177,7 @@ public class GameLoop extends ScreenAdapter {
             bounces += 2;
         }
 
-        tutorial.setText("Hold the button to begin!");
+        tutorial.setText(bundle.get("tutorial1"));
         tutorial.setPosition(collection.REAL_WIDTH / 2, collection.REAL_HEIGHT / 2);
         tutorial.show();
         ready = true;
@@ -264,7 +267,7 @@ public class GameLoop extends ScreenAdapter {
             }
             int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
             int minutes = (int) (player.torso.body.getPosition().x * 0.8f) % 60;
-            slept = game.myBundle.get("slept") + " " + hour + "h " + minutes + "min";
+            slept = bundle.get("slept") + " " + hour + "h " + minutes + "min";
 
         } else {
             map.stopBackground();
@@ -302,8 +305,8 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             layout.setText(fontHandler.font, slept);
             fontHandler.draw(game.batch, slept, 940 / 2 - (int)layout.width / 2, 530);
-            layout.setText(fontHandler.font, game.myBundle.get("bounces") + " " + bounces);
-            fontHandler.draw(game.batch, game.myBundle.get("bounces") + " " + bounces, 940 / 2 - (int)layout.width / 2, 40);
+            layout.setText(fontHandler.font, bundle.get("bounces") + " " + bounces);
+            fontHandler.draw(game.batch, bundle.get("bounces") + " " + bounces, 940 / 2 - (int)layout.width / 2, 40);
             tutorial.draw(game.batch);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);
@@ -332,46 +335,6 @@ public class GameLoop extends ScreenAdapter {
         while (accumultator >= timestep) {
             world.step(timestep, 8, 3);
             accumultator -= timestep;
-        }
-    }
-
-    public void savePreferences() {
-
-    }
-
-    public void loadPreferences() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
-        boolean growBouncy = prefs.getBoolean("growBouncy");
-        boolean growSlippery = prefs.getBoolean("growSlippery");
-        boolean boostLaunch = prefs.getBoolean("boostLaunch");
-        boolean additionalLaunch = prefs.getBoolean("additionalLaunch");
-        boolean extraBounces = prefs.getBoolean("extraBounces");
-        boolean pyjamaGlide = prefs.getBoolean("pyjamaGlide");
-
-        if(growBouncy) {
-            talents.enableGrowBouncy();
-            System.out.println("Grow Bouncy enabled");
-
-        } else if(growSlippery) {
-            talents.enableGrowSlippery();
-            System.out.println("Grow Slippery enabled");
-
-        } else if(boostLaunch) {
-            talents.enableBoostLaunch();
-            System.out.println("Boost Launch enabled");
-
-        } else if(additionalLaunch) {
-            talents.enableAdditionalLaunch();
-            System.out.println("Additional Launch enabled");
-
-        } else if(extraBounces) {
-            talents.enableExtraBounces();
-            System.out.println("Extra Bounces enabled");
-
-        } else if(pyjamaGlide) {
-            talents.enablePyjamaGlide();
-            System.out.println("Pyjama Glide enabled");
         }
     }
 

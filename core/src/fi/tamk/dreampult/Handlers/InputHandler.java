@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.GameLoop;
 import fi.tamk.dreampult.TalentsScreen;
 
@@ -20,12 +21,15 @@ public class InputHandler extends InputAdapter {
     boolean timerOn;
     float timer;
 
+    I18NBundle bundle;
+
     /**
      * Initialize input handler.
      * @param gameLoop
      */
     public InputHandler(GameLoop gameLoop) {
         loop = gameLoop;
+        bundle = gameLoop.game.localization.myBundle;
         timer = 0f;
     }
 
@@ -118,6 +122,13 @@ public class InputHandler extends InputAdapter {
                 && !loop.collection.isGameOn()
                 && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
             loop.dispose();
+            System.exit(0);
+        }
+
+        if(loop.ui.talentsButton.button.contains(touchPos.x, touchPos.y)
+                && !loop.collection.isGameOn()
+                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+            loop.dispose();
             loop.game.setScreen(loop.game.talentsScreen);
         }
 
@@ -164,7 +175,7 @@ public class InputHandler extends InputAdapter {
 
         if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.ui.shootButtonDown();
-            loop.tutorial.setText("Release the button to launch!");
+            loop.tutorial.setText(bundle.get("tutorial2"));
             loop.meter.show();
             loop.arrow.pause();
         }

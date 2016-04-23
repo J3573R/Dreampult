@@ -1,12 +1,16 @@
 package fi.tamk.dreampult.Handlers;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 /**
  * Created by root on 25.2.2016.
@@ -65,9 +69,21 @@ public class AssetHandler {
         manager.load("images/background/level1/layer4.png", Texture.class);
         manager.load("images/background/level2/layer4.png", Texture.class);
         manager.load("images/background/level3/layer4.png", Texture.class);
+
+
 //        manager.load("audio/soundEffects/positive.wav", Sound.class);
 //        manager.load("audio/soundEffects/negative.wav", Sound.class);
+    }
 
+    public void loadLocalization(Locale locale) {
+        //unloadLocale();
+        I18NBundleLoader.I18NBundleParameter param = new I18NBundleLoader.I18NBundleParameter();
+        param.locale.setDefault(locale);
+        manager.load("MyBundle/", I18NBundle.class, param);
+    }
+
+    public void unloadLocale() {
+        manager.unload("MyBundle/");
     }
 
     public void loadAssets() {

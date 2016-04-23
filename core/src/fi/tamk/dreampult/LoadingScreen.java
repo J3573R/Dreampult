@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.QuestionHandler;
 import fi.tamk.dreampult.Helpers.Button;
@@ -67,6 +68,8 @@ public class LoadingScreen implements Screen {
 
     Vector3 touchPoint;
 
+    I18NBundle bundle;
+
 //    Sound positiveSound;
 //    Sound negativeSound;
 
@@ -76,8 +79,9 @@ public class LoadingScreen implements Screen {
         this.UserInterfaceCamera = game.UserInterfaceCamera;
         maps = new Maps();
         this.fontHandler = game.fontHandler;
+        bundle = game.localization.myBundle;
 
-        loading = game.myBundle.get("loading");
+        loading = bundle.get("loading");
         fontHandler.GenerateFont(32, Color.WHITE);
         layout = new GlyphLayout(fontHandler.font, loading);
 
@@ -97,9 +101,9 @@ public class LoadingScreen implements Screen {
     public void reset(int level) {
         this.level = level;
         loaded = false;
-        loading = game.myBundle.get("loading");
-        positiveAnswer = game.myBundle.get("true");
-        negativeAnswer = game.myBundle.get("false");
+        loading = bundle.get("loading");
+        positiveAnswer = bundle.get("true");
+        negativeAnswer = bundle.get("false");
 
         switch (level) {
             case 1:
@@ -122,7 +126,7 @@ public class LoadingScreen implements Screen {
         falseTexture = game.assets.manager.get("images/ui/falseTexture.png", Texture.class);
         trueTexture = game.assets.manager.get("images/ui/trueTexture.png", Texture.class);
 
-        loading = game.myBundle.get("loading");
+        loading = bundle.get("loading");
         layout.setText(fontHandler.font, loading);
 
         question = questionHandler.anyItem();
@@ -155,7 +159,7 @@ public class LoadingScreen implements Screen {
         if(loaded) {
 
             if(game.gameLoop.ready) {
-                loading = game.myBundle.get("loaded");
+                loading = bundle.get("loaded");
                 layout.setText(fontHandler.font, loading);
 
                 if (Gdx.input.justTouched()) {

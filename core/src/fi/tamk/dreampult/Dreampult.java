@@ -12,26 +12,18 @@ import java.util.Locale;
 
 import fi.tamk.dreampult.Handlers.AssetHandler;
 import fi.tamk.dreampult.Handlers.FontHandler;
-import fi.tamk.dreampult.Handlers.LocalizationHandler;
+import fi.tamk.dreampult.Handlers.Localization;
 
 public class Dreampult extends Game {
     public AssetHandler assets = new AssetHandler();
     public FontHandler fontHandler;
-    public LocalizationHandler localizationHandler;
+    public Localization localization;
 
 	public SpriteBatch batch;
     public OrthographicCamera GameCamera;
     public OrthographicCamera UserInterfaceCamera;
 
 	public Collection collection;
-
-    public I18NBundle myBundle;
-
-    Locale startLocale;
-
-    Preferences prefs;
-
-    Boolean finnish;
 
     public TitleScreen titleScreen;
     public LoadingScreen loadingScreen;
@@ -43,13 +35,7 @@ public class Dreampult extends Game {
      */
 	@Override
 	public void create () {
-        loadPreferences();
-
-        localizationHandler = new LocalizationHandler(this, startLocale);
-
-        //setLocale(startLocale);
-
-        myBundle = localizationHandler.getBundle();
+        localization = new Localization(assets);
 
 		collection = new Collection();
 		batch = new SpriteBatch();
@@ -71,17 +57,6 @@ public class Dreampult extends Game {
         setScreen(titleScreen);
 	}
 
-//    public void setLocale(Locale locale) {
-//        myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
-//        savePreferences();
-//    }
-
-    public void setLocale(Locale locale) {
-        localizationHandler.setLocale(locale);
-        myBundle = localizationHandler.getBundle();
-        savePreferences(finnish);
-    }
-
     public void MainMenu() {
         collection.launch = false;
         collection.hidePauseMenu();
@@ -97,26 +72,6 @@ public class Dreampult extends Game {
         loadingScreen.reset(level);
         System.gc();
 	}
-
-    public void savePreferences(boolean finnish) {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
-        prefs.putBoolean("finLanguage", finnish);
-
-        prefs.flush();
-    }
-
-    public void loadPreferences() {
-        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
-        finnish = prefs.getBoolean("finLanguage");
-
-        if(finnish = true) {
-            startLocale = new Locale("fi", "FI");
-        } else if(finnish = false){
-            startLocale = new Locale("en", "UK");
-        }
-    }
 
 	@Override
 	public void render () {
