@@ -76,14 +76,16 @@ public class AssetHandler {
     }
 
     public void loadLocalization(Locale locale) {
-        //unloadLocale();
+        unloadLocale();
         I18NBundleLoader.I18NBundleParameter param = new I18NBundleLoader.I18NBundleParameter();
         param.locale.setDefault(locale);
         manager.load("MyBundle/", I18NBundle.class, param);
     }
 
     public void unloadLocale() {
-        manager.unload("MyBundle/");
+        if(manager.isLoaded("MyBundle/")) {
+            manager.unload("MyBundle/");
+        }
     }
 
     public void loadAssets() {

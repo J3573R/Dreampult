@@ -35,7 +35,7 @@ public class Dreampult extends Game {
      */
 	@Override
 	public void create () {
-        localization = new Localization(assets);
+        localization = new Localization(assets, this);
 
 		collection = new Collection();
 		batch = new SpriteBatch();

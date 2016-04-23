@@ -83,8 +83,6 @@ public class GameLoop extends ScreenAdapter {
     boolean ready;
     boolean initialized;
 
-    I18NBundle bundle;
-
     /**
      * Initialize variables for render.
      * @param game
@@ -99,7 +97,6 @@ public class GameLoop extends ScreenAdapter {
         this.GameCamera = game.GameCamera;
         this.UserInterfaceCamera = game.UserInterfaceCamera;
         this.assets = assets;
-        this.bundle = game.localization.myBundle;
 
         slept = game.localization.myBundle.get("slept") + "0h 0min";
     }
@@ -142,6 +139,7 @@ public class GameLoop extends ScreenAdapter {
             init();
         }
         this.map = map;
+        ui.changeLang();
         map.initialize(this);
 
         game.GameCamera.position.set(8f, 4.5f, 0);
@@ -177,7 +175,7 @@ public class GameLoop extends ScreenAdapter {
             bounces += 2;
         }
 
-        tutorial.setText(bundle.get("tutorial1"));
+        tutorial.setText(game.localization.myBundle.get("tutorial1"));
         tutorial.setPosition(collection.REAL_WIDTH / 2, collection.REAL_HEIGHT / 2);
         tutorial.show();
         ready = true;
@@ -267,7 +265,7 @@ public class GameLoop extends ScreenAdapter {
             }
             int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
             int minutes = (int) (player.torso.body.getPosition().x * 0.8f) % 60;
-            slept = bundle.get("slept") + " " + hour + "h " + minutes + "min";
+            slept = game.localization.myBundle.get("slept") + " " + hour + "h " + minutes + "min";
 
         } else {
             map.stopBackground();
@@ -305,8 +303,8 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
             layout.setText(fontHandler.font, slept);
             fontHandler.draw(game.batch, slept, 940 / 2 - (int)layout.width / 2, 530);
-            layout.setText(fontHandler.font, bundle.get("bounces") + " " + bounces);
-            fontHandler.draw(game.batch, bundle.get("bounces") + " " + bounces, 940 / 2 - (int)layout.width / 2, 40);
+            layout.setText(fontHandler.font, game.localization.myBundle.get("bounces") + " " + bounces);
+            fontHandler.draw(game.batch, game.localization.myBundle.get("bounces") + " " + bounces, 940 / 2 - (int)layout.width / 2, 40);
             tutorial.draw(game.batch);
             ui.draw(game.batch);
             ui.drawPauseMenu(game.batch);

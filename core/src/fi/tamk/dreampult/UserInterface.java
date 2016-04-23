@@ -48,12 +48,9 @@ public class UserInterface {
 
     Unlocks unlocks;
 
-    I18NBundle bundle;
-
     public UserInterface(GameLoop loop) {
         this.loop = loop;
         shapeRenderer = new ShapeRenderer();
-        bundle = loop.game.localization.myBundle;
 
         unlocks = new Unlocks();
 
@@ -70,6 +67,17 @@ public class UserInterface {
         createBackground();
         createPauseMenu();
         createScoreScreen();
+    }
+
+    public void changeLang(){
+        resumeButton.setText(loop.game.localization.myBundle.get("resume"));
+        restartButton.setText(loop.game.localization.myBundle.get("restart"));
+        mainMenuButton.setText(loop.game.localization.myBundle.get("mainMenu"));
+        quitButton.setText(loop.game.localization.myBundle.get("quit"));
+        talentsButton.setText(loop.game.localization.myBundle.get("talents"));
+
+        scoreTitle.setText(loop.game.localization.myBundle.get("woke"));
+        title.setText(loop.game.localization.myBundle.get("pause"));
     }
 
     public void draw(SpriteBatch batch) {
@@ -139,7 +147,7 @@ public class UserInterface {
                 background.x + centeredX,
                 background.y + background.height - buttonHeight,
                 buttonWidth, buttonHeight,
-                bundle.get("pause"));
+                loop.game.localization.myBundle.get("pause"));
         title.setAlpha(0f);
 
         resumeButton = new Button(loop.fontHandler,
@@ -147,7 +155,7 @@ public class UserInterface {
                 background.y + (background.height - buttonHeight) / 9 * 7,
                 buttonWidth,
                 buttonHeight,
-                bundle.get("resume"));
+                loop.game.localization.myBundle.get("resume"));
 
         restartButton = new Button(loop.fontHandler,
                 background.x + centeredX,
@@ -159,13 +167,13 @@ public class UserInterface {
                 background.x + centeredX,
                 background.y + (background.height - buttonHeight) / 9 * 3,
                 buttonWidth, buttonHeight,
-                bundle.get("mainMenu"));
+                loop.game.localization.myBundle.get("mainMenu"));
 
         quitButton = new Button(loop.fontHandler,
                 background.x + centeredX,
                 background.y + (background.height - buttonHeight) / 9,
                 buttonWidth, buttonHeight,
-                bundle.get("quit"));
+                loop.game.localization.myBundle.get("quit"));
     }
 
     public void createScoreScreen() {
@@ -176,14 +184,14 @@ public class UserInterface {
                 background.x + centeredX,
                 background.y + background.height - buttonHeight,
                 buttonWidth, buttonHeight,
-                bundle.get("woke"));
+                loop.game.localization.myBundle.get("woke"));
         scoreTitle.setAlpha(0f);
 
         talentsButton = new Button(loop.fontHandler,
                 background.x + centeredX,
                 background.y + (background.height - buttonHeight) / 9 * 7,
                 buttonWidth, buttonHeight,
-                bundle.get("talents"));
+                loop.game.localization.myBundle.get("talents"));
     }
 
     private void createPauseButton() {

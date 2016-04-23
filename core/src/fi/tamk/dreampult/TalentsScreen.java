@@ -47,11 +47,8 @@ public class TalentsScreen extends ScreenAdapter {
 
     Vector3 touchPoint;
 
-    I18NBundle bundle;
-
     public TalentsScreen(GameLoop game){
         loop = game;
-        bundle = game.game.localization.myBundle;
 
         userInterfaceCamera = game.UserInterfaceCamera;
         touchPoint = new Vector3();
@@ -80,8 +77,8 @@ public class TalentsScreen extends ScreenAdapter {
             pyjamaRectangle = new Rectangle(80, 330, 150, 150);
             extraRectangle = new Rectangle(250, 330, 150, 150);
 
-            resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, bundle.get("reset"));
-            returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, bundle.get("mainMenu"));
+            resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, loop.game.localization.myBundle.get("reset"));
+            returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, loop.game.localization.myBundle.get("mainMenu"));
 
             resetButton.buttonImage = img;
             returnButton.buttonImage = img;
@@ -190,9 +187,9 @@ public class TalentsScreen extends ScreenAdapter {
         loop.game.batch.draw(jumpsIcon, extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
         loop.game.batch.draw(shirtIcon, pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
 
-        resetButton.setText(bundle.get("reset"));
+        resetButton.setText(loop.game.localization.myBundle.get("reset"));
 
-        returnButton.setText(bundle.get("mainMenu"));
+        returnButton.setText(loop.game.localization.myBundle.get("mainMenu"));
 
         resetButton.drawImage(loop.game.batch);
         returnButton.drawImage(loop.game.batch);

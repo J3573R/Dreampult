@@ -18,13 +18,13 @@ public class Localization {
     public I18NBundle myBundle;
     Locale locale;
     AssetHandler assets;
+    Dreampult game;
 
-    public Localization(AssetHandler assets){
+    public Localization(AssetHandler assets, Dreampult game){
         this.assets = assets;
+        this.game = game;
         getPrefs();
-        assets.loadLocalization(locale);
-        assets.manager.finishLoading();
-        myBundle = assets.manager.get("MyBundle/", I18NBundle.class);
+        loadLang();
     }
 
     public void changeLang(){
@@ -36,6 +36,7 @@ public class Localization {
         }
         savePreferences(lang);
         getPrefs();
+        loadLang();
     }
 
     public Locale getLang(){
@@ -49,11 +50,18 @@ public class Localization {
 
         if(lang.equals("fin")) {
             locale = new Locale("fi", "FI");
+
         } else if(lang.equals("en")) {
             locale = new Locale("en", "EN");
         } else {
             locale = new Locale("en", "EN");
         }
+    }
+
+    public void loadLang(){
+        assets.loadLocalization(locale);
+        assets.manager.finishLoading();
+        myBundle = assets.manager.get("MyBundle/", I18NBundle.class);
     }
 
     public void savePreferences(String lang) {
