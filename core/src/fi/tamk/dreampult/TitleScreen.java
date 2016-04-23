@@ -56,7 +56,7 @@ public class TitleScreen implements Screen {
 
     public TitleScreen(Dreampult game) {
         this.game = game;
-        finLanguage = false;
+        finLanguage = game.finnish;
         finLocale = new Locale("fi", "FI");
         engLocale = new Locale("en", "UK");
         //loadPreferences();
@@ -123,16 +123,20 @@ public class TitleScreen implements Screen {
                 game.loadingScreen.reset(3);
 
             } else if (flagRectangle.contains(touchPoint.x, touchPoint.y) && !finLanguage) {
+                game.finnish = true;
                 finLanguage = true;
+                System.out.println(finLanguage);
 
                 game.setLocale(finLocale);
-                game.savePreferences();
+                game.savePreferences(finLanguage);
 
             } else if (flagRectangle.contains(touchPoint.x, touchPoint.y) && finLanguage) {
+                game.finnish = false;
                 finLanguage = false;
+                System.out.println(finLanguage);
 
                 game.setLocale(engLocale);
-                game.savePreferences();
+                game.savePreferences(finLanguage);
 
             } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");

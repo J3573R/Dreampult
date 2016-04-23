@@ -12,10 +12,12 @@ import java.util.Locale;
 
 import fi.tamk.dreampult.Handlers.AssetHandler;
 import fi.tamk.dreampult.Handlers.FontHandler;
+import fi.tamk.dreampult.Handlers.LocalizationHandler;
 
 public class Dreampult extends Game {
     public AssetHandler assets = new AssetHandler();
     public FontHandler fontHandler;
+    public LocalizationHandler localizationHandler;
 
 	public SpriteBatch batch;
     public OrthographicCamera GameCamera;
@@ -43,7 +45,11 @@ public class Dreampult extends Game {
 	public void create () {
         loadPreferences();
 
-        setLocale(startLocale);
+        localizationHandler = new LocalizationHandler(this, startLocale);
+
+        //setLocale(startLocale);
+
+        myBundle = localizationHandler.getBundle();
 
 		collection = new Collection();
 		batch = new SpriteBatch();
@@ -65,11 +71,16 @@ public class Dreampult extends Game {
         setScreen(titleScreen);
 	}
 
-    public void setLocale(Locale locale) {
-        myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
-        savePreferences();
-    }
+//    public void setLocale(Locale locale) {
+//        myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+//        savePreferences();
+//    }
 
+    public void setLocale(Locale locale) {
+        localizationHandler.setLocale(locale);
+        myBundle = localizationHandler.getBundle();
+        savePreferences(finnish);
+    }
 
     public void MainMenu() {
         collection.launch = false;
@@ -87,7 +98,7 @@ public class Dreampult extends Game {
         System.gc();
 	}
 
-    public void savePreferences() {
+    public void savePreferences(boolean finnish) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
 
         prefs.putBoolean("finLanguage", finnish);
@@ -98,14 +109,12 @@ public class Dreampult extends Game {
     public void loadPreferences() {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
 
-        boolean finLanguage = prefs.getBoolean("finLanguage");
+        finnish = prefs.getBoolean("finLanguage");
 
-        if(finLanguage) {
+        if(finnish = true) {
             startLocale = new Locale("fi", "FI");
-            finnish = true;
-        } else {
+        } else if(finnish = false){
             startLocale = new Locale("en", "UK");
-            finnish = false;
         }
     }
 

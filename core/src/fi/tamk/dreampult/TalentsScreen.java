@@ -18,7 +18,6 @@ public class TalentsScreen extends ScreenAdapter {
     public GameLoop loop;
     public OrthographicCamera userInterfaceCamera;
 
-    public Texture talentIcon;
     public Texture bouncyIcon;
     public Texture catapultIcon;
     public Texture jumpsIcon;
