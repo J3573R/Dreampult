@@ -104,16 +104,19 @@ public class LoadingScreen implements Screen {
         switch (level) {
             case 1:
                 game.assets.loadLevel1();
+                background = game.assets.manager.get("images/background/level1/layer4.png", Texture.class);
                 break;
             case 2:
                 game.assets.loadLevel2();
+                background = game.assets.manager.get("images/background/level1/layer4.png", Texture.class);
                 break;
             case 3:
                 game.assets.loadLevel3();
+                background = game.assets.manager.get("images/background/level1/layer4.png", Texture.class);
                 break;
         }
 
-        background = game.assets.manager.get("images/title/Menuscreen.png", Texture.class);
+
         blankFalse = game.assets.manager.get("images/ui/blankFalse.png", Texture.class);
         blankTrue = game.assets.manager.get("images/ui/blankTrue.png", Texture.class);
         falseTexture = game.assets.manager.get("images/ui/falseTexture.png", Texture.class);

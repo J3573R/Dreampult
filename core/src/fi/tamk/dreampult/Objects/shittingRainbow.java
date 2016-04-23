@@ -30,7 +30,7 @@ public class ShittingRainbow {
         this.sheet = loop.assets.get("images/player/rainbow_frames.png", Texture.class);
         this.loop = loop;
         stateTime = 0;
-        width = 4;
+        width = 4; 
         height = 1;
         create(2, 4);
     }

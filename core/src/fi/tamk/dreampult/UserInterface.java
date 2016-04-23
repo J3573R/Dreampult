@@ -33,10 +33,10 @@ public class UserInterface {
 
     ShapeRenderer shapeRenderer;
     Rectangle background;
-    Vector2 backgroundPosition;
 
     Button title;
     Button scoreTitle;
+    public Button resumeButton;
     public Button restartButton;
     public Button mainMenuButton;
     public Button quitButton;
@@ -97,6 +97,7 @@ public class UserInterface {
             batch.begin();
             title.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);
+            resumeButton.drawShape(shapeRenderer, batch);
             mainMenuButton.drawShape(shapeRenderer, batch);
             quitButton.drawShape(shapeRenderer, batch);
         }
@@ -123,26 +124,51 @@ public class UserInterface {
 
     private void createBackground() {
         background = new Rectangle();
-        backgroundPosition = new Vector2(300, 300);
-        background.set(middle.x - backgroundPosition.x / 2, middle.y - backgroundPosition.y / 2, backgroundPosition.x, backgroundPosition.y);
+        background.set(960 / 2 - 300 / 2, 560 / 2 - 400 / 2, 300, 400);
     }
 
     private void createPauseMenu() {
         float buttonWidth = 200;
-        float buttonHeight = background.height / 6;
-        title = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight + 20, buttonWidth, buttonHeight, loop.game.myBundle.get("pause"));
+        float buttonHeight = 50;
+        float centeredX = background.width / 2 - buttonWidth / 2;
+        title = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + background.height - buttonHeight,
+                buttonWidth, buttonHeight,
+                loop.game.myBundle.get("pause"));
         title.setAlpha(0f);
-        restartButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y, buttonWidth, buttonHeight, loop.game.myBundle.get("restart"));
-        mainMenuButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y - buttonHeight - 20, buttonWidth, buttonHeight, loop.game.myBundle.get("mainMenu"));
-        quitButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, loop.game.myBundle.get("quit"));
+
+        resumeButton = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + (background.height - buttonHeight) / 5 * 4,
+                buttonWidth,
+                buttonHeight, loop.game.myBundle.get("resume"));
+
+        restartButton = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + (background.height - buttonHeight) / 5 * 3,
+                buttonWidth, buttonHeight,
+                loop.game.myBundle.get("restart"));
+
+        mainMenuButton = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + (background.height - buttonHeight) / 5 * 2,
+                buttonWidth, buttonHeight,
+                loop.game.myBundle.get("mainMenu"));
+
+        quitButton = new Button(loop.fontHandler,
+                background.x + centeredX,
+                background.y + (background.height - buttonHeight) / 5,
+                buttonWidth, buttonHeight,
+                loop.game.myBundle.get("quit"));
     }
 
     public void createScoreScreen() {
         float buttonWidth = 200;
         float buttonHeight = background.height / 6;
-        scoreTitle = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
-        scoreTitle.setAlpha(0f);
-        talentsButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
+        //scoreTitle = new Button(loop.fontHandler, middle.x - buttonWidth / 2, backgroundPosition.y + buttonHeight, buttonWidth, buttonHeight, loop.game.myBundle.get("woke"));
+        //scoreTitle.setAlpha(0f);
+        //talentsButton = new Button(loop.fontHandler, middle.x - buttonWidth / 2, (backgroundPosition.y - buttonHeight * 2) - 40, buttonWidth, buttonHeight, "Talents");
     }
 
     private void createPauseButton() {

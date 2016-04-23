@@ -62,6 +62,9 @@ public class AssetHandler {
         manager.load("images/ui/text_button_grey.png", Texture.class);
         manager.load("images/finActive.png", Texture.class);
         manager.load("images/britActive.png", Texture.class);
+        manager.load("images/background/level1/layer4.png", Texture.class);
+        manager.load("images/background/level2/layer4.png", Texture.class);
+        manager.load("images/background/level3/layer4.png", Texture.class);
 //        manager.load("audio/soundEffects/positive.wav", Sound.class);
 //        manager.load("audio/soundEffects/negative.wav", Sound.class);
 
@@ -97,18 +100,6 @@ public class AssetHandler {
         manager.load("images/objects/allies/bed.png", Texture.class);
     }
 
-    public void unloadLevel1() {
-        manager.unload("images/background/level1/layer1.png");
-        manager.unload("images/background/level1/layer2.png");
-        manager.unload("images/background/level1/layer3.png");
-        manager.unload("images/background/level1/layer4.png");
-
-        manager.unload("images/objects/enemies/pig.png");
-        manager.unload("images/objects/enemies/clock.png");
-
-        manager.unload("images/objects/allies/bed.png");
-    }
-
     public void loadLevel2(){
         manager.load("images/background/level2/layer1.png", Texture.class);
         manager.load("images/background/level2/layer2.png", Texture.class);
@@ -121,20 +112,6 @@ public class AssetHandler {
 
         manager.load("images/objects/allies/unicorn.png", Texture.class);
         manager.load("images/objects/allies/bed.png", Texture.class);
-    }
-
-    public void unloadLevel2() {
-        manager.unload("images/background/level2/layer1.png");
-        manager.unload("images/background/level2/layer2.png");
-        manager.unload("images/background/level2/layer3.png");
-        manager.unload("images/background/level2/layer4.png");
-
-        manager.unload("images/objects/enemies/pig.png");
-        manager.unload("images/objects/enemies/turtle.png");
-        manager.unload("images/objects/enemies/clock.png");
-
-        manager.unload("images/objects/allies/unicorn.png");
-        manager.unload("images/objects/allies/bed.png");
     }
 
     public void loadLevel3(){
@@ -150,21 +127,6 @@ public class AssetHandler {
 
         manager.load("images/objects/allies/unicorn.png", Texture.class);
         manager.load("images/objects/allies/bed.png", Texture.class);
-    }
-
-    public void unloadLevel3(){
-        manager.unload("images/background/level3/layer1.png");
-        manager.unload("images/background/level3/layer2.png");
-        manager.unload("images/background/level3/layer3.png");
-        manager.unload("images/background/level3/layer4.png");
-
-        manager.unload("images/objects/enemies/pig.png");
-        manager.unload("images/objects/enemies/turtle.png");
-        manager.unload("images/objects/enemies/cow.png");
-        manager.unload("images/objects/enemies/clock.png");
-
-        manager.unload("images/objects/allies/unicorn.png");
-        manager.unload("images/objects/allies/bed.png");
     }
 
     public void loadTalents() {
