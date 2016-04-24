@@ -133,6 +133,14 @@ public class TalentsScreen extends ScreenAdapter {
                     extraSelected = false;
                     glideSelected = false;
                     System.out.println("Grow Bouncy enabled.");
+                } else {
+                    talentSelected = true;
+                    bounceSelected = true;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
                 }
 
             } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -149,6 +157,14 @@ public class TalentsScreen extends ScreenAdapter {
                     extraSelected = false;
                     glideSelected = false;
                     System.out.println("Grow Slippery enabled.");
+                } else {
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = true;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
                 }
 
             } else if (boostRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -165,6 +181,14 @@ public class TalentsScreen extends ScreenAdapter {
                     extraSelected = false;
                     glideSelected = false;
                     System.out.println("Boost Launch enabled.");
+                } else {
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = true;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
                 }
 
             } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -181,6 +205,14 @@ public class TalentsScreen extends ScreenAdapter {
                     extraSelected = false;
                     glideSelected = false;
                     System.out.println("Additional Launch enabled.");
+                } else {
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = true;
+                    extraSelected = false;
+                    glideSelected = false;
                 }
 
             } else if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -197,6 +229,14 @@ public class TalentsScreen extends ScreenAdapter {
                     extraSelected = true;
                     glideSelected = false;
                     System.out.println("Extra Bounces enabled.");
+                } else {
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = true;
+                    glideSelected = false;
                 }
 
             } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -213,6 +253,14 @@ public class TalentsScreen extends ScreenAdapter {
                     extraSelected = false;
                     glideSelected = true;
                     System.out.println("Pyjama Glide enabled.");
+                } else {
+                    talentSelected = true;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = true;
                 }
 
             } else if (resetButton.button.contains(touchPoint.x, touchPoint.y)) {
@@ -228,6 +276,7 @@ public class TalentsScreen extends ScreenAdapter {
                 glideSelected = false;
 
             } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
+                loop.game.collection.hideTalentScreen();
                 //savePreferences();
                 talents.save();
                 talentSelected = false;
@@ -279,29 +328,22 @@ public class TalentsScreen extends ScreenAdapter {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
 
             if(bounceSelected) {
-                font.draw(loop.game.batch, "Your character becomes", 465, 470);
-                font.draw(loop.game.batch, "bouncier", 465, 440);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("bounceDescription"), 465, 470);
 
             } else if (slipSelected) {
-                font.draw(loop.game.batch, "Your character becomes", 465, 470);
-                font.draw(loop.game.batch, "slipperier", 465, 440);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("slipDescription"), 465, 470);
 
             } else if (boostSelected) {
-                font.draw(loop.game.batch, "Launch power is", 465, 470);
-                font.draw(loop.game.batch, "increased", 465, 440);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("boostDescription"), 465, 470);
 
             } else if (additionalSelected) {
-                font.draw(loop.game.batch, "You gain an additional", 465, 470);
-                font.draw(loop.game.batch, "launch", 465, 440);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("launchDescription"), 465, 500);
 
             } else if (extraSelected) {
-                font.draw(loop.game.batch, "The amount of bounces", 465, 470);
-                font.draw(loop.game.batch, "gained is increased", 465, 440);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("extraDescription"), 465, 470);
 
             } else if (glideSelected) {
-                font.draw(loop.game.batch, "Press above or below", 465, 470);
-                font.draw(loop.game.batch, "your character to", 465, 440);
-                font.draw(loop.game.batch, "enable gliding", 465, 410);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("glideDescription"), 465, 500);
             }
         }
 

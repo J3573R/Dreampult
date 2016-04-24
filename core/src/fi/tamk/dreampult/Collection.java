@@ -7,6 +7,7 @@ public class Collection {
     private boolean gameIsOn;
     private boolean PauseMenu;
     private boolean ScoreScreen;
+    private boolean talentScreen;
 
     final public int SCREEN_WIDTH = 16;
     final public int SCREEN_HEIGHT = 9;
@@ -25,6 +26,7 @@ public class Collection {
         gameIsOn = false;
         soundIsOn = true;
         PauseMenu = false;
+        talentScreen = false;
     }
 
     public void start() {
@@ -67,5 +69,17 @@ public class Collection {
     }
     public void hideScoreScreen() {
         this.ScoreScreen = false;
+    }
+
+    public boolean isTalentScreen() {
+        return talentScreen;
+    }
+
+    public void showTalentScreen() {
+        this.talentScreen = true;
+    }
+
+    public void hideTalentScreen() {
+        this.talentScreen = false;
     }
 }

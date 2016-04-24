@@ -98,11 +98,17 @@ public class TitleScreen implements Screen {
             if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Level loading started");
 
+                game.loadingScreen.questionHandler.clearQuestions();
+                game.loadingScreen.questionHandler.initializeQuestions();
+
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(1);
 
             } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y)){
                 System.out.println("Level 2 loading started");
+
+                game.loadingScreen.questionHandler.clearQuestions();
+                game.loadingScreen.questionHandler.initializeQuestions();
 
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(2);
@@ -110,13 +116,15 @@ public class TitleScreen implements Screen {
             } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y)){
                 System.out.println("Level 3 loading started");
 
+                game.loadingScreen.questionHandler.clearQuestions();
+                game.loadingScreen.questionHandler.initializeQuestions();
+
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(3);
 
             } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
                 game.localization.changeLang();
-                game.loadingScreen.questionHandler.clearQuestions();
-                game.loadingScreen.questionHandler.initializeQuestions();
+
 
             }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");

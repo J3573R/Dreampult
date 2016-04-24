@@ -87,51 +87,62 @@ public class InputHandler extends InputAdapter {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         loop.UserInterfaceCamera.unproject(touchPos);
 
-        if(loop.ui.pauseButton.contains(touchPos.x, touchPos.y)) {
-            if(loop.game.collection.isGameOn()) {
-                loop.game.collection.pause();
-                loop.game.collection.showPauseMenu();
-                loop.tutorial.hide();
-            } else {
-                loop.game.collection.start();
-                loop.game.collection.hidePauseMenu();
-                if(!loop.collection.launch) {
-                    loop.tutorial.show();
+        if(!(loop.game.collection.isTalentScreen())) {
+
+            if(loop.ui.pauseButton.contains(touchPos.x, touchPos.y)) {
+                if(loop.game.collection.isGameOn()) {
+                    loop.game.collection.pause();
+                    loop.game.collection.showPauseMenu();
+                    loop.tutorial.hide();
+                } else {
+                    loop.game.collection.start();
+                    loop.game.collection.hidePauseMenu();
+                    if(!loop.collection.launch) {
+                        loop.tutorial.show();
+                    }
+                }
+            }else if(loop.ui.soundButton.contains(touchPos.x, touchPos.y)) {
+                loop.ui.toggleSound();
+            }
+
+            if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y)
+                    && !loop.collection.isGameOn()
+                    && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+                loop.dispose();
+                System.out.println(loop.map.getLevel());
+                loop.game.restart(loop.map.getLevel());
+            }
+
+            if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y)
+                    && !loop.collection.isGameOn()
+                    && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+                loop.dispose();
+                loop.game.MainMenu();
+            }
+
+            if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y)
+                    && !loop.collection.isGameOn()
+                    && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
+                loop.dispose();
+                System.exit(0);
+            }
+
+            if(loop.ui.talentsButton.button.contains(touchPos.x, touchPos.y)
+                    && !loop.collection.isGameOn()
+                    && (loop.collection.isScoreScreen())) {
+                loop.game.collection.showTalentScreen();
+                loop.dispose();
+                loop.game.setScreen(loop.game.talentsScreen);
+            } else if (loop.ui.talentsButton.button.contains(touchPos.x, touchPos.y)
+                    && !loop.collection.isGameOn()
+                    && (loop.collection.isPauseMenu())) {
+                        loop.game.collection.start();
+                        loop.game.collection.hidePauseMenu();
+                    if(!loop.collection.launch) {
+                        loop.tutorial.show();
                 }
             }
-        }else if(loop.ui.soundButton.contains(touchPos.x, touchPos.y)) {
-            loop.ui.toggleSound();
         }
-
-        if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y)
-                && !loop.collection.isGameOn()
-                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
-            loop.dispose();
-            System.out.println(loop.map.getLevel());
-            loop.game.restart(loop.map.getLevel());
-        }
-
-        if(loop.ui.mainMenuButton.button.contains(touchPos.x, touchPos.y)
-                && !loop.collection.isGameOn()
-                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
-            loop.dispose();
-            loop.game.MainMenu();
-        }
-
-        if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y)
-                && !loop.collection.isGameOn()
-                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
-            loop.dispose();
-            System.exit(0);
-        }
-
-        if(loop.ui.talentsButton.button.contains(touchPos.x, touchPos.y)
-                && !loop.collection.isGameOn()
-                && (loop.collection.isPauseMenu() || loop.collection.isScoreScreen())) {
-            loop.dispose();
-            loop.game.setScreen(loop.game.talentsScreen);
-        }
-
 
        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
             loop.meter.hide();
