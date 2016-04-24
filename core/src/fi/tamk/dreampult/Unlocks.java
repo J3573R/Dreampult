@@ -11,6 +11,8 @@ public class Unlocks {
     boolean level2 = false;
     boolean level3 = false;
 
+
+
     public Unlocks() {
         Preferences prefs = Gdx.app.getPreferences("Dreampult_Unlocks");
         stars = prefs.getInteger("stars", 0);

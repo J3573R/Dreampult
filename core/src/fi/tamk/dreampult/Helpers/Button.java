@@ -31,16 +31,15 @@ public class Button {
 
     public Button(FontHandler fontHandler){
         this.fontHandler = fontHandler;
-        button = new Rectangle();
         buttonColor = Color.valueOf("008CBA");
+        button = new Rectangle();
     }
 
     public Button(FontHandler fontHandler, float x, float y, float width, float height, String text) {
         this.fontHandler = fontHandler;
-        //fontHandler.GenerateFont(32, Color.WHITE);
         buttonColor = Color.valueOf("008CBA");
-
         button = new Rectangle();
+
         button.set(x, y, width, height);
         this.buttonText = text;
         createText();
@@ -49,6 +48,7 @@ public class Button {
     public void setButton(float x, float y, float width, float height, String text){
         button.set(x, y, width, height);
         this.buttonText = text;
+        createText();
     }
 
     public void createText() {

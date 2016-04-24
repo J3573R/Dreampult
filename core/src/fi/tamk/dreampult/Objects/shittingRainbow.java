@@ -22,6 +22,8 @@ public class ShittingRainbow {
     float width;
     float height;
 
+    float rotation;
+
     GameLoop loop;
 
     float timer = 0;
@@ -32,6 +34,7 @@ public class ShittingRainbow {
         stateTime = 0;
         width = 4; 
         height = 1;
+        rotation = 0;
         create(2, 4);
     }
 
@@ -62,13 +65,14 @@ public class ShittingRainbow {
     }
     public void draw(SpriteBatch batch) {
         if(timer > 0) {
+            rotation = loop.player.torso.body.getLinearVelocity().y * 5;
             batch.draw(current,
                     loop.player.torso.body.getPosition().x - 4,
                     loop.player.torso.body.getPosition().y - 0.8f,
-                    0, 0,
+                    4, 0.5f,
                     width, height,
                     1, 1,
-                    0);
+                    rotation);
         }
     }
 

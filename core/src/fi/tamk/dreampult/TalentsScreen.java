@@ -108,7 +108,7 @@ public class TalentsScreen extends ScreenAdapter {
             resetButton.buttonImage = img;
             returnButton.buttonImage = img;
 
-            talents = loop.talents;
+            talents = loop.game.talents;
             initialized = true;
         }
     }

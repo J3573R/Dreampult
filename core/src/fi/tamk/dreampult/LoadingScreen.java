@@ -109,11 +109,11 @@ public class LoadingScreen implements Screen {
                 break;
             case 2:
                 game.assets.loadLevel2();
-                background = game.assets.manager.get("images/background/level1/layer4.png", Texture.class);
+                background = game.assets.manager.get("images/background/level2/layer4.png", Texture.class);
                 break;
             case 3:
                 game.assets.loadLevel3();
-                background = game.assets.manager.get("images/background/level1/layer4.png", Texture.class);
+                background = game.assets.manager.get("images/background/level3/layer4.png", Texture.class);
                 break;
         }
 

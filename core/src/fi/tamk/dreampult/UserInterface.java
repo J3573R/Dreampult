@@ -35,8 +35,13 @@ public class UserInterface {
     ShapeRenderer shapeRenderer;
     Rectangle background;
 
+    float buttonWidth;
+    float buttonHeight;
+    float centeredX;
+
     Button title;
     Button scoreTitle;
+    Button score;
     public Button resumeButton;
     public Button restartButton;
     public Button mainMenuButton;
@@ -51,6 +56,7 @@ public class UserInterface {
     public UserInterface(GameLoop loop) {
         this.loop = loop;
         shapeRenderer = new ShapeRenderer();
+        score = new Button(loop.fontHandler);
 
         unlocks = new Unlocks();
 
@@ -65,8 +71,26 @@ public class UserInterface {
         //middle = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         createBackground();
+
+        buttonWidth = 200;
+        buttonHeight = 50;
+        centeredX = background.width / 2 - buttonWidth / 2;
+
         createPauseMenu();
         createScoreScreen();
+    }
+
+    public void refreshScore(){
+        float highscore = loop.scores.getScore(loop.map.getLevel());
+        int hour = (int) (highscore * 0.8f) / 60;
+        int minutes = (int) (highscore * 0.8f) % 60;
+        String slept = hour + "h " + minutes + "min";
+        score.setButton(background.x + centeredX,
+                background.y + (background.height - buttonHeight) / 10 * 8 + 5,
+                buttonWidth,
+                buttonHeight,
+                loop.game.localization.myBundle.get("highscore") + "\n" + slept);
+        score.setAlpha(0);
     }
 
     public void changeLang(){
@@ -108,6 +132,7 @@ public class UserInterface {
             shapeRenderer.end();
             batch.begin();
             title.drawShape(shapeRenderer, batch);
+            score.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);
             resumeButton.drawShape(shapeRenderer, batch);
             mainMenuButton.drawShape(shapeRenderer, batch);
@@ -127,6 +152,7 @@ public class UserInterface {
             shapeRenderer.end();
             batch.begin();
             scoreTitle.drawShape(shapeRenderer, batch);
+            score.drawShape(shapeRenderer, batch);
             talentsButton.drawShape(shapeRenderer, batch);
             restartButton.drawShape(shapeRenderer, batch);
             mainMenuButton.drawShape(shapeRenderer, batch);
@@ -136,7 +162,7 @@ public class UserInterface {
 
     private void createBackground() {
         background = new Rectangle();
-        background.set(960 / 2 - 350 / 2, 560 / 2 - 300 / 2, 300, 350);
+        background.set(960 / 2 - 350 / 2, 560 / 2 - 400 / 2, 350, 400);
     }
 
     private void createPauseMenu() {
@@ -152,26 +178,26 @@ public class UserInterface {
 
         resumeButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 9 * 7,
+                background.y + (background.height - buttonHeight) / 10 * 6 + 5,
                 buttonWidth,
                 buttonHeight,
                 loop.game.localization.myBundle.get("resume"));
 
         restartButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 9 * 5,
+                background.y + (background.height - buttonHeight) / 10 * 4 + 5,
                 buttonWidth, buttonHeight,
                 loop.game.localization.myBundle.get("restart"));
 
         mainMenuButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 9 * 3,
+                background.y + (background.height - buttonHeight) / 10 * 2 + 5,
                 buttonWidth, buttonHeight,
                 loop.game.localization.myBundle.get("mainMenu"));
 
         quitButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 9,
+                background.y + 5,
                 buttonWidth, buttonHeight,
                 loop.game.localization.myBundle.get("quit"));
     }
@@ -189,7 +215,7 @@ public class UserInterface {
 
         talentsButton = new Button(loop.fontHandler,
                 background.x + centeredX,
-                background.y + (background.height - buttonHeight) / 9 * 7,
+                background.y + (background.height - buttonHeight) / 10 * 6 + 5,
                 buttonWidth, buttonHeight,
                 loop.game.localization.myBundle.get("talents"));
     }

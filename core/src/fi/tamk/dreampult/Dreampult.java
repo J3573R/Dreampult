@@ -30,6 +30,8 @@ public class Dreampult extends Game {
     public GameLoop gameLoop;
     public TalentsScreen talentsScreen;
 
+    public Talents talents;
+
     /**
      * Create and initialize Screen.
      */
@@ -39,6 +41,7 @@ public class Dreampult extends Game {
 
 		collection = new Collection();
 		batch = new SpriteBatch();
+        talents = new Talents();
 
         GameCamera = new OrthographicCamera();
         GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
@@ -53,6 +56,9 @@ public class Dreampult extends Game {
         loadingScreen = new LoadingScreen(this);
         gameLoop = new GameLoop(this, assets.manager);
         talentsScreen = new TalentsScreen(gameLoop);
+        talentsScreen.init();
+
+
 
         setScreen(titleScreen);
 	}

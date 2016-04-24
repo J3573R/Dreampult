@@ -23,7 +23,6 @@ public class AssetHandler {
         loadCatapult();
         loadClothes();
         loadAssets();
-        loadTalents();
     }
 
     public void loadPlayer(){
@@ -69,7 +68,7 @@ public class AssetHandler {
         manager.load("images/background/level1/layer4.png", Texture.class);
         manager.load("images/background/level2/layer4.png", Texture.class);
         manager.load("images/background/level3/layer4.png", Texture.class);
-
+        loadTalents();
 
 //        manager.load("audio/soundEffects/positive.wav", Sound.class);
 //        manager.load("audio/soundEffects/negative.wav", Sound.class);

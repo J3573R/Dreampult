@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import fi.tamk.dreampult.Helpers.Button;
 
 import java.util.Locale;
 
@@ -47,6 +48,11 @@ public class TitleScreen implements Screen {
     public Rectangle secondLevelRectangle;
     public Rectangle thirdLevelRectangle;
 
+    public Button talentButton;
+    public Button resetProgress;
+
+    Unlocks unlocks;
+
     Vector3 touchPoint;
 
     public TitleScreen(Dreampult game) {
@@ -76,11 +82,20 @@ public class TitleScreen implements Screen {
 
         soundRectangle = new Rectangle(0, 0, 100, 100);
 
-        firstLevelRectangle = new Rectangle(180, 80, 180, 120);
-        secondLevelRectangle = new Rectangle(360, 80, 180, 120);
-        thirdLevelRectangle = new Rectangle(540, 80, 180, 120);
+        firstLevelRectangle = new Rectangle(960 / 5, 80, 180, 120);
+        secondLevelRectangle = new Rectangle(960 / 5 * 2, 80, 180, 120);
+        thirdLevelRectangle = new Rectangle(960 / 5 * 3, 80, 180, 120);
+
+        talentButton = new Button(game.fontHandler, 960 / 2 - 150 / 2, 20, 150, 50, game.localization.myBundle.get("talents"));
+        talentButton.setText(game.localization.myBundle.get("talents"));
+        talentButton.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
+
+        resetProgress = new Button(game.fontHandler, 960 - 280, 540 - 50, 280, 50, game.localization.myBundle.get("talents"));
+        resetProgress.setText(game.localization.myBundle.get("reset"));
+        resetProgress.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
 
         touchPoint = new Vector3();
+        unlocks = new Unlocks();
     }
 
     @Override
@@ -124,8 +139,8 @@ public class TitleScreen implements Screen {
 
             } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
                 game.localization.changeLang();
-
-
+                talentButton.setText(game.localization.myBundle.get("talents"));
+                resetProgress.setText(game.localization.myBundle.get("reset"));
             }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
                 System.out.println("Sound button pressed");
                 soundPressed = true;
@@ -134,8 +149,13 @@ public class TitleScreen implements Screen {
                 System.out.println("Sound button pressed");
                 soundPressed = false;
 
-            } else {
-                System.out.println(touchPoint.x + " : " + touchPoint.y);
+            } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
+                game.collection.showTalentScreen();
+                game.setScreen(game.talentsScreen);
+            } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
+                game.talents.reset();
+                unlocks.reset();
+                game.gameLoop.ui.starButton.setText(String.valueOf(unlocks.getStars()));
             }
         }
 
@@ -150,6 +170,8 @@ public class TitleScreen implements Screen {
         game.batch.draw(levelTwo, secondLevelRectangle.x, secondLevelRectangle.y, 180, 130);
         game.batch.draw(levelTree, thirdLevelRectangle.x, thirdLevelRectangle.y, 180, 130);
 
+        talentButton.drawImage(game.batch);
+        resetProgress.drawImage(game.batch);
 
         if(soundPressed) {
             game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),

@@ -1,7 +1,6 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Maps.Map;
@@ -53,6 +51,7 @@ public class GameLoop extends ScreenAdapter {
     public Catapult catapult;
     public Talents talents;
     public Popup tutorial;
+    Highscores scores;
 
     public UserInterface ui;
 
@@ -102,7 +101,7 @@ public class GameLoop extends ScreenAdapter {
     }
 
     public void init(){
-        talents = new Talents();
+        talents = game.talents;
         point = new Vector2();
         center = new Vector2();
 
@@ -124,9 +123,10 @@ public class GameLoop extends ScreenAdapter {
         shittingRainbow = new ShittingRainbow(this);
         debug = new Box2DDebugRenderer();
         layout = new GlyphLayout();
+        scores = new Highscores();
 
         tutorial = new Popup(fontHandler);
-        tutorial.bg = game.assets.manager.get("images/ui/text_button_grey.png", Texture.class);
+        tutorial.bg = game.assets.manager.get("images/talents/box.png", Texture.class);
 
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
@@ -141,6 +141,7 @@ public class GameLoop extends ScreenAdapter {
         this.map = map;
         ui.changeLang();
         map.initialize(this);
+        ui.refreshScore();
 
         game.GameCamera.position.set(8f, 4.5f, 0);
         game.GameCamera.update();
@@ -245,6 +246,10 @@ public class GameLoop extends ScreenAdapter {
 
                 if(timer > 2f) {
                     if(retry <= 0){
+                        if(player.torso.body.getPosition().x > scores.getScore(map.getLevel())) {
+                            scores.setScore(map.getLevel(), player.torso.body.getPosition().x);
+                            ui.refreshScore();
+                        }
                         collection.pause();
                         collection.showScoreScreen();
                     } else {
@@ -342,6 +347,7 @@ public class GameLoop extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        bounces = 0;
         map.dispose();
         System.gc();
     }

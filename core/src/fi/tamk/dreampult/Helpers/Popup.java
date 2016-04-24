@@ -1,10 +1,7 @@
 package fi.tamk.dreampult.Helpers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -86,7 +83,10 @@ public class Popup {
 
     public void draw(SpriteBatch batch) {
         if(visible) {
+            Color c = batch.getColor();
+            batch.setColor(c.r, c.g, c.b, 0.8f);
             batch.draw(bg, texturePosition.x - width / 2, texturePosition.y, width, height);
+            batch.setColor(c.r, c.g, c.b, 1f);
             fontHandler.font.draw(batch, layout, fontPosition.x - width / 2,  fontPosition.y);
         }
     }

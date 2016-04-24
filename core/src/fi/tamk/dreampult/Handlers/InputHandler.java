@@ -184,7 +184,7 @@ public class InputHandler extends InputAdapter {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         loop.UserInterfaceCamera.unproject(touchPos);
 
-        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y)) {
+        if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y) && !loop.collection.launch) {
             loop.ui.shootButtonDown();
             loop.tutorial.setText(bundle.get("tutorial2"));
             loop.meter.show();
