@@ -86,8 +86,8 @@ public class Popup {
             Color c = batch.getColor();
             batch.setColor(c.r, c.g, c.b, 0.8f);
             batch.draw(bg, texturePosition.x - width / 2, texturePosition.y, width, height);
-            batch.setColor(c.r, c.g, c.b, 1f);
             fontHandler.font.draw(batch, layout, fontPosition.x - width / 2,  fontPosition.y);
+            batch.setColor(c.r, c.g, c.b, 1f);
         }
     }
 

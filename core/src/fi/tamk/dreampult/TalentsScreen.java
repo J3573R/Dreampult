@@ -59,8 +59,6 @@ public class TalentsScreen extends ScreenAdapter {
     boolean extraSelected;
     boolean glideSelected;
 
-    I18NBundle bundle;
-
     public TalentsScreen(GameLoop game){
         loop = game;
 

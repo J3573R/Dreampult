@@ -65,7 +65,7 @@ public class ShittingRainbow {
     }
     public void draw(SpriteBatch batch) {
         if(timer > 0) {
-            rotation = loop.player.torso.body.getLinearVelocity().y * 5;
+            rotation = loop.player.torso.body.getLinearVelocity().y * 3;
             batch.draw(current,
                     loop.player.torso.body.getPosition().x - 4,
                     loop.player.torso.body.getPosition().y - 0.8f,

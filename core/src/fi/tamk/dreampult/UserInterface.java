@@ -68,7 +68,6 @@ public class UserInterface {
         pauseMenu = this.loop.assets.get("images/ui/pause_menu.png");
 
         middle = new Vector2(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
-        //middle = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         createBackground();
 
@@ -78,6 +77,11 @@ public class UserInterface {
 
         createPauseMenu();
         createScoreScreen();
+    }
+
+    public void init(){
+        starButton.setText(String.valueOf(loop.game.unlocks.getStars()));
+        System.out.println(loop.game.unlocks.getStars());
     }
 
     public void refreshScore(){

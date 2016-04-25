@@ -58,14 +58,27 @@ public class TitleScreen implements Screen {
     public TitleScreen(Dreampult game) {
         this.game = game;
 
+
+
         this.GameCamera = game.GameCamera;
         this.userInterfaceCamera = game.UserInterfaceCamera;
 
         background = game.assets.manager.get("images/title/Menuscreen.png", Texture.class);
 
+        unlocks = game.unlocks;
+
         levelOne = game.assets.manager.get("images/title/level1_open.png", Texture.class);
-        levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
-        levelTree = game.assets.manager.get("images/title/level3_open.png", Texture.class);
+        if(unlocks.isLevel2()) {
+            levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
+        } else {
+            levelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
+        }
+
+        if(unlocks.isLevel3()) {
+            levelTree = game.assets.manager.get("images/title/level3_open.png", Texture.class);
+        } else {
+            levelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
+        }
 
         lockedLevelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
         lockedLevelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
@@ -95,12 +108,25 @@ public class TitleScreen implements Screen {
         resetProgress.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
 
         touchPoint = new Vector3();
-        unlocks = new Unlocks();
     }
 
     @Override
     public void show() {
+        refreshLevels();
+    }
 
+    public void refreshLevels(){
+        if(unlocks.isLevel2()) {
+            levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
+        } else {
+            levelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
+        }
+
+        if(unlocks.isLevel3()) {
+            levelTree = game.assets.manager.get("images/title/level3_open.png", Texture.class);
+        } else {
+            levelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
+        }
     }
 
     @Override
@@ -119,7 +145,7 @@ public class TitleScreen implements Screen {
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(1);
 
-            } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y)){
+            } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y) && unlocks.isLevel2()){
                 System.out.println("Level 2 loading started");
 
                 game.loadingScreen.questionHandler.clearQuestions();
@@ -128,7 +154,7 @@ public class TitleScreen implements Screen {
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(2);
 
-            } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y)){
+            } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y) && unlocks.isLevel3()){
                 System.out.println("Level 3 loading started");
 
                 game.loadingScreen.questionHandler.clearQuestions();
@@ -155,7 +181,7 @@ public class TitleScreen implements Screen {
             } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
                 game.talents.reset();
                 unlocks.reset();
-                game.gameLoop.ui.starButton.setText(String.valueOf(unlocks.getStars()));
+                refreshLevels();
             }
         }
 

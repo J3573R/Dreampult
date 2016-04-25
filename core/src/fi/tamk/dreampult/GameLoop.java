@@ -142,6 +142,7 @@ public class GameLoop extends ScreenAdapter {
         ui.changeLang();
         map.initialize(this);
         ui.refreshScore();
+        ui.init();
 
         game.GameCamera.position.set(8f, 4.5f, 0);
         game.GameCamera.update();
@@ -246,6 +247,16 @@ public class GameLoop extends ScreenAdapter {
 
                 if(timer > 2f) {
                     if(retry <= 0){
+                        int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
+                        if(map.getLevel() == 1 && hour >= 8) {
+                            game.unlocks.setLevel2(true);
+                            game.unlocks.save();
+                        }
+                        if(map.getLevel() == 2 && hour >= 8) {
+                            game.unlocks.setLevel3(true);
+                            game.unlocks.save();
+                        }
+
                         if(player.torso.body.getPosition().x > scores.getScore(map.getLevel())) {
                             scores.setScore(map.getLevel(), player.torso.body.getPosition().x);
                             ui.refreshScore();
