@@ -74,11 +74,11 @@ public class Bodypart {
         FixtureDef def = new FixtureDef();
         def.density = density;
         def.friction = 7f;
-        if(game.talents.isGrowSlippery()) {
+        if(game.saves.isGrowSlippery()) {
             def.friction = 3f;
         }
         def.restitution = 0.3f;
-        if(game.talents.isGrowBouncy()) {
+        if(game.saves.isGrowBouncy()) {
             def.restitution = 0.8f;
         }
         def.isSensor = sensor;
@@ -114,7 +114,7 @@ public class Bodypart {
                     img.getWidth(), img.getHeight(), // srcWidth, srcHeight
                     flip, flip); // flip x, flip y
 
-        if(game.talents.isPyjamaGlide()){
+        if(game.saves.isPyjamaGlide()){
             clothes.draw(batch, this);
         }
     }

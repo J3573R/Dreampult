@@ -1,20 +1,23 @@
 package fi.tamk.dreampult.Handlers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.GameLoop;
+import fi.tamk.dreampult.Helpers.Saves;
 import fi.tamk.dreampult.Objects.Collision.Objects;
 import fi.tamk.dreampult.Objects.HitEffect;
-import fi.tamk.dreampult.Unlocks;
 
 /**
  * Created by root on 25.2.2016.
  */
 public class CollisionHandler implements ContactListener {
     GameLoop game;
+    Saves saves;
 
     public CollisionHandler (GameLoop game) {
         this.game = game;
+        saves = game.game.saves;
     }
     @Override
     public void beginContact(Contact contact) {
@@ -25,6 +28,8 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("pig")) ||
                (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
+                game.shittingRainbow.stop();
+                game.game.sounds.play("pig");
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 game.player.setBodypartVelocity(new Vector2(0, 0));
                 vel.set(15, -15);
@@ -34,6 +39,8 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("cow")) ||
                     (a.equalsIgnoreCase("cow") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
+                game.shittingRainbow.stop();
+                game.game.sounds.play("moo");
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 game.player.torso.body.setAngularVelocity(-360);
                 vel.set(vel.x, -20);
@@ -43,6 +50,7 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("turtle")) ||
                     (a.equalsIgnoreCase("turtle") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
+                game.shittingRainbow.stop();
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 vel.set(vel.x / 100, vel.y / 100);
                 game.player.torso.body.setAngularVelocity(180);
@@ -52,6 +60,7 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("unicorn")) ||
                     (a.equalsIgnoreCase("unicorn") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
+                game.shittingRainbow.play();
                 game.player.setBodypartVelocity(new Vector2(0, 0));
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 vel.set(70, 10);
@@ -61,6 +70,7 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("bed")) ||
                     (a.equalsIgnoreCase("bed") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
+                game.game.sounds.play("ground");
                 game.player.setBodypartVelocity(new Vector2(0, 0));
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 vel.set(30, 30);
@@ -70,7 +80,10 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("clock")) ||
                     (a.equalsIgnoreCase("clock") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
+                game.shittingRainbow.stop();
                 game.retry = 0;
+                game.game.sounds.play("alarm");
+                Gdx.input.vibrate(3000);
                 Vector2 vel = new Vector2(0, 0);
                 game.player.torso.body.setLinearVelocity(vel);
                 game.player.head.body.setLinearVelocity(vel);
@@ -83,10 +96,9 @@ public class CollisionHandler implements ContactListener {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("star")) ||
                     (a.equalsIgnoreCase("star") && b.equalsIgnoreCase("torso"))) {
                 Body star;
-                Unlocks unlocks = new Unlocks();
-                unlocks.addStar();
-                unlocks.save();
-                game.ui.starButton.setText(String.valueOf(unlocks.getStars()));
+                saves.addStar();
+                game.ui.starButton.setText(String.valueOf(saves.getStars()));
+                game.game.sounds.play("star");
                 if(a.equals("star")) {
                     star = contact.getFixtureA().getBody();
                 } else  {

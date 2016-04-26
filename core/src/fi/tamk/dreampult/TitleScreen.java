@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import fi.tamk.dreampult.Helpers.Button;
+import fi.tamk.dreampult.Helpers.Saves;
 
 import java.util.Locale;
 
@@ -51,7 +52,7 @@ public class TitleScreen implements Screen {
     public Button talentButton;
     public Button resetProgress;
 
-    Unlocks unlocks;
+    Saves saves;
 
     Vector3 touchPoint;
 
@@ -65,16 +66,16 @@ public class TitleScreen implements Screen {
 
         background = game.assets.manager.get("images/title/Menuscreen.png", Texture.class);
 
-        unlocks = game.unlocks;
+        saves = game.saves;
 
         levelOne = game.assets.manager.get("images/title/level1_open.png", Texture.class);
-        if(unlocks.isLevel2()) {
+        if(saves.isLevel2()) {
             levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
         } else {
             levelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
         }
 
-        if(unlocks.isLevel3()) {
+        if(saves.isLevel3()) {
             levelTree = game.assets.manager.get("images/title/level3_open.png", Texture.class);
         } else {
             levelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
@@ -116,13 +117,13 @@ public class TitleScreen implements Screen {
     }
 
     public void refreshLevels(){
-        if(unlocks.isLevel2()) {
+        if(saves.isLevel2()) {
             levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
         } else {
             levelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
         }
 
-        if(unlocks.isLevel3()) {
+        if(saves.isLevel3()) {
             levelTree = game.assets.manager.get("images/title/level3_open.png", Texture.class);
         } else {
             levelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
@@ -145,7 +146,7 @@ public class TitleScreen implements Screen {
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(1);
 
-            } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y) && unlocks.isLevel2()){
+            } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel2()){
                 System.out.println("Level 2 loading started");
 
                 game.loadingScreen.questionHandler.clearQuestions();
@@ -154,7 +155,7 @@ public class TitleScreen implements Screen {
                 game.setScreen(game.loadingScreen);
                 game.loadingScreen.reset(2);
 
-            } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y) && unlocks.isLevel3()){
+            } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel3()){
                 System.out.println("Level 3 loading started");
 
                 game.loadingScreen.questionHandler.clearQuestions();
@@ -167,20 +168,19 @@ public class TitleScreen implements Screen {
                 game.localization.changeLang();
                 talentButton.setText(game.localization.myBundle.get("talents"));
                 resetProgress.setText(game.localization.myBundle.get("reset"));
-            }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && !soundPressed) {
-                System.out.println("Sound button pressed");
-                soundPressed = true;
-
-            } else if (((soundRectangle.contains(touchPoint.x, touchPoint.y))) && soundPressed) {
-                System.out.println("Sound button pressed");
-                soundPressed = false;
+            }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y)))) {
+                if(saves.getSounds() == saves.ON) {
+                    saves.setSounds(saves.OFF);
+                } else {
+                    saves.setSounds(saves.ON);
+                }
+                saves.save();
 
             } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
                 game.collection.showTalentScreen();
                 game.setScreen(game.talentsScreen);
             } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
-                game.talents.reset();
-                unlocks.reset();
+                game.saves.reset();
                 refreshLevels();
             }
         }
@@ -199,7 +199,7 @@ public class TitleScreen implements Screen {
         talentButton.drawImage(game.batch);
         resetProgress.drawImage(game.batch);
 
-        if(soundPressed) {
+        if(saves.getSounds() == saves.OFF) {
             game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),
                             soundRectangle.getWidth(), soundRectangle.getHeight());
         } else {

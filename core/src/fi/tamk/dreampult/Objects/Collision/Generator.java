@@ -82,6 +82,11 @@ public class Generator {
                         mon.initalizePosition(world, position, type);
                         objects.add(mon);
                         setInterval(interval + increment);
+                        if(interval < 5) {
+                            setInterval(5);
+                        }
+
+
 
                         reservedPositions.add(position);
 

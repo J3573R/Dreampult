@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
+import fi.tamk.dreampult.Helpers.Saves;
 
 /**
  * Created by DV6-6B20 on 12.4.2016.
@@ -41,7 +42,7 @@ public class TalentsScreen extends ScreenAdapter {
     Button resetButton;
     Button returnButton;
 
-    Talents talents;
+    Saves saves;
 
     boolean initialized;
 
@@ -61,6 +62,7 @@ public class TalentsScreen extends ScreenAdapter {
 
     public TalentsScreen(GameLoop game){
         loop = game;
+        saves = game.game.saves;
 
         userInterfaceCamera = game.UserInterfaceCamera;
         font = loop.fontHandler;
@@ -79,6 +81,7 @@ public class TalentsScreen extends ScreenAdapter {
     }
 
     public void init() {
+        saves = loop.game.saves;
         if(!initialized) {
             bouncyIcon = loop.assets.get("images/talents/bouncy1.png", Texture.class);
             catapultIcon = loop.assets.get("images/talents/catapult1.png", Texture.class);
@@ -106,7 +109,6 @@ public class TalentsScreen extends ScreenAdapter {
             resetButton.buttonImage = img;
             returnButton.buttonImage = img;
 
-            talents = loop.game.talents;
             initialized = true;
         }
     }
@@ -120,9 +122,9 @@ public class TalentsScreen extends ScreenAdapter {
             if (bouncyRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle One touched");
 
-                if(!talents.isGrowBouncy()) {
-                    talents.enableGrowBouncy();
-                    talents.save();
+                if(!saves.isGrowBouncy()) {
+                    saves.enableGrowBouncy();
+                    saves.save();
                     talentSelected = true;
                     bounceSelected = true;
                     slipSelected = false;
@@ -144,9 +146,9 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Two touched");
 
-                if(!talents.isGrowSlippery()) {
-                    talents.enableGrowSlippery();
-                    talents.save();
+                if(!saves.isGrowSlippery()) {
+                    saves.enableGrowSlippery();
+                    saves.save();
                     talentSelected = true;
                     bounceSelected = false;
                     slipSelected = true;
@@ -168,9 +170,9 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (boostRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Three touched");
 
-                if(!talents.isBoostLaunch()) {
-                    talents.enableBoostLaunch();
-                    talents.save();
+                if(!saves.isBoostLaunch()) {
+                    saves.enableBoostLaunch();
+                    saves.save();
                     talentSelected = true;
                     bounceSelected = false;
                     slipSelected = false;
@@ -192,9 +194,9 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Four touched");
 
-                if(!talents.isAdditionalLaunch()) {
-                    talents.enableAdditionalLaunch();
-                    talents.save();
+                if(!saves.isAdditionalLaunch()) {
+                    saves.enableAdditionalLaunch();
+                    saves.save();
                     talentSelected = true;
                     bounceSelected = false;
                     slipSelected = false;
@@ -216,9 +218,9 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Five touched");
 
-                if(!talents.isExtraBounces()) {
-                    talents.enableExtraBounces();
-                    talents.save();
+                if(!saves.isExtraBounces()) {
+                    saves.enableExtraBounces();
+                    saves.save();
                     talentSelected = true;
                     bounceSelected = false;
                     slipSelected = false;
@@ -240,9 +242,9 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Rectangle Six touched");
 
-                if(!talents.isPyjamaGlide()) {
-                    talents.enablePyjamaGlide();
-                    talents.save();
+                if(!saves.isPyjamaGlide()) {
+                    saves.enablePyjamaGlide();
+                    saves.save();
                     talentSelected = true;
                     bounceSelected = false;
                     slipSelected = false;
@@ -264,7 +266,7 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (resetButton.button.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Reset button pressed");
                 //resetProgress();
-                talents.reset();
+                saves.resetTalents();
                 talentSelected = false;
                 bounceSelected = false;
                 slipSelected = false;
@@ -276,7 +278,7 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
                 loop.game.collection.hideTalentScreen();
                 //savePreferences();
-                talents.save();
+                saves.save();
                 talentSelected = false;
                 bounceSelected = false;
                 slipSelected = false;
@@ -347,7 +349,7 @@ public class TalentsScreen extends ScreenAdapter {
 
         loop.game.batch.end();
 
-        if(!talents.isGrowBouncy()) {
+        if(!saves.isGrowBouncy()) {
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
@@ -357,7 +359,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.end();
         }
 
-        if(!talents.isGrowSlippery()) {
+        if(!saves.isGrowSlippery()) {
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
@@ -367,7 +369,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.end();
         }
 
-        if(!talents.isBoostLaunch()) {
+        if(!saves.isBoostLaunch()) {
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
@@ -377,7 +379,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.end();
         }
 
-        if(!talents.isAdditionalLaunch()) {
+        if(!saves.isAdditionalLaunch()) {
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
@@ -387,7 +389,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.end();
         }
 
-        if(!talents.isExtraBounces()) {
+        if(!saves.isExtraBounces()) {
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
@@ -397,7 +399,7 @@ public class TalentsScreen extends ScreenAdapter {
             shapeRenderer.end();
         }
 
-        if(!talents.isPyjamaGlide()) {
+        if(!saves.isPyjamaGlide()) {
             Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);

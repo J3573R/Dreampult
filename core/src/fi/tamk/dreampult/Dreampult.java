@@ -13,6 +13,8 @@ import java.util.Locale;
 import fi.tamk.dreampult.Handlers.AssetHandler;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.Localization;
+import fi.tamk.dreampult.Helpers.Saves;
+import fi.tamk.dreampult.Helpers.Sounds;
 
 public class Dreampult extends Game {
     public AssetHandler assets = new AssetHandler();
@@ -30,8 +32,8 @@ public class Dreampult extends Game {
     public GameLoop gameLoop;
     public TalentsScreen talentsScreen;
 
-    public Talents talents;
-    public Unlocks unlocks;
+    public Saves saves;
+    public Sounds sounds;
 
     /**
      * Create and initialize Screen.
@@ -42,8 +44,7 @@ public class Dreampult extends Game {
 
 		collection = new Collection();
 		batch = new SpriteBatch();
-        talents = new Talents();
-        unlocks = new Unlocks();
+        saves = new Saves();
 
         GameCamera = new OrthographicCamera();
         GameCamera.setToOrtho(false, collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT);
@@ -51,8 +52,10 @@ public class Dreampult extends Game {
         UserInterfaceCamera.setToOrtho(false, 960, 540);
 
         assets.loadUi();
+        assets.loadSoundEffects();
         assets.manager.finishLoading();
 
+        sounds = new Sounds(assets);
         fontHandler = new FontHandler();
         titleScreen = new TitleScreen(this);
         loadingScreen = new LoadingScreen(this);

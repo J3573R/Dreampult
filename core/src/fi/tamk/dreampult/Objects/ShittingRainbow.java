@@ -21,7 +21,10 @@ public class ShittingRainbow {
     float stateTime;
     float width;
     float height;
+    float originX;
+    float originY;
 
+    public boolean manualRotation = false;
     float rotation;
 
     GameLoop loop;
@@ -32,10 +35,23 @@ public class ShittingRainbow {
         this.sheet = loop.assets.get("images/player/rainbow_frames.png", Texture.class);
         this.loop = loop;
         stateTime = 0;
-        width = 4; 
+        width = 4;
         height = 1;
+        originX = 4;
+        originY = 0.5f;
         rotation = 0;
         create(2, 4);
+    }
+
+    public void setSize(float width, float height){
+        this.width = width;
+        this.height = height;
+        this.originX = width;
+        this.originY = height / 2;
+    }
+
+    public void setRotation(float rotation){
+        this.rotation = rotation;
     }
 
     public void create(int FRAME_COLS, int FRAME_ROWS) {
@@ -56,6 +72,10 @@ public class ShittingRainbow {
         timer = 3;
     }
 
+    public void stop(){
+        timer = 0;
+    }
+
     public void update(float delta) {
         if(timer > 0) {
             timer -= Gdx.graphics.getDeltaTime();
@@ -65,16 +85,22 @@ public class ShittingRainbow {
     }
     public void draw(SpriteBatch batch) {
         if(timer > 0) {
-            rotation = loop.player.torso.body.getLinearVelocity().y * 3;
+            if(!manualRotation) {
+                rotation = loop.player.torso.body.getLinearVelocity().y * 3;
+            }
+
             batch.draw(current,
-                    loop.player.torso.body.getPosition().x - 4,
-                    loop.player.torso.body.getPosition().y - 0.8f,
-                    4, 0.5f,
+                    loop.player.torso.body.getPosition().x - originX,
+                    loop.player.torso.body.getPosition().y - originY - 0.3f,
+                    originX, originY,
                     width, height,
                     1, 1,
                     rotation);
         }
     }
 
+    public float getTime(){
+        return timer;
+    }
 
 }

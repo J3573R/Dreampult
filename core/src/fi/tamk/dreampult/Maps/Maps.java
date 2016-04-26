@@ -139,8 +139,8 @@ public class Maps {
     }
 
     public void bedGeneration(AssetManager assets, ArrayList<Generator> generators) {
-        generators.add(new Generator(assets, "bed", 5, 2, new Vector2(1, 0), new Vector2(15, 0)));
-        generators.add(new Generator(assets, "bed", 20, 2, new Vector2(5, 0), new Vector2(1, 0)));
+        generators.add(new Generator(assets, "bed", 10, 3, new Vector2(1, 0), new Vector2(15, 0)));
+        generators.add(new Generator(assets, "bed", 20, 3, new Vector2(5, 0), new Vector2(1, 0)));
     }
 
     public void starGeneration(AssetManager assets, ArrayList<Generator> generators) {

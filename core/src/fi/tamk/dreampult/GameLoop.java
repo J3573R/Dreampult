@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Helpers.Popup;
+import fi.tamk.dreampult.Helpers.Saves;
 import fi.tamk.dreampult.Maps.Map;
 import fi.tamk.dreampult.Objects.HitEffect;
 import fi.tamk.dreampult.Objects.Launching.Arrow;
@@ -42,6 +43,7 @@ public class GameLoop extends ScreenAdapter {
     public HitEffect hit;
     public HitEffect bounce;
     public ShittingRainbow shittingRainbow;
+    public ShittingRainbow shittingMiniRainbow;
 
     public Box2DDebugRenderer debug;
     public WorldHandler worldHandler;
@@ -49,9 +51,9 @@ public class GameLoop extends ScreenAdapter {
     public CollisionHandler collision;
     public Meter meter;
     public Catapult catapult;
-    public Talents talents;
     public Popup tutorial;
-    Highscores scores;
+
+    public Saves saves;
 
     public UserInterface ui;
 
@@ -101,7 +103,7 @@ public class GameLoop extends ScreenAdapter {
     }
 
     public void init(){
-        talents = game.talents;
+        saves = game.saves;
         point = new Vector2();
         center = new Vector2();
 
@@ -121,9 +123,11 @@ public class GameLoop extends ScreenAdapter {
         bounce = new HitEffect(this, true);
         ui = new UserInterface(this);
         shittingRainbow = new ShittingRainbow(this);
+        shittingMiniRainbow = new ShittingRainbow(this);
+        shittingMiniRainbow.setSize(2, 0.5f);
+        shittingMiniRainbow.manualRotation = true;
         debug = new Box2DDebugRenderer();
         layout = new GlyphLayout();
-        scores = new Highscores();
 
         tutorial = new Popup(fontHandler);
         tutorial.bg = game.assets.manager.get("images/talents/box.png", Texture.class);
@@ -167,13 +171,13 @@ public class GameLoop extends ScreenAdapter {
         //player.setBodypartVelocity(zeroVel);
         //player.reset();
 
-        if(talents.isAdditionalLaunch() && secondLaunch == false) {
+        if(saves.isAdditionalLaunch() && secondLaunch == false) {
             retry = 1;
         } else {
             retry = 0;
         }
 
-        if(talents.isExtraBounces()) {
+        if(saves.isExtraBounces()) {
             bounces += 2;
         }
 
@@ -204,10 +208,7 @@ public class GameLoop extends ScreenAdapter {
             hit.update(Gdx.graphics.getDeltaTime());
             bounce.update(Gdx.graphics.getDeltaTime());
             shittingRainbow.update(Gdx.graphics.getDeltaTime());
-
-            if(player.torso.body.getLinearVelocity().x > 25) {
-                shittingRainbow.play();
-            }
+            shittingMiniRainbow.update(Gdx.graphics.getDeltaTime());
 
             if (player.torso.body.getLinearVelocity().x < 0) {
                 player.torso.body.setLinearVelocity(0, player.torso.body.getLinearVelocity().y);
@@ -231,16 +232,33 @@ public class GameLoop extends ScreenAdapter {
                     timer = 0;
                 }
 
-                if(gliding && talents.isPyjamaGlide()) {
+                if(gliding && saves.isPyjamaGlide() && inputHandler.timer > 0.5f) {
                     if(Gdx.input.getY() < 270) {
+                        if(shittingRainbow.getTime() <= 0) {
+                            shittingMiniRainbow.play();
+                            shittingMiniRainbow.setRotation(0);
+                        } else {
+                            System.out.println(shittingRainbow.getTime());
+                            shittingMiniRainbow.stop();
+                        }
+
                         Vector2 vel = player.torso.body.getLinearVelocity();
-                        vel.set(vel.x, vel.y + 0.03f);
+                        vel.set(vel.x  + 0.05f, vel.y);
                         player.torso.body.setLinearVelocity(vel);
                     } else {
+                        if(shittingRainbow.getTime() <= 0) {
+                            shittingMiniRainbow.setRotation(-20);
+                            shittingMiniRainbow.play();
+                        } else {
+                            shittingMiniRainbow.stop();
+                        }
+
                         Vector2 vel = player.torso.body.getLinearVelocity();
-                        vel.set(vel.x, vel.y - 0.1f);
+                        vel.set(vel.x, vel.y - 0.5f);
                         player.torso.body.setLinearVelocity(vel);
                     }
+                } else {
+                    shittingMiniRainbow.stop();
                 }
 
                 inputHandler.timerTick();
@@ -249,16 +267,16 @@ public class GameLoop extends ScreenAdapter {
                     if(retry <= 0){
                         int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
                         if(map.getLevel() == 1 && hour >= 8) {
-                            game.unlocks.setLevel2(true);
-                            game.unlocks.save();
+                            saves.setLevel2(true);
+                            saves.save();
                         }
                         if(map.getLevel() == 2 && hour >= 8) {
-                            game.unlocks.setLevel3(true);
-                            game.unlocks.save();
+                            saves.setLevel3(true);
+                            saves.save();
                         }
 
-                        if(player.torso.body.getPosition().x > scores.getScore(map.getLevel())) {
-                            scores.setScore(map.getLevel(), player.torso.body.getPosition().x);
+                        if(player.torso.body.getPosition().x > saves.getScore(map.getLevel())) {
+                            saves.setScore(map.getLevel(), player.torso.body.getPosition().x);
                             ui.refreshScore();
                         }
                         collection.pause();
@@ -297,6 +315,7 @@ public class GameLoop extends ScreenAdapter {
             map.drawBackground(game.batch);
 
             shittingRainbow.draw(game.batch);
+            shittingMiniRainbow.draw(game.batch);
 
             meter.draw(game.batch);
 

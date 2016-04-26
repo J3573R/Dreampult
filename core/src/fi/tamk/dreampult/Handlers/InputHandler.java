@@ -19,7 +19,7 @@ public class InputHandler extends InputAdapter {
     public float point2;
 
     boolean timerOn;
-    float timer;
+    public float timer;
 
     I18NBundle bundle;
 
@@ -149,8 +149,9 @@ public class InputHandler extends InputAdapter {
             loop.ui.shootButtonUp();
             loop.tutorial.hide();
             float speed = loop.meter.scale * 15;
-            if(loop.talents.isBoostLaunch()) {
+            if(loop.saves.isBoostLaunch()) {
                 speed *= 2;
+                loop.shittingRainbow.play();
             }
             Vector2 force = new Vector2((float)Math.abs(Math.sin(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed,
                                         (float)Math.abs(Math.cos(loop.arrow.rotation)) * MathUtils.radiansToDegrees * speed);
@@ -160,6 +161,7 @@ public class InputHandler extends InputAdapter {
                 loop.player.torso.body.applyForceToCenter(force, true);
                 loop.arrow.hide();
                 loop.meter.hide();
+                loop.game.sounds.play("catapult");
             }
             loop.arrow.start();
         }

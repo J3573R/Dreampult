@@ -158,12 +158,13 @@ public class AssetHandler {
     }
 
     public void loadSoundEffects() {
-        manager.load("audio/soundEffects/analogAlarm.wav", Sound.class);
-        manager.load("audio/soundEffects/catapultLaunch2.wav", Sound.class);
-        manager.load("audio/soundEffects/cowMoo.wav", Sound.class);
-        manager.load("audio/soundEffects/hitGround.wav", Sound.class);
-        manager.load("audio/soundEffects/pigOink.wav", Sound.class);
-        manager.load("audio/soundEffects/victory1.wav", Sound.class);
-        manager.load("audio/soundEffects/victory2.mp3", Sound.class);
+        manager.load("audio/AnalogAlarm.wav", Sound.class);
+        manager.load("audio/CatapultLaunch2.wav", Sound.class);
+        manager.load("audio/CowMoo.wav", Sound.class);
+        manager.load("audio/HitGround.wav", Sound.class);
+        manager.load("audio/PigOink.wav", Sound.class);
+        manager.load("audio/Positive.wav", Sound.class);
+        manager.load("audio/Negative.wav", Sound.class);
+        manager.load("audio/Victory2.mp3", Sound.class);
     }
 }

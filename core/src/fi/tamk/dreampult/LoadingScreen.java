@@ -167,7 +167,9 @@ public class LoadingScreen implements Screen {
                         if (question.isTrue(true)) {
 //                        positiveSound.play();
                             game.gameLoop.bounces += 1;
+                            game.sounds.play("positive");
                         } else {
+                            game.sounds.play("negative");
 //                        negativeSound.play();
                         }
                         game.setScreen(game.gameLoop);
@@ -177,7 +179,9 @@ public class LoadingScreen implements Screen {
                         if (question.isTrue(false)) {
 //                        positiveSound.play();
                             game.gameLoop.bounces += 1;
+                            game.sounds.play("positive");
                         } else {
+                            game.sounds.play("negative");
 //                        negativeSound.play();
                         }
                         game.setScreen(game.gameLoop);

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
+import fi.tamk.dreampult.Helpers.Saves;
 
 /**
  * Created by Clown on 15.3.2016.
@@ -51,14 +52,14 @@ public class UserInterface {
 
     Texture shootTexture;
 
-    Unlocks unlocks;
+    Saves saves;
 
     public UserInterface(GameLoop loop) {
         this.loop = loop;
         shapeRenderer = new ShapeRenderer();
         score = new Button(loop.fontHandler);
 
-        unlocks = new Unlocks();
+        saves = loop.game.saves;
 
         createPauseButton();
         createSoundButton();
@@ -80,12 +81,12 @@ public class UserInterface {
     }
 
     public void init(){
-        starButton.setText(String.valueOf(loop.game.unlocks.getStars()));
-        System.out.println(loop.game.unlocks.getStars());
+        starButton.setText(String.valueOf(saves.getStars()));
+        System.out.println(saves.getStars());
     }
 
     public void refreshScore(){
-        float highscore = loop.scores.getScore(loop.map.getLevel());
+        float highscore = saves.getScore(loop.map.getLevel());
         int hour = (int) (highscore * 0.8f) / 60;
         int minutes = (int) (highscore * 0.8f) % 60;
         String slept = hour + "h " + minutes + "min";
@@ -252,7 +253,7 @@ public class UserInterface {
     }
 
     private void createStar() {
-        starButton = new Button(loop.fontHandler, 800, 460, 80, 80, String.valueOf(unlocks.getStars()));
+        starButton = new Button(loop.fontHandler, 800, 460, 80, 80, String.valueOf(saves.getStars()));
         starButton.buttonImage = loop.assets.get("images/objects/allies/star.png", Texture.class);
     }
 
