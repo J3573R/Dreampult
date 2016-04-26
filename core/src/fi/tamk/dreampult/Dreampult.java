@@ -5,8 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Locale;
 
@@ -35,12 +37,21 @@ public class Dreampult extends Game {
     public Saves saves;
     public Sounds sounds;
 
+    boolean splash;
+
+    float startTime;
+
+    public Texture splashEng;
+    public Texture splashFin;
+
     /**
      * Create and initialize Screen.
      */
 	@Override
 	public void create () {
         localization = new Localization(assets, this);
+
+        splash = true;
 
 		collection = new Collection();
 		batch = new SpriteBatch();
@@ -53,7 +64,11 @@ public class Dreampult extends Game {
 
         assets.loadUi();
         assets.loadSoundEffects();
+        assets.loadSplash();
         assets.manager.finishLoading();
+
+        splashEng = assets.manager.get("images/splashEng.png", Texture.class);
+        splashFin = assets.manager.get("images/splashFin.png", Texture.class);
 
         sounds = new Sounds(assets);
         fontHandler = new FontHandler();
@@ -63,9 +78,10 @@ public class Dreampult extends Game {
         talentsScreen = new TalentsScreen(gameLoop);
         talentsScreen.init();
 
+        startTime = 5;
 
+        //setScreen(titleScreen);
 
-        setScreen(titleScreen);
 	}
 
     public void MainMenu() {
@@ -87,6 +103,22 @@ public class Dreampult extends Game {
 	@Override
 	public void render () {
         super.render();
+
+        if(splash) {
+            System.out.println(assets.manager.update());
+            System.out.println(startTime + "-" + Gdx.graphics.getDeltaTime() + "=" + ((startTime - Gdx.graphics.getDeltaTime())));
+        }
+
+        if(splash) {
+                drawSplash();
+        }
+
+        if((startTime - Gdx.graphics.getDeltaTime()) <= 0 || (Gdx.input.justTouched())) {
+            splash = false;
+            setScreen(titleScreen);
+        }
+
+
         //Gdx.app.log("Java Heap", String.valueOf(Gdx.app.getJavaHeap()));
         //Gdx.app.log("Native Heap", String.valueOf(Gdx.app.getNativeHeap()));
         //Gdx.app.log("FPS:", String.valueOf(Gdx.graphics.getFramesPerSecond()));
@@ -97,5 +129,15 @@ public class Dreampult extends Game {
         System.gc();
     }
 
+    public void drawSplash() {
+        batch.setProjectionMatrix(UserInterfaceCamera.combined);
 
+        batch.begin();
+        if(localization.lang.equals("fin")) {
+            batch.draw(splashFin, 0, 0, 960, 540);
+        } else {
+            batch.draw(splashEng, 0, 0, 960, 540);
+        }
+        batch.end();
+    }
 }

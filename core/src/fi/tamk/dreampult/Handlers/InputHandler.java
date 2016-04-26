@@ -188,7 +188,7 @@ public class InputHandler extends InputAdapter {
 
         if(loop.game.collection.isGameOn() && loop.ui.shootButton.contains(touchPos.x, touchPos.y) && !loop.collection.launch) {
             loop.ui.shootButtonDown();
-            loop.tutorial.setText(bundle.get("tutorial2"));
+            loop.tutorial.setText(loop.game.localization.myBundle.get("tutorial2"));
             loop.meter.show();
             loop.arrow.pause();
         }

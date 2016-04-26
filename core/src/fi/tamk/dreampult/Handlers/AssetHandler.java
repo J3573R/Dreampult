@@ -25,6 +25,11 @@ public class AssetHandler {
         loadAssets();
     }
 
+    public void loadSplash() {
+        manager.load("images/splashEng.png", Texture.class);
+        manager.load("images/splashFin.png", Texture.class);
+    }
+
     public void loadPlayer(){
         manager.load("images/player/body.png", Texture.class);
         manager.load("images/player/headwithball.png", Texture.class);

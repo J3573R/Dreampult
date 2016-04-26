@@ -29,31 +29,50 @@ public class Sounds {
     }
 
     public void play(String sound) {
-        switch (sound) {
-            case "catapult":
-                catapult.play(1.0f);
-                break;
-            case "moo":
-                moo.play(1.0f);
-                break;
-            case "pig":
-                pig.play(1.0f);
-                break;
-            case "alarm":
-                alarm.play(1.0f);
-                break;
-            case "positive":
-                positive.play(1.0f);
-                break;
-            case "negative":
-                negative.play(1.0f);
-                break;
-            case "ground":
-                ground.play(1.0f);
-                break;
-            case "star":
-                star.play(1.0f);
-                break;
+//        switch (sound) {
+//            case "catapult":
+//                catapult.play(1.0f);
+//                break;
+//            case "moo":
+//                moo.play(1.0f);
+//                break;
+//            case "pig":
+//                pig.play(1.0f);
+//                break;
+//            case "alarm":
+//                alarm.play(1.0f);
+//                break;
+//            case "positive":
+//                positive.play(1.0f);
+//                break;
+//            case "negative":
+//                negative.play(1.0f);
+//                break;
+//            case "ground":
+//                ground.play(1.0f);
+//                break;
+//            case "star":
+//                star.play(1.0f);
+//                break;
+//        }
+
+        if(sound.equals("catapult")) {
+            catapult.play(1.0f);
+        } else if(sound.equals("moo")) {
+            moo.play(1.0f);
+        } else if(sound.equals("pig")) {
+            pig.play(1.0f);
+        } else if(sound.equals("alarm")) {
+            alarm.play(1.0f);
+        } else if(sound.equals("positive")) {
+            positive.play(1.0f);
+        } else if(sound.equals("negative")) {
+            negative.play(1.0f);
+        } else if(sound.equals("ground")) {
+            ground.play(1.0f);
+        } else if(sound.equals("star")) {
+            star.play(1.0f);
         }
+
     }
 }

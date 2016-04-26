@@ -19,6 +19,7 @@ public class Localization {
     Locale locale;
     AssetHandler assets;
     Dreampult game;
+    public String lang;
 
     public Localization(AssetHandler assets, Dreampult game){
         this.assets = assets;
@@ -28,7 +29,7 @@ public class Localization {
     }
 
     public void changeLang(){
-        String lang = "en";
+        lang = "en";
        if(locale.getLanguage().contains("fi")) {
             lang = "en";
         } else if(locale.getLanguage().contains("en")) {
@@ -46,7 +47,7 @@ public class Localization {
     private void getPrefs(){
         Preferences prefs = Gdx.app.getPreferences("DreampultLanguage");
 
-        String lang = prefs.getString("language");
+        lang = prefs.getString("language");
 
         if(lang.equals("fin")) {
             locale = new Locale("fi", "FI");
