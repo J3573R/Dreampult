@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import fi.tamk.dreampult.Handlers.*;
 import fi.tamk.dreampult.Helpers.Popup;
@@ -233,6 +234,20 @@ public class GameLoop extends ScreenAdapter {
                 }
 
                 if(gliding && saves.isPyjamaGlide() && inputHandler.timer > 0.5f) {
+                    //Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                    //UserInterfaceCamera.unproject(touchPos);
+                    //Vector2 vel = player.torso.body.getLinearVelocity();
+                    //float multiplier = vel.x / 20;
+                    //if(multiplier > 1.5f) {
+                    //    multiplier = 1.5f;
+                    //}
+                    //System.out.println(multiplier);
+                    //float force = (touchPos.y / 100 - 2.5f) * multiplier;
+                    //float force = (touchPos.y / 100 - 2.5f);
+
+                    //System.out.println(force);
+
+                    //player.torso.body.applyForceToCenter(force * -2, force / 4, true);
                     if(Gdx.input.getY() < 270) {
                         if(shittingRainbow.getTime() <= 0) {
                             shittingMiniRainbow.play();
@@ -241,10 +256,10 @@ public class GameLoop extends ScreenAdapter {
                             System.out.println(shittingRainbow.getTime());
                             shittingMiniRainbow.stop();
                         }
-
-                        Vector2 vel = player.torso.body.getLinearVelocity();
-                        vel.set(vel.x  + 0.05f, vel.y);
-                        player.torso.body.setLinearVelocity(vel);
+                        player.torso.body.applyForceToCenter(0, Gdx.input.getY(), true);
+                        //Vector2 vel = player.torso.body.getLinearVelocity();
+                        //vel.set(vel.x, vel.y + 0.3f);
+                        //player.torso.body.setLinearVelocity(vel);
                     } else {
                         if(shittingRainbow.getTime() <= 0) {
                             shittingMiniRainbow.setRotation(-20);
@@ -265,7 +280,7 @@ public class GameLoop extends ScreenAdapter {
 
                 if(timer > 2f) {
                     if(retry <= 0){
-                        int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
+                        int hour = (int) (player.torso.body.getPosition().x * 0.6f) / 60;
                         if(map.getLevel() == 1 && hour >= 8) {
                             saves.setLevel2(true);
                             saves.save();
@@ -297,8 +312,8 @@ public class GameLoop extends ScreenAdapter {
                 }
 
             }
-            int hour = (int) (player.torso.body.getPosition().x * 0.8f) / 60;
-            int minutes = (int) (player.torso.body.getPosition().x * 0.8f) % 60;
+            int hour = (int) (player.torso.body.getPosition().x * 0.6f) / 60;
+            int minutes = (int) (player.torso.body.getPosition().x * 0.6f) % 60;
             slept = game.localization.myBundle.get("slept") + " " + hour + "h " + minutes + "min";
 
         } else {

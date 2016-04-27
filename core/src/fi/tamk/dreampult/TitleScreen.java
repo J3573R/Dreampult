@@ -144,6 +144,9 @@ public class TitleScreen implements Screen {
     @Override
     public void render(float delta) {
         if(splashTimer > 0) {
+            if(Gdx.input.justTouched()) {
+                splashTimer = 0;
+            }
             drawSplash(game.batch);
         } else {
             game.batch.setProjectionMatrix(userInterfaceCamera.combined);

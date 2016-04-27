@@ -77,15 +77,17 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        if(loop.game.collection.isGameOn() && loop.game.collection.launch && timer < 0.5f && loop.bounces > 0) {
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        loop.UserInterfaceCamera.unproject(touchPos);
+
+        if(loop.game.collection.isGameOn() && loop.game.collection.launch && timer < 0.5f && loop.bounces > 0 && touchPos.y < 450) {
             loop.player.setBodypartVelocity(new Vector2(0, 0));
             Vector2 vel = new Vector2(30, 30);
             loop.player.torso.body.setLinearVelocity(vel);
             loop.bounces -= 1;
         }
 
-        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        loop.UserInterfaceCamera.unproject(touchPos);
+        System.out.println(touchPos);
 
         if(!(loop.game.collection.isTalentScreen())) {
 

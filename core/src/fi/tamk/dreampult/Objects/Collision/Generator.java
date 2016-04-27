@@ -178,7 +178,7 @@ public class Generator {
 
     private boolean startGeneration(Vector2 playerPosition) {
         if(startPoint != 0) {
-            if((int) playerPosition.x * 0.8f / 60 > startPoint) {
+            if((int) playerPosition.x * 0.6f / 60 > startPoint) {
                 return true;
             } else {
                 return false;

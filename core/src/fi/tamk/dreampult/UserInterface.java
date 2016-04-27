@@ -87,8 +87,8 @@ public class UserInterface {
 
     public void refreshScore(){
         float highscore = saves.getScore(loop.map.getLevel());
-        int hour = (int) (highscore * 0.8f) / 60;
-        int minutes = (int) (highscore * 0.8f) % 60;
+        int hour = (int) (highscore * 0.6f) / 60;
+        int minutes = (int) (highscore * 0.6f) % 60;
         String slept = hour + "h " + minutes + "min";
         score.setButton(background.x + centeredX,
                 background.y + (background.height - buttonHeight) / 10 * 8 + 5,
