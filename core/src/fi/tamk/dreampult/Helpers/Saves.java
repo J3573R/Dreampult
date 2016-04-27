@@ -47,6 +47,9 @@ public class Saves {
         level2 = prefs.getBoolean("level2", false);
         level3 = prefs.getBoolean("level3", false);
 
+        level2 = true;
+        level3 = true;
+
         getScores();
 
         lang = prefs.getInteger("lang", ENG);
@@ -70,6 +73,7 @@ public class Saves {
 
         prefs.putBoolean("level2", level2);
         prefs.putBoolean("level3", level3);
+
 
         prefs.putFloat("level1Score", level1Score);
         prefs.putFloat("level2Score", level2Score);

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import fi.tamk.dreampult.Helpers.Button;
@@ -40,6 +41,12 @@ public class TitleScreen implements Screen {
 
     public Texture finActive;
     public Texture britActive;
+
+
+    float splashTimer;
+
+    public Texture splashEng;
+    public Texture splashFin;
 
     public Rectangle flagRectangle;
 
@@ -90,6 +97,9 @@ public class TitleScreen implements Screen {
         finActive = game.assets.manager.get("images/finActive.png", Texture.class);
         britActive = game.assets.manager.get("images/britActive.png", Texture.class);
 
+        splashEng = game.assets.manager.get("images/splashEng.png", Texture.class);
+        splashFin = game.assets.manager.get("images/splashFin.png", Texture.class);
+
         soundPressed = false;
 
         flagRectangle = new Rectangle(840, 0, 120, 60);
@@ -109,6 +119,7 @@ public class TitleScreen implements Screen {
         resetProgress.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
 
         touchPoint = new Vector3();
+        splashTimer = 5;
     }
 
     @Override
@@ -132,89 +143,91 @@ public class TitleScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        //game.batch.setProjectionMatrix(GameCamera.combined);
-        game.batch.setProjectionMatrix(userInterfaceCamera.combined);
+        if(splashTimer > 0) {
+            drawSplash(game.batch);
+        } else {
+            game.batch.setProjectionMatrix(userInterfaceCamera.combined);
 
-        if(Gdx.input.justTouched()) {
-            userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Level loading started");
+            if(Gdx.input.justTouched()) {
+                userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
+                    System.out.println("Level loading started");
 
-                game.loadingScreen.questionHandler.clearQuestions();
-                game.loadingScreen.questionHandler.initializeQuestions();
+                    game.loadingScreen.questionHandler.clearQuestions();
+                    game.loadingScreen.questionHandler.initializeQuestions();
 
-                game.setScreen(game.loadingScreen);
-                game.loadingScreen.reset(1);
+                    game.setScreen(game.loadingScreen);
+                    game.loadingScreen.reset(1);
 
-            } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel2()){
-                System.out.println("Level 2 loading started");
+                } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel2()){
+                    System.out.println("Level 2 loading started");
 
-                game.loadingScreen.questionHandler.clearQuestions();
-                game.loadingScreen.questionHandler.initializeQuestions();
+                    game.loadingScreen.questionHandler.clearQuestions();
+                    game.loadingScreen.questionHandler.initializeQuestions();
 
-                game.setScreen(game.loadingScreen);
-                game.loadingScreen.reset(2);
+                    game.setScreen(game.loadingScreen);
+                    game.loadingScreen.reset(2);
 
-            } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel3()){
-                System.out.println("Level 3 loading started");
+                } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel3()){
+                    System.out.println("Level 3 loading started");
 
-                game.loadingScreen.questionHandler.clearQuestions();
-                game.loadingScreen.questionHandler.initializeQuestions();
+                    game.loadingScreen.questionHandler.clearQuestions();
+                    game.loadingScreen.questionHandler.initializeQuestions();
 
-                game.setScreen(game.loadingScreen);
-                game.loadingScreen.reset(3);
+                    game.setScreen(game.loadingScreen);
+                    game.loadingScreen.reset(3);
 
-            } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
-                game.localization.changeLang();
-                talentButton.setText(game.localization.myBundle.get("talents"));
-                resetProgress.setText(game.localization.myBundle.get("reset"));
-            }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y)))) {
-                if(saves.getSounds() == saves.ON) {
-                    saves.setSounds(saves.OFF);
-                } else {
-                    saves.setSounds(saves.ON);
+                } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
+                    game.localization.changeLang();
+                    talentButton.setText(game.localization.myBundle.get("talents"));
+                    resetProgress.setText(game.localization.myBundle.get("reset"));
+                }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y)))) {
+                    if(saves.getSounds() == saves.ON) {
+                        saves.setSounds(saves.OFF);
+                    } else {
+                        saves.setSounds(saves.ON);
+                    }
+                    saves.save();
+
+                } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
+                    game.collection.showTalentScreen();
+                    game.setScreen(game.talentsScreen);
+                } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
+                    game.saves.reset();
+                    refreshLevels();
                 }
-                saves.save();
-
-            } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
-                game.collection.showTalentScreen();
-                game.setScreen(game.talentsScreen);
-            } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
-                game.saves.reset();
-                refreshLevels();
             }
+
+            Gdx.gl.glClearColor(0, 0.2f, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            game.batch.begin();
+
+            game.batch.draw(background, 0, 0, 960, 540);
+
+            game.batch.draw(levelOne, firstLevelRectangle.x, firstLevelRectangle.y, 180, 130);
+            game.batch.draw(levelTwo, secondLevelRectangle.x, secondLevelRectangle.y, 180, 130);
+            game.batch.draw(levelTree, thirdLevelRectangle.x, thirdLevelRectangle.y, 180, 130);
+
+            talentButton.drawImage(game.batch);
+            resetProgress.drawImage(game.batch);
+
+            if(saves.getSounds() == saves.OFF) {
+                game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),
+                        soundRectangle.getWidth(), soundRectangle.getHeight());
+            } else {
+                game.batch.draw(soundOn, soundRectangle.getX(), soundRectangle.getY(),
+                        soundRectangle.getWidth(), soundRectangle.getHeight());
+            }
+
+            if(game.localization.getLang().getLanguage().contains("fi")) {
+                game.batch.draw(finActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
+            } else {
+                game.batch.draw(britActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
+            }
+
+            game.batch.end();
         }
-
-        Gdx.gl.glClearColor(0, 0.2f, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.batch.begin();
-
-        game.batch.draw(background, 0, 0, 960, 540);
-
-        game.batch.draw(levelOne, firstLevelRectangle.x, firstLevelRectangle.y, 180, 130);
-        game.batch.draw(levelTwo, secondLevelRectangle.x, secondLevelRectangle.y, 180, 130);
-        game.batch.draw(levelTree, thirdLevelRectangle.x, thirdLevelRectangle.y, 180, 130);
-
-        talentButton.drawImage(game.batch);
-        resetProgress.drawImage(game.batch);
-
-        if(saves.getSounds() == saves.OFF) {
-            game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),
-                            soundRectangle.getWidth(), soundRectangle.getHeight());
-        } else {
-            game.batch.draw(soundOn, soundRectangle.getX(), soundRectangle.getY(),
-                            soundRectangle.getWidth(), soundRectangle.getHeight());
-        }
-
-        if(game.localization.getLang().getLanguage().contains("fi")) {
-            game.batch.draw(finActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
-        } else {
-            game.batch.draw(britActive, flagRectangle.getX(), flagRectangle.getY(), flagRectangle.getWidth(), flagRectangle.getHeight());
-        }
-
-        game.batch.end();
-
     }
 
     @Override
@@ -240,5 +253,18 @@ public class TitleScreen implements Screen {
     @Override
     public void dispose() {
         background.dispose();
+    }
+
+    public void drawSplash(SpriteBatch batch) {
+        batch.setProjectionMatrix(userInterfaceCamera.combined);
+
+        batch.begin();
+        if(game.localization.lang.equals("fin")) {
+            batch.draw(splashFin, 0, 0, 960, 540);
+        } else {
+            batch.draw(splashEng, 0, 0, 960, 540);
+        }
+        batch.end();
+        splashTimer -= Gdx.graphics.getDeltaTime();
     }
 }
