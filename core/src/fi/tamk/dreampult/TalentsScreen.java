@@ -312,8 +312,6 @@ public class TalentsScreen extends ScreenAdapter {
                     tierOne = true;
                     saves.unlockTier(1);
                     System.out.println("Tier One unlocked.");
-                    System.out.println("lol");
-                    System.out.println("lol");
                 } else if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
                     System.out.println("Not enough stars!");
                 }

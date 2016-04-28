@@ -47,9 +47,6 @@ public class Saves {
         level2 = prefs.getBoolean("level2", false);
         level3 = prefs.getBoolean("level3", false);
 
-        level2 = true;
-        level3 = true;
-
         getScores();
 
         lang = prefs.getInteger("lang", ENG);
@@ -63,7 +60,7 @@ public class Saves {
         growBouncy = prefs.getBoolean("growBouncy", false);
         growSlippery = prefs.getBoolean("growSlippery", false);
 
-        tier2 = prefs.getBoolean("tier2", false);
+        tier3 = prefs.getBoolean("tier3", false);
         boostLaunch = prefs.getBoolean("boostLaunch", false);
         additionalLaunch = prefs.getBoolean("additionalLaunch", false);
     }
