@@ -145,6 +145,20 @@ public class Saves {
         save();
     }
 
+    public void unlockTier(int number) {
+        stars = stars - 10;
+
+        if (number == 1) {
+            setTier1(true);
+        } else if (number == 2) {
+            setTier2(true);
+        } else if (number == 3) {
+            setTier3(true);
+        }
+
+        save();
+    }
+
     public int getLang() {
         return lang;
     }
