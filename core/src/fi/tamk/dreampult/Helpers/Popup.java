@@ -98,4 +98,8 @@ public class Popup {
     public void hide(){
         visible = false;
     }
+
+    public boolean returnState() {
+        return visible;
+    }
 }

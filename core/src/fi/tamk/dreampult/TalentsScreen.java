@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
+import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Helpers.Saves;
 
 /**
@@ -69,6 +70,17 @@ public class TalentsScreen extends ScreenAdapter {
     boolean tierTwo;
     boolean tierThree;
 
+    public Popup tutorial;
+
+    public boolean purchase;
+    public boolean notEnoughStars;
+    public Button yesButton;
+    public Button noButton;
+
+    public boolean lockOneTouched;
+    public boolean lockTwoTouched;
+    public boolean lockThreeTouched;
+
     public TalentsScreen(GameLoop game){
         loop = game;
         saves = game.game.saves;
@@ -89,6 +101,11 @@ public class TalentsScreen extends ScreenAdapter {
         tierOne = false;
         tierTwo = false;
         tierThree = false;
+        purchase = false;
+        lockOneTouched = false;
+        lockTwoTouched = false;
+        lockThreeTouched = false;
+        notEnoughStars = false;
         initialized = false;
     }
 
@@ -126,6 +143,16 @@ public class TalentsScreen extends ScreenAdapter {
             resetButton.buttonImage = img;
             returnButton.buttonImage = img;
 
+            tutorial = new Popup(loop.fontHandler);
+            tutorial.bg = loop.assets.get("images/talents/box.png", Texture.class);
+            tutorial.show();
+
+            yesButton = new Button(loop.fontHandler, 450, 290, 150, 100, "Yes");
+            noButton = new Button(loop.fontHandler, 720, 290, 150, 100, "No");
+
+            yesButton.buttonImage = img;
+            noButton.buttonImage = img;
+
             initialized = true;
         }
     }
@@ -136,213 +163,268 @@ public class TalentsScreen extends ScreenAdapter {
         if(Gdx.input.justTouched()) {
             userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-            if(saves.isTier2()) {
-                if (bouncyRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Rectangle One touched");
+            if (!tutorial.returnState()) {
 
-                    if (!saves.isGrowBouncy()) {
-                        saves.enableGrowBouncy();
-                        saves.save();
-                        talentSelected = true;
-                        bounceSelected = true;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = false;
-                        System.out.println("Grow Bouncy enabled.");
-                    } else {
-                        talentSelected = true;
-                        bounceSelected = true;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = false;
+                if(saves.isTier2()) {
+                    if (bouncyRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        System.out.println("Rectangle One touched");
+
+                        if (!saves.isGrowBouncy()) {
+                            saves.enableGrowBouncy();
+                            saves.save();
+                            talentSelected = true;
+                            bounceSelected = true;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = false;
+                            System.out.println("Grow Bouncy enabled.");
+                        } else {
+                            talentSelected = true;
+                            bounceSelected = true;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = false;
+                        }
+
+                    } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        System.out.println("Rectangle Two touched");
+
+                        if (!saves.isGrowSlippery()) {
+                            saves.enableGrowSlippery();
+                            saves.save();
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = true;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = false;
+                            System.out.println("Grow Slippery enabled.");
+                        } else {
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = true;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = false;
+                        }
                     }
-
-                } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Rectangle Two touched");
-
-                    if (!saves.isGrowSlippery()) {
-                        saves.enableGrowSlippery();
-                        saves.save();
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = true;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = false;
-                        System.out.println("Grow Slippery enabled.");
-                    } else {
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = true;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = false;
+                } else if (!saves.isTier2()) {
+                    if ((tierTwoLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
+                        lockTwoTouched = true;
+                        lockOneTouched = false;
+                        lockThreeTouched = false;
+                        purchase = true;
+                        notEnoughStars = false;
+                        System.out.println("Lock Two touched");
+                    } else if ((tierTwoLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
+                        System.out.println("Not enough stars!");
+                        notEnoughStars = true;
                     }
                 }
-            } else if (!saves.isTier2()) {
-                if ((tierTwoLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
-                    System.out.println("Lock Two touched");
-                    tierTwo = true;
-                    saves.unlockTier(2);
-                    System.out.println("Tier Two unlocked.");
-                } else if ((tierTwoLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
-                    System.out.println("Not enough stars!");
+
+                if(saves.isTier3()) {
+                    if (boostRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        System.out.println("Rectangle Three touched");
+
+                        if (!saves.isBoostLaunch()) {
+                            saves.enableBoostLaunch();
+                            saves.save();
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = true;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = false;
+                            System.out.println("Boost Launch enabled.");
+                        } else {
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = true;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = false;
+                        }
+
+                    } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        System.out.println("Rectangle Four touched");
+
+                        if (!saves.isAdditionalLaunch()) {
+                            saves.enableAdditionalLaunch();
+                            saves.save();
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = true;
+                            extraSelected = false;
+                            glideSelected = false;
+                            System.out.println("Additional Launch enabled.");
+                        } else {
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = true;
+                            extraSelected = false;
+                            glideSelected = false;
+                        }
+                    }
+                } else {
+                    if ((tierThreeLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
+                        lockOneTouched = false;
+                        lockTwoTouched = false;
+                        lockThreeTouched = true;
+                        purchase = true;
+                        notEnoughStars = false;
+                        System.out.println("Lock Three touched");
+                    } else if ((tierThreeLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
+                        System.out.println("Not enough stars!");
+                        notEnoughStars = true;
+                    }
                 }
+
+                if(saves.isTier1()) {
+                    if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        System.out.println("Rectangle Five touched");
+
+                        if (!saves.isExtraBounces()) {
+                            saves.enableExtraBounces();
+                            saves.save();
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = true;
+                            glideSelected = false;
+                            System.out.println("Extra Bounces enabled.");
+                        } else {
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = true;
+                            glideSelected = false;
+                        }
+
+                    } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
+                        System.out.println("Rectangle Six touched");
+
+                        if (!saves.isPyjamaGlide()) {
+                            saves.enablePyjamaGlide();
+                            saves.save();
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = true;
+                            System.out.println("Pyjama Glide enabled.");
+                        } else {
+                            talentSelected = true;
+                            bounceSelected = false;
+                            slipSelected = false;
+                            boostSelected = false;
+                            additionalSelected = false;
+                            extraSelected = false;
+                            glideSelected = true;
+                        }
+                    }
+                } else {
+                    if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
+                        System.out.println("Lock One touched");
+                            lockOneTouched = true;
+                            lockTwoTouched = false;
+                            lockThreeTouched = false;
+                            purchase = true;
+                            notEnoughStars = false;
+
+                    } else if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
+                        System.out.println("Not enough stars!");
+                        notEnoughStars = true;
+                    }
+                }
+
+                if (purchase) {
+                    if (yesButton.button.contains(touchPoint.x, touchPoint.y)) {
+
+                        if (lockOneTouched) {
+                            tierOne = true;
+                            saves.unlockTier(1);
+                            System.out.println("Tier One unlocked.");
+                            purchase = false;
+                            lockOneTouched = false;
+                            lockTwoTouched = false;
+                            lockThreeTouched = false;
+
+                        } else if (lockTwoTouched) {
+                            tierTwo = true;
+                            saves.unlockTier(2);
+                            System.out.println("Tier Two unlocked.");
+                            purchase = false;
+                            lockOneTouched = false;
+                            lockTwoTouched = false;
+                            lockThreeTouched = false;
+
+                        } else if (lockThreeTouched) {
+                            tierThree = true;
+                            saves.unlockTier(3);
+                            System.out.println("Tier Three unlocked.");
+                            purchase = false;
+                            lockOneTouched = false;
+                            lockTwoTouched = false;
+                            lockThreeTouched = false;
+                        }
+
+                    } else if (noButton.button.contains(touchPoint.x, touchPoint.y)) {
+                        purchase = false;
+                        lockOneTouched = false;
+                        lockTwoTouched = false;
+                        lockThreeTouched = false;
+                    }
+                }
+
+                if (resetButton.button.contains(touchPoint.x, touchPoint.y)) {
+                    System.out.println("Reset button pressed");
+                    //resetProgress();
+                    saves.resetTalents();
+                    talentSelected = false;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
+                    notEnoughStars = false;
+
+                } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
+                    loop.game.collection.hideTalentScreen();
+                    //savePreferences();
+                    saves.save();
+                    talentSelected = false;
+                    bounceSelected = false;
+                    slipSelected = false;
+                    boostSelected = false;
+                    additionalSelected = false;
+                    extraSelected = false;
+                    glideSelected = false;
+                    notEnoughStars = false;
+                    loop.game.MainMenu();
+                }
+
+            } else if (tutorial.returnState()) {
+                tutorial.hide();
             }
-
-            if(saves.isTier3()) {
-                if (boostRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Rectangle Three touched");
-
-                    if (!saves.isBoostLaunch()) {
-                        saves.enableBoostLaunch();
-                        saves.save();
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = true;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = false;
-                        System.out.println("Boost Launch enabled.");
-                    } else {
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = true;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = false;
-                    }
-
-                } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Rectangle Four touched");
-
-                    if (!saves.isAdditionalLaunch()) {
-                        saves.enableAdditionalLaunch();
-                        saves.save();
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = true;
-                        extraSelected = false;
-                        glideSelected = false;
-                        System.out.println("Additional Launch enabled.");
-                    } else {
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = true;
-                        extraSelected = false;
-                        glideSelected = false;
-                    }
-                }
-            } else {
-                if ((tierThreeLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
-                    System.out.println("Lock Three touched");
-                    tierThree = true;
-                    saves.unlockTier(3);
-                    System.out.println("Tier Three unlocked.");
-                } else if ((tierThreeLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
-                    System.out.println("Not enough stars!");
-                }
-            }
-
-            if(saves.isTier1()) {
-                if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Rectangle Five touched");
-
-                    if (!saves.isExtraBounces()) {
-                        saves.enableExtraBounces();
-                        saves.save();
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = true;
-                        glideSelected = false;
-                        System.out.println("Extra Bounces enabled.");
-                    } else {
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = true;
-                        glideSelected = false;
-                    }
-
-                } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Rectangle Six touched");
-
-                    if (!saves.isPyjamaGlide()) {
-                        saves.enablePyjamaGlide();
-                        saves.save();
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = true;
-                        System.out.println("Pyjama Glide enabled.");
-                    } else {
-                        talentSelected = true;
-                        bounceSelected = false;
-                        slipSelected = false;
-                        boostSelected = false;
-                        additionalSelected = false;
-                        extraSelected = false;
-                        glideSelected = true;
-                    }
-                }
-            } else {
-                if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)
-                        ) {
-                    System.out.println("Lock One touched");
-                    tierOne = true;
-                    saves.unlockTier(1);
-                    System.out.println("Tier One unlocked.");
-                } else if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
-                    System.out.println("Not enough stars!");
-                }
-            }
-
-            if (resetButton.button.contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Reset button pressed");
-                //resetProgress();
-                saves.resetTalents();
-                talentSelected = false;
-                bounceSelected = false;
-                slipSelected = false;
-                boostSelected = false;
-                additionalSelected = false;
-                extraSelected = false;
-                glideSelected = false;
-
-            } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
-                loop.game.collection.hideTalentScreen();
-                //savePreferences();
-                saves.save();
-                talentSelected = false;
-                bounceSelected = false;
-                slipSelected = false;
-                boostSelected = false;
-                additionalSelected = false;
-                extraSelected = false;
-                glideSelected = false;
-                loop.game.MainMenu();
-            }
-
         }
 
         loop.game.batch.setProjectionMatrix(userInterfaceCamera.combined);
@@ -411,6 +493,23 @@ public class TalentsScreen extends ScreenAdapter {
             } else if (glideSelected) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("glideDescription"), 465, 500);
             }
+        }
+
+        tutorial.setText(loop.game.localization.myBundle.get("talentTutorial"));
+        tutorial.setPosition(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
+
+        tutorial.draw(loop.game.batch);
+
+        if (purchase) {
+            loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
+            font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierUnlock"), 465, 470);
+            yesButton.setText(loop.game.localization.myBundle.get("positive"));
+            noButton.setText(loop.game.localization.myBundle.get("negative"));
+            yesButton.drawImage(loop.game.batch);
+            noButton.drawImage(loop.game.batch);
+        } else if (notEnoughStars) {
+            loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
+            font.draw(loop.game.batch, loop.game.localization.myBundle.get("lackingStars"), 465, 470);
         }
 
         loop.game.batch.end();
