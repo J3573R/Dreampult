@@ -68,7 +68,7 @@ public class GameLoop extends ScreenAdapter {
     private double accumultator = 0;
     private float timestep = 1 / 60f;
 
-    private float timer = 0;
+    public float timer = 0;
 
     String slept;
 
@@ -226,59 +226,56 @@ public class GameLoop extends ScreenAdapter {
                 //player.reset();
 
             } else {
-
-                if(player.torso.body.getLinearVelocity().x < 0.1f) {
-                    timer += delta;
+                if(player.torso.body.getLinearVelocity().x < 0.1f && player.torso.body.getLinearVelocity().y < 0.1f) {
+                    timer += Gdx.graphics.getDeltaTime();
                 } else {
                     timer = 0;
                 }
 
+                //if(player.torso.body.getLinearVelocity().x < 0.1f && player.torso.body.getLinearVelocity().y < 0.1f) {
+                    //timer += delta;
+                //} else {
+                //    timer = 0;
+                //}
+
                 if(gliding && saves.isPyjamaGlide() && inputHandler.timer > 0.5f) {
-                    //Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                    //UserInterfaceCamera.unproject(touchPos);
-                    //Vector2 vel = player.torso.body.getLinearVelocity();
-                    //float multiplier = vel.x / 20;
-                    //if(multiplier > 1.5f) {
-                    //    multiplier = 1.5f;
-                    //}
-                    //System.out.println(multiplier);
-                    //float force = (touchPos.y / 100 - 2.5f) * multiplier;
-                    //float force = (touchPos.y / 100 - 2.5f);
+                    Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                    UserInterfaceCamera.unproject(touchPos);
+                    Vector2 vel = player.torso.body.getLinearVelocity();
 
-                    //System.out.println(force);
-
-                    //player.torso.body.applyForceToCenter(force * -2, force / 4, true);
                     if(Gdx.input.getY() < 270) {
-                        if(shittingRainbow.getTime() <= 0) {
-                            shittingMiniRainbow.play();
-                            shittingMiniRainbow.setRotation(0);
-                        } else {
-                            System.out.println(shittingRainbow.getTime());
-                            shittingMiniRainbow.stop();
+
+                        if(player.torso.body.getLinearVelocity().x > 5f) {
+                            if(shittingRainbow.getTime() <= 0) {
+                                shittingMiniRainbow.play();
+                                shittingMiniRainbow.setRotation(player.torso.body.getLinearVelocity().y * 2);
+                            } else {
+                                System.out.println(shittingRainbow.getTime());
+                                shittingMiniRainbow.stop();
+                            }
+                            float force = (touchPos.y / 100 - 2.5f);
+                            player.torso.body.applyForceToCenter(force * -2, force * 2, true);
+                            System.out.println(player.torso.body.getLinearVelocity());
                         }
-                        player.torso.body.applyForceToCenter(0, Gdx.input.getY(), true);
-                        //Vector2 vel = player.torso.body.getLinearVelocity();
-                        //vel.set(vel.x, vel.y + 0.3f);
-                        //player.torso.body.setLinearVelocity(vel);
                     } else {
                         if(shittingRainbow.getTime() <= 0) {
-                            shittingMiniRainbow.setRotation(-20);
+                            shittingMiniRainbow.setRotation(player.torso.body.getLinearVelocity().y * 2);
                             shittingMiniRainbow.play();
                         } else {
                             shittingMiniRainbow.stop();
                         }
-
-                        Vector2 vel = player.torso.body.getLinearVelocity();
-                        vel.set(vel.x, vel.y - 0.5f);
-                        player.torso.body.setLinearVelocity(vel);
+                        float force = (touchPos.y / 100 - 2.5f);
+                        player.torso.body.applyForceToCenter(force * -2, force * 2, true);
                     }
+
+
                 } else {
                     shittingMiniRainbow.stop();
                 }
 
                 inputHandler.timerTick();
 
-                if(timer > 2f) {
+                if(timer > 3f) {
                     if(retry <= 0){
                         int hour = (int) (player.torso.body.getPosition().x * 0.6f) / 60;
                         if(map.getLevel() == 1 && hour >= 8) {

@@ -96,6 +96,7 @@ public class Saves {
 
     public void reset() {
         stars = 0;
+        stars = 25;
 
         level2 = false;
         level3 = false;

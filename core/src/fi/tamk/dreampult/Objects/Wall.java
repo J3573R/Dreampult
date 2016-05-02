@@ -21,6 +21,7 @@ public class Wall {
     public Wall(GameLoop gameLoop) {
         this.game = gameLoop;
         body = createBodyDef();
+        body.setUserData("ground");
         createBodyFixture();
     }
 
