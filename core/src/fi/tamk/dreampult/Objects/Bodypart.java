@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 import fi.tamk.dreampult.GameLoop;
 
@@ -53,6 +52,7 @@ public class Bodypart {
         body.getPosition().set(originalPosition);
         body.setLinearVelocity(0, 0);
         body.setAngularVelocity(0);
+        clothes.setDropClothes(false);
     }
 
     /**
@@ -114,7 +114,7 @@ public class Bodypart {
                     img.getWidth(), img.getHeight(), // srcWidth, srcHeight
                     flip, flip); // flip x, flip y
 
-        if(game.saves.isPyjamaGlide()){
+        if(game.saves.isPyjamaProtection()){
             clothes.draw(batch, this);
         }
     }

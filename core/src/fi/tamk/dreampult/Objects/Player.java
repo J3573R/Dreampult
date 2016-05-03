@@ -168,4 +168,13 @@ public class Player {
         leftLeg.body.setAngularDamping(0);
         head.body.setAngularDamping(0);
     }
+
+    public void dropClothes() {
+        rightArm.clothes.setDropClothes(true);
+        rightLeg.clothes.setDropClothes(true);
+        torso.clothes.setDropClothes(true);
+        head.clothes.setDropClothes(true);
+        leftArm.clothes.setDropClothes(true);
+        leftLeg.clothes.setDropClothes(true);
+    }
 }

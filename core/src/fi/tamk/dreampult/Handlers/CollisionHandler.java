@@ -27,34 +27,52 @@ public class CollisionHandler implements ContactListener {
         if(a != null && b != null) {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("pig")) ||
                (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
-                playAnimation(contact);
-                game.shittingRainbow.stop();
-                game.game.sounds.play("pig");
-                Vector2 vel = game.player.torso.body.getLinearVelocity();
-                game.player.setBodypartVelocity(new Vector2(0, 0));
-                vel.set(15, -15);
-                game.player.torso.body.setLinearVelocity(vel);
+                if(game.pyjamaOn) {
+                    bounce(contact);
+                    game.pyjamaOn = false;
+                    game.player.dropClothes();
+                } else {
+                    playAnimation(contact);
+                    game.shittingRainbow.stop();
+                    game.game.sounds.play("pig");
+                    Vector2 vel = game.player.torso.body.getLinearVelocity();
+                    game.player.setBodypartVelocity(new Vector2(0, 0));
+                    vel.set(15, -15);
+                    game.player.torso.body.setLinearVelocity(vel);
+                }
             }
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("cow")) ||
                     (a.equalsIgnoreCase("cow") && b.equalsIgnoreCase("torso"))) {
-                playAnimation(contact);
-                game.shittingRainbow.stop();
-                game.game.sounds.play("moo");
-                Vector2 vel = game.player.torso.body.getLinearVelocity();
-                game.player.torso.body.setAngularVelocity(-360);
-                vel.set(vel.x, -20);
-                game.player.torso.body.setLinearVelocity(vel);
+                if(game.pyjamaOn) {
+                    bounce(contact);
+                    game.pyjamaOn = false;
+                    game.player.dropClothes();
+                } else {
+                    playAnimation(contact);
+                    game.shittingRainbow.stop();
+                    game.game.sounds.play("moo");
+                    Vector2 vel = game.player.torso.body.getLinearVelocity();
+                    game.player.torso.body.setAngularVelocity(-360);
+                    vel.set(vel.x, -20);
+                    game.player.torso.body.setLinearVelocity(vel);
+                }
             }
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("turtle")) ||
                     (a.equalsIgnoreCase("turtle") && b.equalsIgnoreCase("torso"))) {
-                playAnimation(contact);
-                game.shittingRainbow.stop();
-                Vector2 vel = game.player.torso.body.getLinearVelocity();
-                vel.set(vel.x / 100, vel.y / 100);
-                game.player.torso.body.setAngularVelocity(180);
-                game.player.torso.body.setLinearVelocity(vel);
+                if(game.pyjamaOn) {
+                    bounce(contact);
+                    game.pyjamaOn = false;
+                    game.player.dropClothes();
+                } else {
+                    playAnimation(contact);
+                    game.shittingRainbow.stop();
+                    Vector2 vel = game.player.torso.body.getLinearVelocity();
+                    vel.set(vel.x / 100, vel.y / 100);
+                    game.player.torso.body.setAngularVelocity(180);
+                    game.player.torso.body.setLinearVelocity(vel);
+                }
             }
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("unicorn")) ||
@@ -69,28 +87,35 @@ public class CollisionHandler implements ContactListener {
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("bed")) ||
                     (a.equalsIgnoreCase("bed") && b.equalsIgnoreCase("torso"))) {
-                playAnimation(contact);
+                bounce(contact);
+                /*playAnimation(contact);
                 game.game.sounds.play("ground");
                 game.player.setBodypartVelocity(new Vector2(0, 0));
                 Vector2 vel = game.player.torso.body.getLinearVelocity();
                 vel.set(30, 30);
-                game.player.torso.body.setLinearVelocity(vel);
+                game.player.torso.body.setLinearVelocity(vel);*/
             }
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("clock")) ||
                     (a.equalsIgnoreCase("clock") && b.equalsIgnoreCase("torso"))) {
-                playAnimation(contact);
-                game.shittingRainbow.stop();
-                game.retry = 0;
-                game.game.sounds.play("alarm");
-                Gdx.input.vibrate(3000);
-                Vector2 vel = new Vector2(0, 0);
-                game.player.torso.body.setLinearVelocity(vel);
-                game.player.head.body.setLinearVelocity(vel);
-                game.player.leftArm.body.setLinearVelocity(vel);
-                game.player.rightArm.body.setLinearVelocity(vel);
-                game.player.leftLeg.body.setLinearVelocity(vel);
-                game.player.rightLeg.body.setLinearVelocity(vel);
+                if(game.pyjamaOn) {
+                    bounce(contact);
+                    game.pyjamaOn = false;
+                    game.player.dropClothes();
+                } else {
+                    playAnimation(contact);
+                    game.shittingRainbow.stop();
+                    game.retry = 0;
+                    game.game.sounds.play("alarm");
+                    Gdx.input.vibrate(3000);
+                    Vector2 vel = new Vector2(0, 0);
+                    game.player.torso.body.setLinearVelocity(vel);
+                    game.player.head.body.setLinearVelocity(vel);
+                    game.player.leftArm.body.setLinearVelocity(vel);
+                    game.player.rightArm.body.setLinearVelocity(vel);
+                    game.player.leftLeg.body.setLinearVelocity(vel);
+                    game.player.rightLeg.body.setLinearVelocity(vel);
+                }
             }
 
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("star")) ||
@@ -137,6 +162,15 @@ public class CollisionHandler implements ContactListener {
             Body body = contact.getFixtureB().getBody();
             game.bounce.play(new Vector2(body.getPosition()));
         }
+    }
+
+    public void bounce(Contact contact){
+        playAnimation(contact);
+        game.game.sounds.play("ground");
+        game.player.setBodypartVelocity(new Vector2(0, 0));
+        Vector2 vel = game.player.torso.body.getLinearVelocity();
+        vel.set(30, 30);
+        game.player.torso.body.setLinearVelocity(vel);
     }
 
     @Override

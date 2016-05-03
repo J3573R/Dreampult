@@ -62,6 +62,7 @@ public class GameLoop extends ScreenAdapter {
 
     public boolean gliding;
     public int bounces;
+    public boolean pyjamaOn;
     public int retry;
     public boolean secondLaunch;
 
@@ -112,7 +113,6 @@ public class GameLoop extends ScreenAdapter {
         world = new World(new Vector2(0, -1f), true);
         world.setContactListener(collision);
 
-
         worldHandler = new WorldHandler(this);
         player = new Player(world, this);
         arrow = new Arrow(this);
@@ -158,6 +158,12 @@ public class GameLoop extends ScreenAdapter {
         gliding = false;
         theEnd = false;
 
+        if(saves.isPyjamaProtection()) {
+            pyjamaOn = true;
+        } else {
+            pyjamaOn = false;
+        }
+
         arrow.reset();
         meter.reset();
         angle = catapult.spoonRotation;
@@ -167,10 +173,7 @@ public class GameLoop extends ScreenAdapter {
         rotatedX = (float) (Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y - center.y) + center.x);
         rotatedY = (float) (Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y);
 
-        //player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
         player.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
-        //player.setBodypartVelocity(zeroVel);
-        //player.reset();
 
         if(saves.isAdditionalLaunch() && secondLaunch == false) {
             retry = 1;
@@ -216,15 +219,8 @@ public class GameLoop extends ScreenAdapter {
             }
 
             if(!collection.launch) {
-                if(secondLaunch) {
-
-                    //player.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
-                }
                 player.torso.body.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
-                //player.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
                 player.setBodypartVelocity(zeroVel);
-                //player.reset();
-
             } else {
                 if(player.torso.body.getLinearVelocity().x < 0.1f && player.torso.body.getLinearVelocity().y < 0.1f) {
                     timer += Gdx.graphics.getDeltaTime();
@@ -232,13 +228,7 @@ public class GameLoop extends ScreenAdapter {
                     timer = 0;
                 }
 
-                //if(player.torso.body.getLinearVelocity().x < 0.1f && player.torso.body.getLinearVelocity().y < 0.1f) {
-                    //timer += delta;
-                //} else {
-                //    timer = 0;
-                //}
-
-                if(gliding && saves.isPyjamaGlide() && inputHandler.timer > 0.5f) {
+                if(gliding && inputHandler.timer > 0.5f) {
                     Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                     UserInterfaceCamera.unproject(touchPos);
                     Vector2 vel = player.torso.body.getLinearVelocity();
@@ -360,8 +350,6 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(GameCamera.combined);
 
             game.batch.end();
-            //debug.render(world, GameCamera.combined);
-        //System.out.println(Gdx.graphics.getFramesPerSecond());'
     }
 
     /**

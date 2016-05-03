@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 import fi.tamk.dreampult.Handlers.FontHandler;
-import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Helpers.Button;
 import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Helpers.Saves;
@@ -319,8 +318,8 @@ public class TalentsScreen extends ScreenAdapter {
                     } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
                         System.out.println("Rectangle Six touched");
 
-                        if (!saves.isPyjamaGlide()) {
-                            saves.enablePyjamaGlide();
+                        if (!saves.isPyjamaProtection()) {
+                            saves.enablePyjamaProtection();
                             saves.save();
                             talentSelected = true;
                             bounceSelected = false;
@@ -569,7 +568,7 @@ public class TalentsScreen extends ScreenAdapter {
                 shapeRenderer.end();
             }
 
-            if(!saves.isPyjamaGlide()) {
+            if(!saves.isPyjamaProtection()) {
                 Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);

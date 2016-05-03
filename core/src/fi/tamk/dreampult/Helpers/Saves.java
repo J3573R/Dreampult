@@ -29,7 +29,7 @@ public class Saves {
 
     boolean tier1;
     private boolean extraBounces;
-    private boolean pyjamaGlide;
+    private boolean pyjamaProtection;
 
     boolean tier2;
     private boolean growBouncy;
@@ -54,7 +54,7 @@ public class Saves {
 
         tier1 = prefs.getBoolean("tier1", false);
         extraBounces = prefs.getBoolean("extraBounces", false);
-        pyjamaGlide = prefs.getBoolean("pyjamaGlide", false);
+        pyjamaProtection = prefs.getBoolean("pyjamaProtection", false);
 
         tier2 = prefs.getBoolean("tier2", false);
         growBouncy = prefs.getBoolean("growBouncy", false);
@@ -81,7 +81,7 @@ public class Saves {
 
         prefs.putBoolean("tier1", tier1);
         prefs.putBoolean("extraBounces", extraBounces);
-        prefs.putBoolean("pyjamaGlide", pyjamaGlide);
+        prefs.putBoolean("pyjamaProtection", pyjamaProtection);
 
         prefs.putBoolean("tier2", tier2);
         prefs.putBoolean("growBouncy", growBouncy);
@@ -106,7 +106,7 @@ public class Saves {
 
         tier1 = false;
         extraBounces = false;
-        pyjamaGlide = false;
+        pyjamaProtection = false;
 
         tier2 = false;
         growBouncy = false;
@@ -121,7 +121,7 @@ public class Saves {
     public void resetTalents() {
         tier1 = false;
         extraBounces = false;
-        pyjamaGlide = false;
+        pyjamaProtection = false;
 
         tier2 = false;
         growBouncy = false;
@@ -258,15 +258,15 @@ public class Saves {
 
     public void enableExtraBounces() {
         this.extraBounces = true;
-        this.pyjamaGlide = false;
+        this.pyjamaProtection = false;
     }
 
-    public boolean isPyjamaGlide() {
-        return pyjamaGlide;
+    public boolean isPyjamaProtection() {
+        return pyjamaProtection;
     }
 
-    public void enablePyjamaGlide() {
-        this.pyjamaGlide = true;
+    public void enablePyjamaProtection() {
+        this.pyjamaProtection = true;
         this.extraBounces = false;
     }
 
