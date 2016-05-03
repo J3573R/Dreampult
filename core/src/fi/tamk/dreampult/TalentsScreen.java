@@ -129,7 +129,10 @@ public class TalentsScreen extends ScreenAdapter {
 
             tutorial = new Popup(loop.fontHandler);
             tutorial.bg = loop.assets.get("images/talents/box.png", Texture.class);
-            tutorial.show();
+
+            if(!saves.isTier1() && !saves.isTier2() && !saves.isTier3()) {
+                tutorial.show();
+            }
 
             yesButton = new Button(loop.fontHandler, 450, 290, 150, 100, "Yes");
             noButton = new Button(loop.fontHandler, 720, 290, 150, 100, "No");
@@ -378,14 +381,16 @@ public class TalentsScreen extends ScreenAdapter {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("extraDescription"), 465, 470);
 
             } else if (selected == BLOCK) {
-                font.draw(loop.game.batch, loop.game.localization.myBundle.get("glideDescription"), 465, 500);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("blockDescription"), 465, 515);
             }
         }
 
         tutorial.setText(loop.game.localization.myBundle.get("talentTutorial"));
         tutorial.setPosition(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
 
-        tutorial.draw(loop.game.batch);
+        if(!saves.isTier1() && !saves.isTier2() && !saves.isTier3()) {
+            tutorial.draw(loop.game.batch);
+        }
 
         if (purchase) {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);

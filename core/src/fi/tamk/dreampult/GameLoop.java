@@ -186,7 +186,7 @@ public class GameLoop extends ScreenAdapter {
         }
 
         tutorial.setText(game.localization.myBundle.get("tutorial1"));
-        tutorial.setPosition(collection.REAL_WIDTH / 2, collection.REAL_HEIGHT / 2);
+        tutorial.setPosition(collection.REAL_WIDTH / 2, collection.REAL_HEIGHT / 3);
         tutorial.show();
         ready = true;
     }
