@@ -46,7 +46,7 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionOneTwenty"), false));
 
         questions.add(new Question(game.localization.myBundle.get("questionTwoOne"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionTwoTwo"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionTwoTwo"), true));
         questions.add(new Question(game.localization.myBundle.get("questionTwoThree"), true));
         questions.add(new Question(game.localization.myBundle.get("questionTwoFour"), false));
         questions.add(new Question(game.localization.myBundle.get("questionTwoFive"), false));
@@ -56,7 +56,6 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionTwoNine"), true));
         questions.add(new Question(game.localization.myBundle.get("questionTwoTen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionTwoEleven"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionTwoTwelve"), false));
         questions.add(new Question(game.localization.myBundle.get("questionTwoThirteen"), false));
         questions.add(new Question(game.localization.myBundle.get("questionTwoFourteen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionTwoFifteen"), true));
@@ -71,7 +70,7 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionThreeThree"), false));
         questions.add(new Question(game.localization.myBundle.get("questionThreeFour"), false));
         questions.add(new Question(game.localization.myBundle.get("questionThreeFive"), false));
-        questions.add(new Question(game.localization.myBundle.get("questionThreeSix"), false));
+        questions.add(new Question(game.localization.myBundle.get("questionThreeSix"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeSeven"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeEight"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeNine"), true));
@@ -84,8 +83,6 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionThreeSixteen"), false));
         questions.add(new Question(game.localization.myBundle.get("questionThreeSeventeen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeEighteen"), true));
-        questions.add(new Question(game.localization.myBundle.get("questionThreeNineteen"), false));
-        questions.add(new Question(game.localization.myBundle.get("questionThreeTwenty"), false));
     }
 
     public void clearQuestions() {

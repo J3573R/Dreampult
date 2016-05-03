@@ -58,16 +58,13 @@ public class TalentsScreen extends ScreenAdapter {
 
     public Texture lock;
 
-    boolean talentSelected;
-    boolean bounceSelected;
-    boolean slipSelected;
-    boolean boostSelected;
-    boolean additionalSelected;
-    boolean extraSelected;
-    boolean glideSelected;
-    boolean tierOne;
-    boolean tierTwo;
-    boolean tierThree;
+    private int selected = 0;
+    final private int BOUNCY = 1;
+    final private int SLIP = 2;
+    final private int BOOST = 3;
+    final private int ADDITIONAL = 4;
+    final private int EXTRA = 5;
+    final private int BLOCK = 6;
 
     public Popup tutorial;
 
@@ -76,9 +73,10 @@ public class TalentsScreen extends ScreenAdapter {
     public Button yesButton;
     public Button noButton;
 
-    public boolean lockOneTouched;
-    public boolean lockTwoTouched;
-    public boolean lockThreeTouched;
+    private int selectedLock = 0;
+    final private int TIER_ONE = 1;
+    final private int TIER_TWO = 2;
+    final private int TIER_THREE = 3;
 
     public TalentsScreen(GameLoop game){
         loop = game;
@@ -90,20 +88,7 @@ public class TalentsScreen extends ScreenAdapter {
         touchPoint = new Vector3();
         img = loop.assets.get("images/ui/text_button.png", Texture.class);
 
-        talentSelected = false;
-        bounceSelected = false;
-        slipSelected = false;
-        boostSelected = false;
-        additionalSelected = false;
-        extraSelected = false;
-        glideSelected = false;
-        tierOne = false;
-        tierTwo = false;
-        tierThree = false;
         purchase = false;
-        lockOneTouched = false;
-        lockTwoTouched = false;
-        lockThreeTouched = false;
         notEnoughStars = false;
         initialized = false;
     }
@@ -171,22 +156,10 @@ public class TalentsScreen extends ScreenAdapter {
                         if (!saves.isGrowBouncy()) {
                             saves.enableGrowBouncy();
                             saves.save();
-                            talentSelected = true;
-                            bounceSelected = true;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = BOUNCY;
                             System.out.println("Grow Bouncy enabled.");
                         } else {
-                            talentSelected = true;
-                            bounceSelected = true;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = BOUNCY;
                         }
 
                     } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -195,29 +168,15 @@ public class TalentsScreen extends ScreenAdapter {
                         if (!saves.isGrowSlippery()) {
                             saves.enableGrowSlippery();
                             saves.save();
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = true;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = SLIP;
                             System.out.println("Grow Slippery enabled.");
                         } else {
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = true;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = SLIP;
                         }
                     }
                 } else if (!saves.isTier2()) {
                     if ((tierTwoLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
-                        lockTwoTouched = true;
-                        lockOneTouched = false;
-                        lockThreeTouched = false;
+                        selectedLock = TIER_TWO;
                         purchase = true;
                         notEnoughStars = false;
                         System.out.println("Lock Two touched");
@@ -234,22 +193,10 @@ public class TalentsScreen extends ScreenAdapter {
                         if (!saves.isBoostLaunch()) {
                             saves.enableBoostLaunch();
                             saves.save();
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = true;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = BOOST;
                             System.out.println("Boost Launch enabled.");
                         } else {
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = true;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = BOOST;
                         }
 
                     } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -258,29 +205,15 @@ public class TalentsScreen extends ScreenAdapter {
                         if (!saves.isAdditionalLaunch()) {
                             saves.enableAdditionalLaunch();
                             saves.save();
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = true;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = ADDITIONAL;
                             System.out.println("Additional Launch enabled.");
                         } else {
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = true;
-                            extraSelected = false;
-                            glideSelected = false;
+                            selected = ADDITIONAL;
                         }
                     }
                 } else {
                     if ((tierThreeLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
-                        lockOneTouched = false;
-                        lockTwoTouched = false;
-                        lockThreeTouched = true;
+                        selectedLock = TIER_THREE;
                         purchase = true;
                         notEnoughStars = false;
                         System.out.println("Lock Three touched");
@@ -297,22 +230,10 @@ public class TalentsScreen extends ScreenAdapter {
                         if (!saves.isExtraBounces()) {
                             saves.enableExtraBounces();
                             saves.save();
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = true;
-                            glideSelected = false;
+                            selected = EXTRA;
                             System.out.println("Extra Bounces enabled.");
                         } else {
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = true;
-                            glideSelected = false;
+                            selected = EXTRA;
                         }
 
                     } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
@@ -321,30 +242,16 @@ public class TalentsScreen extends ScreenAdapter {
                         if (!saves.isPyjamaProtection()) {
                             saves.enablePyjamaProtection();
                             saves.save();
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = true;
-                            System.out.println("Pyjama Glide enabled.");
+                            selected = BLOCK;
+                            System.out.println("Pyjama Protection enabled.");
                         } else {
-                            talentSelected = true;
-                            bounceSelected = false;
-                            slipSelected = false;
-                            boostSelected = false;
-                            additionalSelected = false;
-                            extraSelected = false;
-                            glideSelected = true;
+                            selected = BLOCK;
                         }
                     }
                 } else {
                     if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
                         System.out.println("Lock One touched");
-                            lockOneTouched = true;
-                            lockTwoTouched = false;
-                            lockThreeTouched = false;
+                            selectedLock = TIER_ONE;
                             purchase = true;
                             notEnoughStars = false;
 
@@ -357,39 +264,28 @@ public class TalentsScreen extends ScreenAdapter {
                 if (purchase) {
                     if (yesButton.button.contains(touchPoint.x, touchPoint.y)) {
 
-                        if (lockOneTouched) {
-                            tierOne = true;
+                        if (selectedLock == TIER_ONE) {
                             saves.unlockTier(1);
                             System.out.println("Tier One unlocked.");
                             purchase = false;
-                            lockOneTouched = false;
-                            lockTwoTouched = false;
-                            lockThreeTouched = false;
+                            selectedLock = 0;
 
-                        } else if (lockTwoTouched) {
-                            tierTwo = true;
+                        } else if (selectedLock == TIER_TWO) {
                             saves.unlockTier(2);
                             System.out.println("Tier Two unlocked.");
                             purchase = false;
-                            lockOneTouched = false;
-                            lockTwoTouched = false;
-                            lockThreeTouched = false;
+                            selectedLock = 0;
 
-                        } else if (lockThreeTouched) {
-                            tierThree = true;
+                        } else if (selectedLock == TIER_THREE) {
                             saves.unlockTier(3);
                             System.out.println("Tier Three unlocked.");
                             purchase = false;
-                            lockOneTouched = false;
-                            lockTwoTouched = false;
-                            lockThreeTouched = false;
+                            selectedLock = 0;
                         }
 
                     } else if (noButton.button.contains(touchPoint.x, touchPoint.y)) {
                         purchase = false;
-                        lockOneTouched = false;
-                        lockTwoTouched = false;
-                        lockThreeTouched = false;
+                        selectedLock = 0;
                     }
                 }
 
@@ -397,26 +293,18 @@ public class TalentsScreen extends ScreenAdapter {
                     System.out.println("Reset button pressed");
                     //resetProgress();
                     saves.resetTalents();
-                    talentSelected = false;
-                    bounceSelected = false;
-                    slipSelected = false;
-                    boostSelected = false;
-                    additionalSelected = false;
-                    extraSelected = false;
-                    glideSelected = false;
+                    selected = 0;
+                    selectedLock = 0;
+                    purchase = false;
                     notEnoughStars = false;
 
                 } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
                     loop.game.collection.hideTalentScreen();
                     //savePreferences();
                     saves.save();
-                    talentSelected = false;
-                    bounceSelected = false;
-                    slipSelected = false;
-                    boostSelected = false;
-                    additionalSelected = false;
-                    extraSelected = false;
-                    glideSelected = false;
+                    selected = 0;
+                    selectedLock = 0;
+                    purchase = false;
                     notEnoughStars = false;
                     loop.game.MainMenu();
                 }
@@ -471,25 +359,25 @@ public class TalentsScreen extends ScreenAdapter {
         resetButton.drawImage(loop.game.batch);
         returnButton.drawImage(loop.game.batch);
 
-        if(talentSelected) {
+        if(selected > 0) {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
 
-            if(bounceSelected) {
+            if(selected == BOUNCY) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("bounceDescription"), 465, 470);
 
-            } else if (slipSelected) {
+            } else if (selected == SLIP) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("slipDescription"), 465, 470);
 
-            } else if (boostSelected) {
+            } else if (selected == BOOST) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("boostDescription"), 465, 470);
 
-            } else if (additionalSelected) {
+            } else if (selected == ADDITIONAL) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("launchDescription"), 465, 500);
 
-            } else if (extraSelected) {
+            } else if (selected == EXTRA) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("extraDescription"), 465, 470);
 
-            } else if (glideSelected) {
+            } else if (selected == BLOCK) {
                 font.draw(loop.game.batch, loop.game.localization.myBundle.get("glideDescription"), 465, 500);
             }
         }
