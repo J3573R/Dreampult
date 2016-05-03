@@ -62,7 +62,7 @@ public class Clothes {
             posX = bodypart.body.getPosition().x - bodypart.width / 2;
             dropVelocity += Gdx.graphics.getDeltaTime() * 2;
             batch.draw(img,
-                    posX,
+                    posX - dropVelocity,
                     posY - dropVelocity, // Texture, x, y
                     bodypart.width / 2, bodypart.height / 2, // Origin x, Origin y
                     bodypart.width, bodypart.height, // Width, Height

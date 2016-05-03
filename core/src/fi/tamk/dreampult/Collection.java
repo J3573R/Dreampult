@@ -9,8 +9,11 @@ public class Collection {
     private boolean ScoreScreen;
     private boolean talentScreen;
 
-    final public int SCREEN_WIDTH = 16;
-    final public int SCREEN_HEIGHT = 9;
+    final public int SCREEN_WIDTH = 24;
+    final public int SCREEN_HEIGHT = 14;
+
+    final public int SCREEN_WIDTH_CENTER  = SCREEN_WIDTH / 2;
+    final public int SCREEN_HEIGHT_CENTER = SCREEN_HEIGHT / 2;
 
     final public int REAL_WIDTH = 960;
     final public int REAL_HEIGHT = 540;

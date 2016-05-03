@@ -24,6 +24,7 @@ public class Bodypart {
 
     public float width;
     public float height;
+    public boolean sensor;
 
     Clothes clothes;
 
@@ -45,11 +46,12 @@ public class Bodypart {
         this.width = width;
         this.height = height;
         this.img = img;
+        this.sensor = sensor;
         originalPosition = body.getPosition();
     }
 
-    public void resetPosition() {
-        body.getPosition().set(originalPosition);
+    public void resetPosition(Vector2 position) {
+        body.getPosition().set(position);
         body.setLinearVelocity(0, 0);
         body.setAngularVelocity(0);
         clothes.setDropClothes(false);

@@ -98,12 +98,12 @@ public class Player {
     }
 
     public void reset() {
-        head.resetPosition();
-        torso.resetPosition();
-        rightArm.resetPosition();
-        leftArm.resetPosition();
-        rightLeg.resetPosition();
-        rightLeg.resetPosition();
+        head.resetPosition(this.torso.body.getPosition());
+        torso.resetPosition(this.torso.body.getPosition());
+        rightArm.resetPosition(this.torso.body.getPosition());
+        leftArm.resetPosition(this.torso.body.getPosition());
+        rightLeg.resetPosition(this.torso.body.getPosition());
+        rightLeg.resetPosition(this.torso.body.getPosition());
     }
 
     /**
@@ -150,11 +150,6 @@ public class Player {
     }
 
     public void setBodypartVelocity(Vector2 vel) {
-        rightArm.body.setLinearVelocity(vel);
-        leftArm.body.setLinearVelocity(vel);
-        rightLeg.body.setLinearVelocity(vel);
-        leftLeg.body.setLinearVelocity(vel);
-        head.body.setLinearVelocity(vel);
 
         rightArm.body.setAngularVelocity(0);
         leftArm.body.setAngularVelocity(0);
@@ -162,11 +157,11 @@ public class Player {
         leftLeg.body.setAngularVelocity(0);
         head.body.setAngularVelocity(0);
 
-        rightArm.body.setAngularDamping(0);
-        leftArm.body.setAngularDamping(0);
-        rightLeg.body.setAngularDamping(0);
-        leftLeg.body.setAngularDamping(0);
-        head.body.setAngularDamping(0);
+        rightArm.body.setLinearVelocity(vel);
+        leftArm.body.setLinearVelocity(vel);
+        rightLeg.body.setLinearVelocity(vel);
+        leftLeg.body.setLinearVelocity(vel);
+        head.body.setLinearVelocity(vel);
     }
 
     public void dropClothes() {

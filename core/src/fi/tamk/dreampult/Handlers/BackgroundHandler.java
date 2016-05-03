@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import fi.tamk.dreampult.Collection;
 import fi.tamk.dreampult.GameLoop;
 
 /**
@@ -47,20 +48,23 @@ public class BackgroundHandler {
      */
     float offset;
 
+    Collection collection;
+
     /**
      * Initialize everything.
      * @param background Background texture.
      * @param imgWidth Width in loop world.
      * @param imgHeight Height in loop world.
      */
-    public BackgroundHandler(Texture background, float imgWidth, float imgHeight, float speedStabilizer){
+    public BackgroundHandler(Texture background, float imgWidth, float imgHeight, float speedStabilizer, Collection collection){
         this.imgWidth = imgWidth;
         this.imgHeight = imgHeight;
         this.speedStabilizer = speedStabilizer;
+        this.collection = collection;
 
         this.background = background;
         position = new Vector2(0, 0);
-        imageAmount = (int) Math.ceil((double) (16 / imgWidth)) + 1;
+        imageAmount = (int) Math.ceil((double) (collection.SCREEN_WIDTH_CENTER / imgWidth)) + 1;
     }
 
     public void reset() {
@@ -98,7 +102,7 @@ public class BackgroundHandler {
      * Updating offset according GameCamera position.
      */
     public void updateOffset(float cameraX) {
-        offset = cameraX - (16f / 2f);
+        offset = cameraX - collection.SCREEN_WIDTH_CENTER;
     }
 
     public void setSpeed(float speed) {

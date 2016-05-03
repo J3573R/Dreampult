@@ -149,7 +149,7 @@ public class GameLoop extends ScreenAdapter {
         ui.refreshScore();
         ui.init();
 
-        game.GameCamera.position.set(8f, 4.5f, 0);
+        game.GameCamera.position.set(game.collection.SCREEN_WIDTH_CENTER, game.collection.SCREEN_HEIGHT_CENTER, 0);
         game.GameCamera.update();
 
         catapult.reset();
@@ -205,7 +205,7 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(GameCamera.combined);
 
             ground.body.setTransform(GameCamera.position.x, 0, 0);
-            roof.body.setTransform(GameCamera.position.x, 50, 0);
+            roof.body.setTransform(GameCamera.position.x, 51, 0);
 
             arrow.update();
             map.update();
@@ -231,7 +231,6 @@ public class GameLoop extends ScreenAdapter {
                 if(gliding && inputHandler.timer > 0.5f) {
                     Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                     UserInterfaceCamera.unproject(touchPos);
-                    Vector2 vel = player.torso.body.getLinearVelocity();
 
                     if(Gdx.input.getY() < 270) {
 
@@ -291,7 +290,7 @@ public class GameLoop extends ScreenAdapter {
                         meter.scale = 0;
                         secondLaunch = true;
                         rotatedX = player.torso.body.getPosition().x;
-                        player.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
+                        //player.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
                         player.reset();
                         retry -= 1;
                     }
@@ -350,6 +349,7 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(GameCamera.combined);
 
             game.batch.end();
+            debug.render(world, GameCamera.combined);
     }
 
     /**

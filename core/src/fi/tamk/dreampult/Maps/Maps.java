@@ -3,6 +3,7 @@ package fi.tamk.dreampult.Maps;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import fi.tamk.dreampult.Collection;
 import fi.tamk.dreampult.Handlers.BackgroundHandler;
 import fi.tamk.dreampult.Objects.Collision.Generator;
 import fi.tamk.dreampult.Objects.Collision.Objects;
@@ -13,8 +14,10 @@ import java.util.ArrayList;
  * Created by Clown on 16.4.2016.
  */
 public class Maps {
+    Collection collection;
 
-    public Map loadMap(int level, AssetManager assets) {
+    public Map loadMap(int level, AssetManager assets, Collection collection) {
+        this.collection = collection;
         if(level == 1) {
             return Level1(assets);
         } else if (level == 2) {
@@ -35,14 +38,14 @@ public class Maps {
 
             backgrounds.add(new BackgroundHandler(
                     assets.get("images/background/level1/layer3.png", Texture.class),
-                    16, 9, 0.3f));
+                    collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.3f, collection));
             backgrounds.add(new BackgroundHandler(
                     assets.get("images/background/level1/layer2.png", Texture.class),
-                    16, 9, 0.4f));
+                    collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.4f, collection));
 
             backgrounds.add(new BackgroundHandler(
                     assets.get("images/background/level1/layer1.png", Texture.class),
-                    16, 9, 0.5f));
+                    collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.5f, collection));
 
             bedGeneration(assets, objects);
             starGeneration(assets, objects);
@@ -70,14 +73,14 @@ public class Maps {
 
         backgrounds.add(new BackgroundHandler(
                 assets.get("images/background/level2/layer3.png", Texture.class),
-                16, 9, 0.3f));
+                collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.3f, collection));
         backgrounds.add(new BackgroundHandler(
                 assets.get("images/background/level2/layer2.png", Texture.class),
-                16, 9, 0.4f));
+                collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.4f, collection));
 
         backgrounds.add(new BackgroundHandler(
                 assets.get("images/background/level2/layer1.png", Texture.class),
-                16, 9, 0.5f));
+                collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.5f, collection));
 
         bedGeneration(assets, objects);
         starGeneration(assets, objects);
@@ -109,21 +112,21 @@ public class Maps {
 
         backgrounds.add(new BackgroundHandler(
                 assets.get("images/background/level3/layer3.png", Texture.class),
-                16, 9, 0.3f));
+                collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.3f, collection));
         backgrounds.add(new BackgroundHandler(
                 assets.get("images/background/level3/layer2.png", Texture.class),
-                16, 9, 0.4f));
+                collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.4f, collection));
 
         backgrounds.add(new BackgroundHandler(
                 assets.get("images/background/level3/layer1.png", Texture.class),
-                16, 9, 0.5f));
+                collection.SCREEN_WIDTH, collection.SCREEN_HEIGHT, 0.5f, collection));
 
         bedGeneration(assets, objects);
         starGeneration(assets, objects);
         unicornGeneration(assets, objects);
         clockGeneration(assets, objects);
 
-        objects.add(new Generator(assets, "cow", 30, 0, new Vector2(15, 0), new Vector2(48, 30)));
+        objects.add(new Generator(assets, "cow", 30, 0, new Vector2(15, 0), new Vector2(45, 30)));
         objects.add(new Generator(assets, "cow", 10, 0, new Vector2(15, 0), new Vector2(30, 10)));
 
         objects.add(new Generator(assets, "turtle", 15, 0, new Vector2(15, 0), new Vector2(20, 5)));
@@ -144,11 +147,11 @@ public class Maps {
     }
 
     public void starGeneration(AssetManager assets, ArrayList<Generator> generators) {
-        generators.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(48, 10)));
+        generators.add(new Generator(assets, "star", 30, 0, new Vector2(1, 0), new Vector2(45, 10)));
     }
 
     public void unicornGeneration(AssetManager assets, ArrayList<Generator> generators) {
-        generators.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(48, 20)));
+        generators.add(new Generator(assets, "unicorn", 20, 0, new Vector2(1, 0), new Vector2(45, 20)));
     }
 
     public void clockGeneration(AssetManager assets, ArrayList<Generator> generators) {

@@ -139,7 +139,7 @@ public class LoadingScreen implements Screen {
         truthButton.setAlpha(0f);
         falseButton.setAlpha(0f);
 
-        game.GameCamera.position.set(8, 4.5f, 0);
+        game.GameCamera.position.set(game.collection.SCREEN_WIDTH_CENTER, game.collection.SCREEN_HEIGHT_CENTER, 0);
         game.GameCamera.update();
         game.UserInterfaceCamera.position.set(480, 270, 0);
         game.UserInterfaceCamera.update();
@@ -194,7 +194,7 @@ public class LoadingScreen implements Screen {
             }
         } else {
             if(game.assets.manager.update()) {
-                this.map = maps.loadMap(level, game.assets.manager);
+                this.map = maps.loadMap(level, game.assets.manager, game.collection);
                 game.gameLoop.reset(map);
                 game.talentsScreen.init();
                 if(game.gameLoop.ready) {
@@ -210,7 +210,7 @@ public class LoadingScreen implements Screen {
 
         game.batch.begin();
 
-        game.batch.draw(background, 0, 0, 16, 9);
+        game.batch.draw(background, 0, 0, game.collection.SCREEN_WIDTH, game.collection.SCREEN_HEIGHT);
         game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
 
         if(loaded) {

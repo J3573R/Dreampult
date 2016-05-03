@@ -48,7 +48,7 @@ public class Map {
             );
         }
         for ( BackgroundHandler background : backgrounds) {
-            if(loop.player.torso.body.getPosition().x >= 8) {
+            if(loop.player.torso.body.getPosition().x >= loop.collection.SCREEN_WIDTH_CENTER) {
                 background.setSpeed(loop.player.torso.body.getLinearVelocity().x);
                 background.move();
                 background.updateOffset(loop.GameCamera.position.x);
@@ -65,7 +65,7 @@ public class Map {
     public void drawBackground(SpriteBatch batch) {
         batch.draw(staticBackground,
                 loop.GameCamera.position.x - loop.collection.SCREEN_WIDTH / 2,
-                loop.GameCamera.position.y - loop.collection.SCREEN_HEIGHT / 2 - 0.5f,
+                loop.GameCamera.position.y - loop.collection.SCREEN_HEIGHT / 2,
                 loop.collection.SCREEN_WIDTH,
                 loop.collection.SCREEN_HEIGHT);
         for ( BackgroundHandler background : backgrounds){
