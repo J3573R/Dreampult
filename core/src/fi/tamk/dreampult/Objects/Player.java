@@ -17,6 +17,13 @@ import fi.tamk.dreampult.GameLoop;
 public class Player {
     GameLoop game;
     World world;
+
+    Texture imgBody;
+    Texture imgLeg;
+    Texture imgLeftArm;
+    Texture imgRightArm;
+    Texture imgHead;
+
     public Bodypart head;
     public Bodypart leftLeg;
     public Bodypart rightLeg;
@@ -47,11 +54,11 @@ public class Player {
         rightArm = new Bodypart(game);
         torso = new Bodypart(game);
 
-        Texture imgBody = game.assets.get("images/player/body.png", Texture.class);
-        Texture imgLeg = game.assets.get("images/player/leg.png", Texture.class);
-        Texture imgLeftArm = game.assets.get("images/player/left_arm.png", Texture.class);
-        Texture imgRightArm = game.assets.get("images/player/right_arm.png", Texture.class);
-        Texture imgHead = game.assets.get("images/player/headwithball.png", Texture.class);
+        imgBody = game.assets.get("images/player/body.png", Texture.class);
+        imgLeg = game.assets.get("images/player/leg.png", Texture.class);
+        imgLeftArm = game.assets.get("images/player/left_arm.png", Texture.class);
+        imgRightArm = game.assets.get("images/player/right_arm.png", Texture.class);
+        imgHead = game.assets.get("images/player/headwithball.png", Texture.class);
 
         torso.density = 0.1f;
 
@@ -104,6 +111,58 @@ public class Player {
         leftArm.resetPosition(this.torso.body.getPosition());
         rightLeg.resetPosition(this.torso.body.getPosition());
         rightLeg.resetPosition(this.torso.body.getPosition());
+    }
+
+    public void reCreate(){
+        Vector2 torsoPos = torso.body.getPosition();
+        world.destroyBody(head.body);
+        world.destroyBody(leftLeg.body);
+        world.destroyBody(leftArm.body);
+        world.destroyBody(rightLeg.body);
+        world.destroyBody(rightArm.body);
+        world.destroyBody(torso.body);
+
+        head = new Bodypart(game);
+        leftLeg = new Bodypart(game);
+        leftArm = new Bodypart(game);
+        rightLeg = new Bodypart(game);
+        rightArm = new Bodypart(game);
+        torso = new Bodypart(game);
+
+        torso.density = 0.1f;
+
+        head.createBodypart("head", torsoPos.x, torsoPos.y + 0.5f, width, width, true, imgHead);
+        leftLeg.createBodypart("left leg", torsoPos, limbWidth, limbHeight, true, imgLeg);
+        leftArm.createBodypart("left arm", torsoPos, limbWidth, limbHeight, true, imgLeftArm);
+        rightLeg.createBodypart("right leg", torsoPos, limbWidth, limbHeight, true, imgLeg);
+        rightArm.createBodypart("right arm", torsoPos, limbWidth, limbHeight, true, imgRightArm);
+        torso.createBodypart("torso", torsoPos, width, height, false, imgBody);
+
+        connectBodypart(torso, leftArm,
+                0, height / 2 - 0.1f,
+                0, limbHeight / 2 + 0.05f,
+                false);
+
+        connectBodypart(torso, rightArm,
+                0, height / 2 - 0.1f,
+                0, limbHeight / 2,
+                false);
+
+        connectBodypart(torso, leftLeg,
+                0, height / 2 * -1 + 0.1f,
+                0, limbHeight / 2 + 0.05f,
+                true);
+
+        connectBodypart(torso, rightLeg,
+                0, height / 2 * -1 + 0.1f,
+                0, limbHeight / 2,
+                true);
+
+        connectBodypart(torso, head,
+                0, height / 2 - 0.05f,
+                0, width / 2,
+                true);
+
     }
 
     /**

@@ -50,6 +50,18 @@ public class Bodypart {
         originalPosition = body.getPosition();
     }
 
+    public void createBodypart(String userData, float x, float y, float width, float height, boolean sensor, Texture img) {
+        body = createBodyDef(new Vector2(x, y));
+        body.setUserData(userData);
+        createBodyFixture(body, 1f, width, height, sensor, 0);
+
+        this.width = width;
+        this.height = height;
+        this.img = img;
+        this.sensor = sensor;
+        originalPosition = body.getPosition();
+    }
+
     public void resetPosition(Vector2 position) {
         body.getPosition().set(position);
         body.setLinearVelocity(0, 0);

@@ -292,6 +292,7 @@ public class GameLoop extends ScreenAdapter {
                         rotatedX = player.torso.body.getPosition().x;
                         //player.setTransform(rotatedX, rotatedY, catapult.spoonRotation);
                         player.reset();
+                        player.reCreate();
                         retry -= 1;
                     }
 
