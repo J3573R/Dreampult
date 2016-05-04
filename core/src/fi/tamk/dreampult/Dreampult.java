@@ -100,7 +100,7 @@ public class Dreampult extends Game {
 	@Override
 	public void render () {
         super.render();
-        System.out.println(Gdx.graphics.getFramesPerSecond());
+        //System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     public void setScreen(Screen screen) {

@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.QuestionHandler;
 import fi.tamk.dreampult.Helpers.Button;
+import fi.tamk.dreampult.Helpers.ConfirmationText;
 import fi.tamk.dreampult.Helpers.Question;
 import fi.tamk.dreampult.Maps.Map;
 import fi.tamk.dreampult.Maps.Maps;
@@ -68,8 +69,11 @@ public class LoadingScreen implements Screen {
 
     Vector3 touchPoint;
 
-//    Sound positiveSound;
-//    Sound negativeSound;
+    ConfirmationText confirmationText;
+
+    public int answerInteger = 0;
+    final int CORRECT = 1;
+    final int INCORRECT = 2;
 
     public LoadingScreen(Dreampult game) {
         this.game = game;
@@ -93,6 +97,8 @@ public class LoadingScreen implements Screen {
         falseButton = new Button(fontHandler);
 
         touchPoint = new Vector3();
+
+        confirmationText = new ConfirmationText(game);
     }
 
     public void reset(int level) {
@@ -168,24 +174,40 @@ public class LoadingScreen implements Screen {
 //                        positiveSound.play();
                             game.gameLoop.bounces += 1;
                             game.sounds.play("positive");
+                            answerInteger = CORRECT;
                         } else {
                             game.sounds.play("negative");
+                            answerInteger = INCORRECT;
 //                        negativeSound.play();
                         }
-                        game.setScreen(game.gameLoop);
-                        game.collection.start();
+
+                        if (confirmationText.timeOut()) {
+                            System.out.println("Time over: " + confirmationText.timer);
+                            //answerInteger = 0;
+                            //game.setScreen(game.gameLoop);
+                            //game.collection.start();
+                        } else if (!confirmationText.timeOut()) {
+                            System.out.println("Timer: " + confirmationText.timer);
+                        }
 
                     } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
                         if (question.isTrue(false)) {
 //                        positiveSound.play();
                             game.gameLoop.bounces += 1;
                             game.sounds.play("positive");
+                            answerInteger = CORRECT;
                         } else {
                             game.sounds.play("negative");
+                            answerInteger = INCORRECT;
 //                        negativeSound.play();
                         }
-                        game.setScreen(game.gameLoop);
-                        game.collection.start();
+
+                        if (confirmationText.timeOut()) {
+                            System.out.println("Time over: " + confirmationText.timer);
+                        } else if (!confirmationText.timeOut()) {
+                            System.out.println("Timer: " + confirmationText.timer);
+                        }
+
                     } else {
                         //System.out.println(touchPoint.x + " : " + touchPoint.y);
                         //System.out.println(question);
@@ -259,6 +281,12 @@ public class LoadingScreen implements Screen {
         game.batch.begin();
 
         question.draw(game.batch);
+
+        if (answerInteger == CORRECT) {
+            confirmationText.drawText(true, true);
+        } else if (answerInteger == INCORRECT) {
+            confirmationText.drawText(false, false);
+        }
 
         game.batch.end();
     }

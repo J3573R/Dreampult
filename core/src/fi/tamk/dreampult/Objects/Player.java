@@ -37,8 +37,6 @@ public class Player {
     float limbWidth = width / 1.5f;
     float limbHeight = height / 1.5f;
 
-    // TODO: Se helvetin katapulttianimaatio pitäis kans tehdä.
-
     /**
      * Create player.
      * @param world
