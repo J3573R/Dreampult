@@ -104,7 +104,7 @@ public class TalentsScreen extends ScreenAdapter {
             slipperyIcon = loop.assets.get("images/talents/slippery1.png", Texture.class);
             background = loop.assets.get("images/talents/talentScreen_bg.png", Texture.class);
             emptyBox = loop.assets.get("images/talents/box.png", Texture.class);
-            lock = loop.assets.get("images/talents/lock.png", Texture.class);
+            lock = loop.assets.get("images/talents/TalentLock.png", Texture.class);
 
             shapeRenderer = new ShapeRenderer();
 
@@ -117,9 +117,9 @@ public class TalentsScreen extends ScreenAdapter {
             pyjamaRectangle = new Rectangle(80, 330, 150, 150);
             extraRectangle = new Rectangle(250, 330, 150, 150);
 
-            tierOneLock = new Rectangle(80, 330, 320, 150);
-            tierTwoLock = new Rectangle(80, 10, 320, 150);
-            tierThreeLock = new Rectangle(80, 170, 320, 150);
+            tierOneLock = new Rectangle(80, 330, 320, 142);
+            tierTwoLock = new Rectangle(80, 10, 320, 142);
+            tierThreeLock = new Rectangle(80, 170, 320, 142);
 
             resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, loop.game.localization.myBundle.get("reset"));
             returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, loop.game.localization.myBundle.get("mainMenu"));

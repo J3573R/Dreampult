@@ -9,7 +9,7 @@ import fi.tamk.dreampult.GameLoop;
 import org.w3c.dom.Text;
 
 /**
- * Created by root on 23.3.2016.
+ * Created by Clown on 23.3.2016.
  */
 public class Catapult {
 

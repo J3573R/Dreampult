@@ -3,6 +3,7 @@ package fi.tamk.dreampult.Handlers;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import java.util.Locale;
 
 /**
- * Created by root on 25.2.2016.
+ * Created by Clown on 25.2.2016.
  */
 public class AssetHandler {
     public AssetManager manager = new AssetManager();
@@ -28,6 +29,12 @@ public class AssetHandler {
     public void loadSplash() {
         manager.load("images/splashEng.png", Texture.class);
         manager.load("images/splashFin.png", Texture.class);
+    }
+
+    public void loadMusic(){
+        manager.load("audio/Music/bensound-scifi.mp3", Music.class);
+        manager.load("audio/Music/bensound-dance.mp3", Music.class);
+        manager.load("audio/Music/bensound-creepy.mp3", Music.class);
     }
 
     public void loadPlayer(){
@@ -74,9 +81,6 @@ public class AssetHandler {
         manager.load("images/background/level2/layer4.png", Texture.class);
         manager.load("images/background/level3/layer4.png", Texture.class);
         loadTalents();
-
-//        manager.load("audio/soundEffects/positive.wav", Sound.class);
-//        manager.load("audio/soundEffects/negative.wav", Sound.class);
     }
 
     public void loadLocalization(Locale locale) {
@@ -160,7 +164,7 @@ public class AssetHandler {
         manager.load("images/talents/slippery1.png", Texture.class);
         manager.load("images/talents/talentScreen_bg.png", Texture.class);
         manager.load("images/talents/box.png", Texture.class);
-        manager.load("images/talents/lock.png", Texture.class);
+        manager.load("images/talents/TalentLock.png", Texture.class);
     }
 
     public void loadSoundEffects() {

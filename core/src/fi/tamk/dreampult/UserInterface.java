@@ -26,7 +26,6 @@ public class UserInterface {
     Texture soundOn;
     Texture soundOff;
     public Rectangle soundButton;
-    boolean soundState = true;
 
     public Circle shootButton;
 
@@ -112,7 +111,7 @@ public class UserInterface {
     public void draw(SpriteBatch batch) {
 
         batch.draw(pauseTexture, pauseButton.getX(), pauseButton.getY(), pauseButton.getWidth(), pauseButton.getHeight());
-        if(soundState) {
+        if(saves.getSounds() == saves.ON) {
             batch.draw(soundOn, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());
         } else {
             batch.draw(soundOff, soundButton.getX(), soundButton.getY(), soundButton.getWidth(), soundButton.getHeight());
@@ -256,14 +255,4 @@ public class UserInterface {
         starButton = new Button(loop.fontHandler, 800, 460, 80, 80, String.valueOf(saves.getStars()));
         starButton.buttonImage = loop.assets.get("images/objects/allies/star.png", Texture.class);
     }
-
-    public void toggleSound() {
-        if(soundState) {
-            soundState = false;
-        } else {
-            soundState = true;
-        }
-    }
-
-    public boolean isSoundOn(){ return soundState; }
 }

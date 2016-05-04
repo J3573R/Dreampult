@@ -9,7 +9,7 @@ import fi.tamk.dreampult.Objects.Collision.Objects;
 import fi.tamk.dreampult.Objects.HitEffect;
 
 /**
- * Created by root on 25.2.2016.
+ * Created by Clown on 25.2.2016.
  */
 public class CollisionHandler implements ContactListener {
     GameLoop game;

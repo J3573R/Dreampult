@@ -158,7 +158,7 @@ public class TitleScreen implements Screen {
 
                     game.loadingScreen.questionHandler.clearQuestions();
                     game.loadingScreen.questionHandler.initializeQuestions();
-
+                    game.player.playLevel1();
                     game.setScreen(game.loadingScreen);
                     game.loadingScreen.reset(1);
 
@@ -167,7 +167,7 @@ public class TitleScreen implements Screen {
 
                     game.loadingScreen.questionHandler.clearQuestions();
                     game.loadingScreen.questionHandler.initializeQuestions();
-
+                    game.player.playLevel2();
                     game.setScreen(game.loadingScreen);
                     game.loadingScreen.reset(2);
 
@@ -176,7 +176,7 @@ public class TitleScreen implements Screen {
 
                     game.loadingScreen.questionHandler.clearQuestions();
                     game.loadingScreen.questionHandler.initializeQuestions();
-
+                    game.player.playLevel3();
                     game.setScreen(game.loadingScreen);
                     game.loadingScreen.reset(3);
 
@@ -191,6 +191,7 @@ public class TitleScreen implements Screen {
                         saves.setSounds(saves.ON);
                     }
                     saves.save();
+                    game.player.toggle();
 
                 } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
                     game.collection.showTalentScreen();

@@ -104,7 +104,13 @@ public class InputHandler extends InputAdapter {
                     }
                 }
             }else if(loop.ui.soundButton.contains(touchPos.x, touchPos.y)) {
-                loop.ui.toggleSound();
+                if(loop.saves.getSounds() == loop.saves.ON) {
+                    loop.saves.setSounds(loop.saves.OFF);
+                } else {
+                    loop.saves.setSounds(loop.saves.ON);
+                }
+                loop.saves.save();
+                loop.game.player.toggle();
             }
 
             if(loop.ui.restartButton.button.contains(touchPos.x, touchPos.y)

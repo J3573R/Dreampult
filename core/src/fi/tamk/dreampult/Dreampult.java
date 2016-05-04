@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,7 @@ import java.util.Locale;
 import fi.tamk.dreampult.Handlers.AssetHandler;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.Localization;
+import fi.tamk.dreampult.Helpers.MusicPlayer;
 import fi.tamk.dreampult.Helpers.Saves;
 import fi.tamk.dreampult.Helpers.Sounds;
 
@@ -36,6 +38,8 @@ public class Dreampult extends Game {
 
     public Saves saves;
     public Sounds sounds;
+
+    public MusicPlayer player;
 
     boolean splash;
 
@@ -61,6 +65,7 @@ public class Dreampult extends Game {
         assets.loadUi();
         assets.loadSoundEffects();
         assets.loadSplash();
+        assets.loadMusic();
         assets.manager.finishLoading();
 
         sounds = new Sounds(assets);
@@ -70,8 +75,8 @@ public class Dreampult extends Game {
         gameLoop = new GameLoop(this, assets.manager);
         talentsScreen = new TalentsScreen(gameLoop);
         talentsScreen.init();
+        player = new MusicPlayer(assets.manager, saves);
 
-        //startTime = 5;
         setScreen(titleScreen);
 	}
 
@@ -79,6 +84,7 @@ public class Dreampult extends Game {
         collection.launch = false;
         collection.hidePauseMenu();
         collection.hideScoreScreen();
+        player.playLevel1();
         setScreen(titleScreen);
     }
 

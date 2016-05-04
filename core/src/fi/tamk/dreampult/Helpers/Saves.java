@@ -71,6 +71,9 @@ public class Saves {
         prefs.putBoolean("level2", level2);
         prefs.putBoolean("level3", level3);
 
+        level2 = true;
+        level3 = true;
+
 
         prefs.putFloat("level1Score", level1Score);
         prefs.putFloat("level2Score", level2Score);

@@ -8,7 +8,7 @@ import fi.tamk.dreampult.Collection;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by root on 9.3.2016.
+ * Created by Clown on 9.3.2016.
  */
 public class BackgroundHandler {
 

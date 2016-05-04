@@ -350,7 +350,6 @@ public class GameLoop extends ScreenAdapter {
             game.batch.setProjectionMatrix(GameCamera.combined);
 
             game.batch.end();
-            debug.render(world, GameCamera.combined);
     }
 
     /**
