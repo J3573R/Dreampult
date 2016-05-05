@@ -30,41 +30,30 @@ public class ConfirmationText {
             correctAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
             incorrectAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
 
-            timer = 10;
+            timer = 1;
             round = 0;
         }
 
         public void drawText(boolean text, boolean direction) {
-
-
-            while (timer > 0) {
-                //game.batch.begin();
-
-                if (text && direction) {
-                    fontHandler.draw(game.batch, game.localization.myBundle.get("correctAnswer"), game.collection.REAL_WIDTH / 2, location, Color.WHITE);
+            if (text && direction) {
+                    fontHandler.draw(game.batch,
+                            game.localization.myBundle.get("correctAnswer"),
+                            game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.WHITE);
                     System.out.println("Location: " + location);
-
-                    if (round == 10) {
-                        location ++;
-                        round = 0;
-                    }
+                    location += 2;
 
             } else if (!text && !direction) {
-                    fontHandler.draw(game.batch, game.localization.myBundle.get("incorrectAnswer"), game.collection.REAL_WIDTH / 2, location, Color.WHITE);
-                    location--;
-
-                    if (round == 10) {
-                        location--;
-                        round = 0;
-                    }
+                    fontHandler.draw(game.batch,
+                            game.localization.myBundle.get("incorrectAnswer"),
+                            game.collection.REAL_WIDTH / 2 - (int)incorrectAnswerLayout.width / 2, location, Color.WHITE);
+                    location -= 2;
             }
+            //game.batch.end();
+            timer -= Gdx.graphics.getDeltaTime();
+            System.out.println(timer);
+            round++;
+            timeOut();
 
-                //game.batch.end();
-                timer -= Gdx.graphics.getDeltaTime();
-                System.out.println(timer);
-                round++;
-                timeOut();
-            }
         }
 
         public boolean timeOut() {
