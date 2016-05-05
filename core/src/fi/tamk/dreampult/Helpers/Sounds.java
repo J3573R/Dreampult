@@ -7,6 +7,7 @@ import fi.tamk.dreampult.Handlers.AssetHandler;
  * @author Tommi Hagelberg
  */
 public class Sounds {
+    Saves saves;
 
     public Sound catapult;
     public Sound moo;
@@ -20,8 +21,10 @@ public class Sounds {
     /**
      * Loads all sound effects for the quick use.
      * @param manager Asset manager for loading sounds.
+     * @param saves For checking if sounds are on.
      */
-    public Sounds(AssetHandler manager){
+    public Sounds(AssetHandler manager, Saves saves){
+        this.saves = saves;
         catapult = manager.manager.get("audio/CatapultLaunch2.wav", Sound.class);
         moo = manager.manager.get("audio/CowMoo.wav", Sound.class);
         pig = manager.manager.get("audio/PigOink.wav", Sound.class);
@@ -37,24 +40,24 @@ public class Sounds {
      * @param sound Name of the sound file.
      */
     public void play(String sound) {
-
-        if(sound.equals("catapult")) {
-            catapult.play(1.0f);
-        } else if(sound.equals("moo")) {
-            moo.play(1.0f);
-        } else if(sound.equals("pig")) {
-            pig.play(1.0f);
-        } else if(sound.equals("alarm")) {
-            alarm.play(1.0f);
-        } else if(sound.equals("positive")) {
-            positive.play(1.0f);
-        } else if(sound.equals("negative")) {
-            negative.play(1.0f);
-        } else if(sound.equals("ground")) {
-            ground.play(1.0f);
-        } else if(sound.equals("star")) {
-            star.play(1.0f);
+        if(saves.getSounds() == saves.ON) {
+            if(sound.equals("catapult")) {
+                catapult.play(1.0f);
+            } else if(sound.equals("moo")) {
+                moo.play(1.0f);
+            } else if(sound.equals("pig")) {
+                pig.play(1.0f);
+            } else if(sound.equals("alarm")) {
+                alarm.play(1.0f);
+            } else if(sound.equals("positive")) {
+                positive.play(1.0f);
+            } else if(sound.equals("negative")) {
+                negative.play(1.0f);
+            } else if(sound.equals("ground")) {
+                ground.play(1.0f);
+            } else if(sound.equals("star")) {
+                star.play(1.0f);
+            }
         }
-
     }
 }

@@ -63,7 +63,7 @@ public class Dreampult extends Game {
         assets.loadMusic();
         assets.manager.finishLoading();
 
-        sounds = new Sounds(assets);
+        sounds = new Sounds(assets, saves);
         fontHandler = new FontHandler();
         titleScreen = new TitleScreen(this);
         loadingScreen = new LoadingScreen(this);
