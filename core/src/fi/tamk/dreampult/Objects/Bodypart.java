@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by DV6-6B20 on 10.3.2016.
+ * @author Kalle Heinonen & Tommi Hagelberg
  */
 public class Bodypart {
 
@@ -30,6 +30,11 @@ public class Bodypart {
 
     public Vector2 originalPosition;
 
+    /**
+     * Runs a request to create the clothes, and initializes density.
+     *
+     * @param game used to pass GameLoop to clothes
+     */
     public Bodypart(GameLoop game) {
         this.game = game;
 
@@ -38,6 +43,15 @@ public class Bodypart {
         density = 1f;
     }
 
+    /**
+     * Creates the Bodypart in the beginning of the level
+     *
+     * @param userData identifier for the Bodypart
+     * @param width of the Bodypart
+     * @param height of the Bodypart
+     * @param sensor determines if the Bodypart ignores collision or not
+     * @param img the Texture used for drawing the Bodypart
+     */
     public void createBodypart(String userData, Vector2 position, float width, float height, boolean sensor, Texture img) {
         body = createBodyDef(position);
         body.setUserData(userData);
@@ -50,6 +64,17 @@ public class Bodypart {
         originalPosition = body.getPosition();
     }
 
+    /**
+     * Creates the Bodypart in set coordinates.
+     *
+     * @param userData identifier for the Bodypart
+     * @param x coordinate on the X-axis
+     * @param y coordinate on the Y-axis
+     * @param width of the Bodypart
+     * @param height of the Bodypart
+     * @param sensor determines if the Bodypart ignores collision or not
+     * @param img the Texture used for drawing the Bodypart
+     */
     public void createBodypart(String userData, float x, float y, float width, float height, boolean sensor, Texture img) {
         body = createBodyDef(new Vector2(x, y));
         body.setUserData(userData);
@@ -62,6 +87,9 @@ public class Bodypart {
         originalPosition = body.getPosition();
     }
 
+    /**
+     * @param position to set the Bodypart to
+     */
     public void resetPosition(Vector2 position) {
         body.getPosition().set(position);
         body.setLinearVelocity(0, 0);
@@ -71,7 +99,8 @@ public class Bodypart {
 
     /**
      * Create players body definition.
-     * @return
+     *
+     * @return the created body definition
      */
     private Body createBodyDef(Vector2 position) {
         BodyDef bodyDef = new BodyDef();
@@ -112,6 +141,11 @@ public class Bodypart {
         }
     }
 
+    /**
+     * Draws the Bodypart
+     *
+     * @param batch SpriteBatch used for drawing
+     */
     public void draw(SpriteBatch batch) {
 
         boolean flip = false;

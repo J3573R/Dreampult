@@ -217,6 +217,7 @@ public class TitleScreen implements Screen {
 
                 // Takes the player to the Talent Screen
                 } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
+                    game.talentsScreen.refreshStarButton();
                     game.collection.showTalentScreen();
                     game.setScreen(game.talentsScreen);
 

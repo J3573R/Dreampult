@@ -13,7 +13,7 @@ import fi.tamk.dreampult.Helpers.Button;
 import fi.tamk.dreampult.Helpers.Saves;
 
 /**
- * Created by Clown on 15.3.2016.
+ * @author Kalle Heinonen & Tommi Hagelberg
  */
 public class UserInterface {
     GameLoop loop;
@@ -53,6 +53,11 @@ public class UserInterface {
 
     Saves saves;
 
+    /**
+     * Creates all the menus and buttons.
+     *
+     * @param loop used to access GameLoop's saves, AssetManager, and fontHandler
+     */
     public UserInterface(GameLoop loop) {
         this.loop = loop;
         shapeRenderer = new ShapeRenderer();
@@ -79,11 +84,16 @@ public class UserInterface {
         createScoreScreen();
     }
 
+    /**
+     * Initializes the value of stars
+     */
     public void init(){
         starButton.setText(String.valueOf(saves.getStars()));
-        System.out.println(saves.getStars());
     }
 
+    /**
+     * Refreshes the best score of the current level
+     */
     public void refreshScore(){
         float highscore = saves.getScore(loop.map.getLevel());
         int hour = (int) (highscore * 0.6f) / 60;
@@ -97,6 +107,9 @@ public class UserInterface {
         score.setAlpha(0);
     }
 
+    /**
+     * Changes the text of the buttons to match the current language
+     */
     public void changeLang(){
         resumeButton.setText(loop.game.localization.myBundle.get("resume"));
         restartButton.setText(loop.game.localization.myBundle.get("restart"));
@@ -108,6 +121,11 @@ public class UserInterface {
         title.setText(loop.game.localization.myBundle.get("pause"));
     }
 
+    /**
+     * Draws all the menus and buttons
+     *
+     * @param batch SpriteBatch used for drawing
+     */
     public void draw(SpriteBatch batch) {
 
         batch.draw(pauseTexture, pauseButton.getX(), pauseButton.getY(), pauseButton.getWidth(), pauseButton.getHeight());
@@ -124,6 +142,11 @@ public class UserInterface {
         }
     }
 
+    /**
+     * Draws the pause menu and its buttons
+     *
+     * @param batch SpriteBatch used for drawing
+     */
     public void drawPauseMenu(SpriteBatch batch) {
         if(loop.collection.isPauseMenu()) {
             batch.end();
@@ -144,6 +167,11 @@ public class UserInterface {
         }
     }
 
+    /**
+     * Draws the score screen and its buttons
+     *
+     * @param batch SpriteBatch used for drawing
+     */
     public void drawScoreScreen(SpriteBatch batch) {
         if(loop.collection.isScoreScreen()) {
             batch.end();
@@ -164,11 +192,17 @@ public class UserInterface {
         }
     }
 
+    /**
+     * Creates the background rectangle used by pause menu and score screen
+     */
     private void createBackground() {
         background = new Rectangle();
         background.set(960 / 2 - 350 / 2, 560 / 2 - 400 / 2, 350, 400);
     }
 
+    /**
+     * Creates the pause menu and its buttons
+     */
     private void createPauseMenu() {
         float buttonWidth = 200;
         float buttonHeight = 50;
@@ -206,6 +240,9 @@ public class UserInterface {
                 loop.game.localization.myBundle.get("quit"));
     }
 
+    /**
+     * Creates the score screen and its buttons
+     */
     public void createScoreScreen() {
         float buttonWidth = 200;
         float buttonHeight = 50;
@@ -224,12 +261,18 @@ public class UserInterface {
                 loop.game.localization.myBundle.get("talents"));
     }
 
+    /**
+     * Creates the pause button
+     */
     private void createPauseButton() {
         pauseTexture = this.loop.assets.get("images/ui/pause.png");
         pauseButton = new Rectangle();
         pauseButton.set(880, 460, 80, 80);
     }
 
+    /**
+     * Creates the sound button
+     */
     private void createSoundButton() {
         soundOn = this.loop.assets.get("images/ui/soundOn.png", Texture.class);
         soundOff = this.loop.assets.get("images/ui/soundOff.png", Texture.class);
@@ -237,20 +280,32 @@ public class UserInterface {
         soundButton.set(0, 460, 80, 80);
     }
 
+    /**
+     * Creates the shoot button
+     */
     private void createShootButton() {
         shootTexture = this.loop.assets.get("images/launching/Launch_button.png", Texture.class);
         shootButton = new Circle();
         shootButton.set(880, 80, 60);
     }
 
+    /**
+     * Changes the texture used by the shoot button
+     */
     public void shootButtonDown(){
         shootTexture = this.loop.assets.get("images/launching/Launch_button_down.png", Texture.class);
     }
 
+    /**
+     * Changes the texture used by the shoot button
+     */
     public void shootButtonUp() {
         shootTexture = this.loop.assets.get("images/launching/Launch_button.png", Texture.class);
     }
 
+    /**
+     * Creates the button used to show the amount of stars the player has
+     */
     private void createStar() {
         starButton = new Button(loop.fontHandler, 800, 460, 80, 80, String.valueOf(saves.getStars()));
         starButton.buttonImage = loop.assets.get("images/objects/allies/star.png", Texture.class);

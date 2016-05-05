@@ -100,6 +100,7 @@ public class AssetHandler {
         manager.load("images/background/level1/layer4.png", Texture.class);
         manager.load("images/background/level2/layer4.png", Texture.class);
         manager.load("images/background/level3/layer4.png", Texture.class);
+        manager.load("images/objects/allies/star.png", Texture.class);
         loadTalents();
     }
 
@@ -135,7 +136,6 @@ public class AssetHandler {
         manager.load("images/player/hiteffect2.png", Texture.class);
         manager.load("images/player/rainbow_frames.png", Texture.class);
         manager.load("images/player/glide_animation.png", Texture.class);
-        manager.load("images/objects/allies/star.png", Texture.class);
         manager.load("images/objects/allies/unicorn.png", Texture.class);
     }
 

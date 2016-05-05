@@ -112,6 +112,8 @@ public class Saves {
      * Resets the values to their defaults.
      */
     public void reset() {
+        stars = 0;
+
         level2 = false;
         level3 = false;
 

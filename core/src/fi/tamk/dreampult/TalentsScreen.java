@@ -83,6 +83,8 @@ public class TalentsScreen extends ScreenAdapter {
     final private int TIER_TWO = 2;
     final private int TIER_THREE = 3;
 
+    public Button starButton;
+
     /**
      * The screen for accessing talents.
      *
@@ -97,6 +99,8 @@ public class TalentsScreen extends ScreenAdapter {
 
         touchPoint = new Vector3();
         img = loop.assets.get("images/ui/text_button.png", Texture.class);
+
+        createStar();
 
         purchase = false;
         notEnoughStars = false;
@@ -155,6 +159,10 @@ public class TalentsScreen extends ScreenAdapter {
 
             initialized = true;
         }
+    }
+
+    public void refreshStarButton () {
+        starButton.setText(String.valueOf(saves.getStars()));
     }
 
     @Override
@@ -269,16 +277,20 @@ public class TalentsScreen extends ScreenAdapter {
                             saves.unlockTier(1);
                             purchase = false;
                             selectedLock = 0;
+                            refreshStarButton();
 
                         } else if (selectedLock == TIER_TWO) {
                             saves.unlockTier(2);
                             purchase = false;
                             selectedLock = 0;
+                            refreshStarButton();
 
                         } else if (selectedLock == TIER_THREE) {
                             saves.unlockTier(3);
                             purchase = false;
                             selectedLock = 0;
+                            refreshStarButton();
+
                         }
 
                     // The tier is not unlocked if the player chooses "No"
@@ -393,7 +405,20 @@ public class TalentsScreen extends ScreenAdapter {
         // Draws a purchase prompt if a lock is touched while having at least 10 stars
         if (purchase) {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
-            font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierUnlock"), 465, 470);
+
+            if (selectedLock == TIER_ONE) {
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierUnlock"), 465, 530);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierOneDescription"), 465, 460);
+
+            } else if (selectedLock == TIER_TWO) {
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierUnlock"), 465, 530);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierTwoDescription"), 465, 460);
+
+            } else if (selectedLock == TIER_THREE) {
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierUnlock"), 465, 530);
+                font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierThreeDescription"), 465, 460);
+            }
+
             yesButton.setText(loop.game.localization.myBundle.get("positive"));
             noButton.setText(loop.game.localization.myBundle.get("negative"));
             yesButton.drawImage(loop.game.batch);
@@ -402,6 +427,8 @@ public class TalentsScreen extends ScreenAdapter {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
             font.draw(loop.game.batch, loop.game.localization.myBundle.get("lackingStars"), 465, 470);
         }
+
+        starButton.drawImage(loop.game.batch);
 
         loop.game.batch.end();
 
@@ -471,6 +498,14 @@ public class TalentsScreen extends ScreenAdapter {
                 shapeRenderer.end();
             }
         }
+    }
+
+    /**
+     * Creates the button used to show the amount of stars the player has
+     */
+    private void createStar() {
+        starButton = new Button(loop.fontHandler, 880, 460, 80, 80, String.valueOf(saves.getStars()));
+        starButton.buttonImage = loop.assets.get("images/objects/allies/star.png", Texture.class);
     }
 
     @Override

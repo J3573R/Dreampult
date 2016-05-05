@@ -13,11 +13,12 @@ import fi.tamk.dreampult.GameLoop;
 import java.util.Random;
 
 /**
- * Created by DV6-6B20 on 10.3.2016.
+ * @author Kalle Heinonen & Tommi Hagelberg
  */
 public class Clothes {
     GameLoop game;
 
+    // Textures for the clothes
     Texture leftSleeve;
     Texture rightSleeve;
     Texture shirt;
@@ -28,6 +29,11 @@ public class Clothes {
     float posX;
     float posY;
 
+    /**
+     * Creates the clothes for the player.
+     *
+     * @param game used to gain access to the AssetManager GameLoop uses
+     */
     public Clothes(GameLoop game) {
         this.game = game;
         dropClothes = false;
@@ -38,10 +44,18 @@ public class Clothes {
         shirt = game.assets.get("images/player/pyjama/shirt.png", Texture.class);
     }
 
+    /**
+     * Draws the clothes.
+     *
+     * @param batch SpriteBatch used for drawing
+     * @param bodypart the Bodypart to draw
+     */
     public void draw(SpriteBatch batch, Bodypart bodypart) {
 
+        // Initializes the value of texture img
         Texture img = leftSleeve;
 
+        // Draws the correct texture
         if (bodypart.body.getUserData() == "left arm") {
             img = leftSleeve;
         }
@@ -54,10 +68,7 @@ public class Clothes {
             img = shirt;
         }
 
-        else {
-            return;
-        }
-
+        // Makes the clothes drop off the player
         if(dropClothes) {
             posX = bodypart.body.getPosition().x - bodypart.width / 2;
             dropVelocity += Gdx.graphics.getDeltaTime() * 2;
@@ -86,6 +97,10 @@ public class Clothes {
 
     }
 
+
+    /**
+     * @param drop changes whether the clothes will drop or not
+     */
     public void setDropClothes(boolean drop) {
         dropClothes = drop;
     }

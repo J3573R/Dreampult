@@ -88,6 +88,9 @@ public class GameLoop extends ScreenAdapter {
     boolean ready;
     boolean initialized;
 
+    public int levelUnlock = 0;
+    final int UNLOCK = 1;
+
     /**
      * Constructs and set default values for loop.
      * @param game Saves game for later use.
@@ -341,10 +344,12 @@ public class GameLoop extends ScreenAdapter {
                          */
                         int hour = (int) (player.torso.body.getPosition().x * 0.6f) / 60;
                         if(map.getLevel() == 1 && hour >= 8) {
+                            levelUnlock = 1;
                             saves.setLevel2(true);
                             saves.save();
                         }
                         if(map.getLevel() == 2 && hour >= 8) {
+                            levelUnlock = 1;
                             saves.setLevel3(true);
                             saves.save();
                         }
@@ -433,6 +438,11 @@ public class GameLoop extends ScreenAdapter {
         ui.draw(game.batch);
         ui.drawPauseMenu(game.batch);
         ui.drawScoreScreen(game.batch);
+
+        if (levelUnlock == UNLOCK) {
+            game.loadingScreen.confirmationText.drawStageUnlock();
+        }
+
         game.batch.setProjectionMatrix(GameCamera.combined);
 
         game.batch.end();

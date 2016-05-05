@@ -89,6 +89,7 @@ public class InputHandler extends InputAdapter {
                     /**
                      * Restarts game loop.
                      */
+                    loop.levelUnlock = 0;
                     loop.dispose();
                     System.out.println(loop.map.getLevel());
                     loop.game.restart(loop.map.getLevel());
@@ -96,12 +97,14 @@ public class InputHandler extends InputAdapter {
                     /**
                      * Returns to main menu.
                      */
+                    loop.levelUnlock = 0;
                     loop.dispose();
                     loop.game.MainMenu();
                 } else if(loop.ui.quitButton.button.contains(touchPos.x, touchPos.y)) {
                     /**
                      * Exits the application.
                      */
+                    loop.levelUnlock = 0;
                     loop.dispose();
                     System.exit(0);
                 } else if(loop.collection.isScoreScreen()) {
@@ -109,7 +112,9 @@ public class InputHandler extends InputAdapter {
                         /**
                          * Switchs to talents screen.
                          */
+                        loop.levelUnlock = 0;
                         loop.dispose();
+                        loop.game.talentsScreen.refreshStarButton();
                         loop.game.collection.showTalentScreen();
                         loop.game.setScreen(loop.game.talentsScreen);
                     }

@@ -11,7 +11,7 @@ import java.util.Locale;
 import fi.tamk.dreampult.Dreampult;
 
 /**
- * Created by DV6-6B20 on 23.4.2016.
+ * @author Kalle Heinonen & Tommi Hagelberg
  */
 public class Localization {
 
@@ -21,6 +21,12 @@ public class Localization {
     Dreampult game;
     public String lang;
 
+    /**
+     * Initializes everything so that localization can be used properly
+     *
+     * @param assets AssetManager used by Dreampult
+     * @param game used to gain access to Dreampult's AssetManager
+     */
     public Localization(AssetHandler assets, Dreampult game){
         this.assets = assets;
         this.game = game;
@@ -28,6 +34,9 @@ public class Localization {
         loadLang();
     }
 
+    /**
+     * Changes the language currently in use
+     */
     public void changeLang(){
         lang = "en";
        if(locale.getLanguage().contains("fi")) {
@@ -40,10 +49,16 @@ public class Localization {
         loadLang();
     }
 
+    /**
+     * @return the locale currently in use
+     */
     public Locale getLang(){
         return locale;
     }
 
+    /**
+     * Creates the locale based on the value stored in preferences
+     */
     private void getPrefs(){
         Preferences prefs = Gdx.app.getPreferences("DreampultLanguage");
 
@@ -59,12 +74,18 @@ public class Localization {
         }
     }
 
+    /**
+     * Loads the I18NBundle from the AssetManager with the correct locale
+     */
     public void loadLang(){
         assets.loadLocalization(locale);
         assets.manager.finishLoading();
         myBundle = assets.manager.get("MyBundle/", I18NBundle.class);
     }
 
+    /**
+     * @param lang currently used language is stored to the preferences
+     */
     public void savePreferences(String lang) {
         Preferences prefs = Gdx.app.getPreferences("DreampultLanguage");
         prefs.putString("language", lang);

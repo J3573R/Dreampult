@@ -18,6 +18,7 @@ public class ConfirmationText {
     // Layouts for the text variants
     GlyphLayout correctAnswerLayout;
     GlyphLayout incorrectAnswerLayout;
+    GlyphLayout newStageLayout;
 
     // Timer for drawing the text
     public float timer;
@@ -36,8 +37,9 @@ public class ConfirmationText {
 
         location = game.collection.REAL_HEIGHT / 2;
 
-        correctAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, "loading");
-        incorrectAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, "loading");
+        correctAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, game.localization.myBundle.get("correctAnswer"));
+        incorrectAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, game.localization.myBundle.get("incorrectAnswer"));
+        newStageLayout = new GlyphLayout(fontHandler.confirmationFont, game.localization.myBundle.get("stageUnlock"));
 
         timer = 1;
     }
@@ -66,6 +68,18 @@ public class ConfirmationText {
 
         timer -= Gdx.graphics.getDeltaTime();
         timeOut();
+        }
+    }
+
+    public void drawStageUnlock() {
+        if (timer > 0) {
+                fontHandler.drawConfirmation(game.batch,
+                        game.localization.myBundle.get("stageUnlock"),
+                        game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.GREEN);
+                location += 2;
+
+            timer -= Gdx.graphics.getDeltaTime();
+            timeOut();
         }
     }
 

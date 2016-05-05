@@ -12,18 +12,20 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 22.2.2016.
+ * @author Kalle Heinonen & Tommi Hagelberg
  */
 public class Player {
     GameLoop game;
     World world;
 
+    // Textures for the body and limbs
     Texture imgBody;
     Texture imgLeg;
     Texture imgLeftArm;
     Texture imgRightArm;
     Texture imgHead;
 
+    // Bodyparts for the body to use
     public Bodypart head;
     public Bodypart leftLeg;
     public Bodypart rightLeg;
@@ -31,15 +33,19 @@ public class Player {
     public Bodypart leftArm;
     public Bodypart rightArm;
 
+    // Width and height of the body
     float width = 0.5f;
     float height = 1f;
 
+    // Width and height of the limbs
     float limbWidth = width / 1.5f;
     float limbHeight = height / 1.5f;
 
     /**
-     * Create player.
-     * @param world
+     * Creates the player.
+     *
+     * @param world used for creating and destroying the limbs
+     * @param game used to gain access to AssetManager and passed on to Bodypart
      */
     public Player(World world, GameLoop game) {
         this.world = world;
@@ -60,6 +66,7 @@ public class Player {
 
         torso.density = 0.1f;
 
+        // Creates all the Bodyparts
         head.createBodypart("head", new Vector2(1, 2.5f), width, width, true, imgHead);
         leftLeg.createBodypart("left leg", new Vector2(1, 2), limbWidth, limbHeight, true, imgLeg);
         leftArm.createBodypart("left arm", new Vector2(1, 2), limbWidth, limbHeight, true, imgLeftArm);
@@ -67,6 +74,7 @@ public class Player {
         rightArm.createBodypart("right arm", new Vector2(1, 2), limbWidth, limbHeight, true, imgRightArm);
         torso.createBodypart("torso", new Vector2(1, 2), width, height, false, imgBody);
 
+        // Connects all the Bodyparts to each other
         connectBodypart(torso, leftArm,
                 0, height / 2 - 0.1f,
                 0, limbHeight / 2 + 0.05f,
@@ -93,6 +101,13 @@ public class Player {
                 true);
     }
 
+    /**
+     * Moves and rotates the Bodyparts properly
+     *
+     * @param x the new location on the X-axis
+     * @param y the new location on the Y-axis
+     * @param rotation the new amount of rotation for the Bodyparts
+     */
     public void setTransform(float x, float y, float rotation) {
         head.body.setTransform(x , x, 0);
         torso.body.setTransform(x, y, rotation);
@@ -102,6 +117,9 @@ public class Player {
         leftLeg.body.setTransform(x, y, 0);
     }
 
+    /**
+     * Resets the position of the Bodyparts
+     */
     public void reset() {
         head.resetPosition(this.torso.body.getPosition());
         torso.resetPosition(this.torso.body.getPosition());
@@ -111,6 +129,9 @@ public class Player {
         rightLeg.resetPosition(this.torso.body.getPosition());
     }
 
+    /**
+     * Destroys and recreates all the Bodyparts.
+     */
     public void reCreate(){
         Vector2 torsoPos = torso.body.getPosition();
         world.destroyBody(head.body);
@@ -164,11 +185,12 @@ public class Player {
     }
 
     /**
-     * Create and attatch limb to body.
-     * @param bodyOriginX X position from body to attatch.
-     * @param bodyOriginY Y position from body to attatch.
-     * @param limbOriginX X position from limb to attatch.
-     * @param limbOriginY Y position from limb to attatch.
+     * Create and attach limb to body.
+     *
+     * @param bodyOriginX X position from body to attach.
+     * @param bodyOriginY Y position from body to attach.
+     * @param limbOriginX X position from limb to attach.
+     * @param limbOriginY Y position from limb to attach.
      * @param limit Rotation limit on or off.
      */
     private void connectBodypart(Bodypart bodypartOne, Bodypart bodypartTwo, float bodyOriginX, float bodyOriginY, float limbOriginX, float limbOriginY,
@@ -194,8 +216,9 @@ public class Player {
     }
 
     /**
-     * Draw player position and rotation according body.
-     * @param batch
+     * Draws the Bodyparts.
+     *
+     * @param batch SpriteBatch used for drawing
      */
     public void draw(SpriteBatch batch) {
         rightArm.draw(batch);
@@ -206,6 +229,11 @@ public class Player {
         leftLeg.draw(batch);
     }
 
+    /**
+     * Sets the velocity of the Bodyparts.
+     *
+     * @param vel the value the velocity is set to
+     */
     public void setBodypartVelocity(Vector2 vel) {
 
         rightArm.body.setAngularVelocity(0);
@@ -221,6 +249,9 @@ public class Player {
         head.body.setLinearVelocity(vel);
     }
 
+    /**
+     * Drops the clothes off the player's body when hit (Only if talent Pyjama Protection is on)
+     */
     public void dropClothes() {
         rightArm.clothes.setDropClothes(true);
         rightLeg.clothes.setDropClothes(true);

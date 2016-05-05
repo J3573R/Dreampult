@@ -20,7 +20,12 @@ import fi.tamk.dreampult.Helpers.MusicPlayer;
 import fi.tamk.dreampult.Helpers.Saves;
 import fi.tamk.dreampult.Helpers.Sounds;
 
+/**
+ * @author Kalle Heinonen & Tommi Hagelberg
+ */
 public class Dreampult extends Game {
+
+    // Handlers for assets, fonts, and localization
     public AssetHandler assets = new AssetHandler();
     public FontHandler fontHandler;
     public Localization localization;
@@ -31,18 +36,21 @@ public class Dreampult extends Game {
 
 	public Collection collection;
 
+    // Screens the game uses
     public TitleScreen titleScreen;
     public LoadingScreen loadingScreen;
     public GameLoop gameLoop;
     public TalentsScreen talentsScreen;
 
     public Saves saves;
-    public Sounds sounds;
 
+    // Handlers for sounds
+    public Sounds sounds;
     public MusicPlayer player;
 
+
     /**
-     * Create and initialize Screen.
+     * Create and initialize values and assets.
      */
 	@Override
 	public void create () {
@@ -75,6 +83,9 @@ public class Dreampult extends Game {
         setScreen(titleScreen);
 	}
 
+    /**
+     * Sets the screen to TitleScreen.
+     */
     public void MainMenu() {
         collection.launch = false;
         collection.hidePauseMenu();
@@ -83,6 +94,11 @@ public class Dreampult extends Game {
         setScreen(titleScreen);
     }
 
+    /**
+     * Restarts the loading screen.
+     *
+     * @param level to load next
+     */
 	public void restart(int level) {
 		collection.launch = false;
 		collection.hidePauseMenu();
@@ -97,6 +113,11 @@ public class Dreampult extends Game {
         super.render();
     }
 
+    /**
+     * Sets the screen and runs the Garbage Collector.
+     *
+     * @param screen to set
+     */
     public void setScreen(Screen screen) {
         super.setScreen(screen);
         System.gc();
