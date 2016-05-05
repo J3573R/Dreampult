@@ -395,7 +395,7 @@ public class TalentsScreen extends ScreenAdapter {
         }
 
         tutorial.setText(loop.game.localization.myBundle.get("talentTutorial"));
-        tutorial.setPosition(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
+        tutorial.setPosition(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 3);
 
         // Draws the tutorial if no tiers are unlocked when entering the screen
         if(!saves.isTier1() && !saves.isTier2() && !saves.isTier3()) {
