@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 22.2.2016.
+ * @author Tommi Hagelberg
  */
 public class Arrow {
     GameLoop game;
@@ -28,8 +28,8 @@ public class Arrow {
     boolean show;
 
     /**
-     * Initialize arrow.
-     * @param gameLoop
+     * Initialize arrow and set default values.
+     * @param gameLoop Saves game loop for later use.
      */
     public Arrow(GameLoop gameLoop) {
         game = gameLoop;
@@ -42,14 +42,18 @@ public class Arrow {
         start();
     }
 
+    /**
+     * Reset arrow position for relaunch.
+     */
     public void reset() {
         rotation = 0;
         show = true;
     }
 
     /**
-     * Create arrows body definition.
-     * @return
+     * Create arrows body definition. Used for getting arrow rotation.
+     * Bad code, could've done with Vector2.
+     * @return Arrows body.
      */
     public Body createBodyDef() {
         BodyDef bodyDef = new BodyDef();
@@ -75,15 +79,13 @@ public class Arrow {
 
     /**
      * Draw arrow position and rotation according body.
-     * @param batch
+     * @param batch Spritebatch for drawing.
      */
     public void draw(SpriteBatch batch) {
         if (show) {
-
-        body.setTransform(body.getPosition(), rotation);
-            //System.out.println(rotation);
-
-            batch.draw(img, body.getPosition().x - 0.48f + game.player.torso.body.getPosition().x, body.getPosition().y, // Texture, x, y
+            body.setTransform(body.getPosition(), rotation);
+            batch.draw(img,
+                    body.getPosition().x - 0.48f + game.player.torso.body.getPosition().x, body.getPosition().y, // Texture, x, y
                     0.5f, 0, // Origin x, Origin y
                     width, height, // Width, Height
                     1, 1, // Scale X, Scale Y
@@ -94,6 +96,9 @@ public class Arrow {
         }
     }
 
+    /**
+     * Updates arrow moving direction.
+     */
     public void update() {
         if (moving) {
             if (rotation > 0) {
@@ -113,18 +118,30 @@ public class Arrow {
         }
     }
 
+    /**
+     * Starts arrow movement.
+     */
     public void start() {
         moving = true;
     }
 
+    /**
+     * Stops arrow movement.
+     */
      public void pause() {
          moving = false;
      }
 
+    /**
+     * Shows arrow.
+     */
     public void show() {
         show = true;
     }
 
+    /**
+     * Hides arrow.
+     */
     public void hide() {
         show = false;
     }

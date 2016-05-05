@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 22.2.2016.
+ * @author Tommi Hagelberg
  */
 public class Wall {
     GameLoop game;
@@ -25,6 +25,9 @@ public class Wall {
         createBodyFixture();
     }
 
+    /**
+     * @return Body of wall.
+     */
     private Body createBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -32,6 +35,9 @@ public class Wall {
         return game.world.createBody(bodyDef);
     }
 
+    /**
+     * Creates fixture for body.
+     */
     private void createBodyFixture() {
         FixtureDef def = new FixtureDef();
         def.density = 0;

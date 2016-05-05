@@ -202,8 +202,7 @@ public class Generator {
     }
 
     /**
-     * Dispose all bodies from world and objects from array.
-     * @param world
+     * @param world Dispose all bodies from world and objects from array.
      */
     public void dispose(World world){
         Iterator<Objects> iterator = objects.iterator();
@@ -214,5 +213,4 @@ public class Generator {
             iterator.remove();
         }
     }
-
 }

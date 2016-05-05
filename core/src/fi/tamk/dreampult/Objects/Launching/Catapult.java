@@ -9,10 +9,9 @@ import fi.tamk.dreampult.GameLoop;
 import org.w3c.dom.Text;
 
 /**
- * Created by Clown on 23.3.2016.
+ * @author Tommi Hagelberg
  */
 public class Catapult {
-
     GameLoop gameLoop;
 
     Texture body;
@@ -22,6 +21,10 @@ public class Catapult {
     public float spoonRotation;
     public float x;
 
+    /**
+     * Constructs catapult with default values.
+     * @param gameLoop Saves game loop for later use.
+     */
     public Catapult(GameLoop gameLoop) {
         this.gameLoop = gameLoop;
         body = gameLoop.assets.get("images/launching/catapult/Catapult.png", Texture.class);
@@ -31,10 +34,20 @@ public class Catapult {
         x = 0;
     }
 
+    /**
+     * Draw catapult according player events.
+     * @param batch Spritebatch for drawing.
+     */
     public void draw(SpriteBatch batch) {
+
+        // Pre-launch rotation
         if(gameLoop.collection.launch) {
             rotate();
         }
+
+        /**
+         * Draw every catapult texture.
+         */
         batch.draw(spoon, spoonPosition.x + x, spoonPosition.y, // Texture, x, y
                 2, 0, // Origin x, Origin y
                 2, 2, // Width, Height
@@ -56,18 +69,27 @@ public class Catapult {
                 false, false); // flip x, flip y
     }
 
+    /**
+     * Rotate catapult spoon.
+     */
     public void rotate() {
         if(spoonRotation > -1f) {
             spoonRotation -= 1.5f * Gdx.graphics.getDeltaTime();
         }
     }
 
+    /**
+     * Reset catapult spoon position.
+     */
     public void reset(){
         x = 0;
         spoonRotation = 0.2f;
         spoonPosition.set(0.2f, 0.2f);
     }
 
+    /**
+     * Set catapult position for second launch.
+     */
     public void setPosition() {
         x = gameLoop.player.torso.body.getPosition().x;
         spoonRotation = 0.2f;

@@ -1,7 +1,7 @@
 package fi.tamk.dreampult;
 
 /**
- * Created by Clown on 15.3.2016.
+ * @author Tommi Hagelberg
  */
 public class Collection {
     private boolean gameIsOn;
@@ -23,65 +23,93 @@ public class Collection {
 
     public boolean launch = false;
 
-    private boolean soundIsOn;
-
+    /**
+     * Constructs and sets default values.
+     */
     public Collection() {
         gameIsOn = false;
-        soundIsOn = true;
         PauseMenu = false;
         talentScreen = false;
     }
 
+    /**
+     * Starts game.
+     */
     public void start() {
         gameIsOn = true;
     }
+
+    /**
+     * Pauses game.
+     */
     public void pause() {
         gameIsOn = false;
     }
 
-    public void soundOn() {
-        soundIsOn = true;
-    }
-    public void soundOff() {
-        soundIsOn = false;
-    }
-
+    /**
+     * @return Checks game state.
+     */
     public boolean isGameOn() {
         return gameIsOn;
     }
 
-    public boolean isSoundOn() {
-        return soundIsOn;
-    }
-
+    /**
+     * @return Checks pause menu state.
+     */
     public boolean isPauseMenu() {
         return PauseMenu;
     }
 
+    /**
+     * Shows pause menu.
+     */
     public void showPauseMenu() {
         this.PauseMenu = true;
     }
+
+    /**
+     * Hides pause menu.
+     */
     public void hidePauseMenu() {
         this.PauseMenu = false;
     }
 
+    /**
+     * @return Checks score screen state.
+     */
     public boolean isScoreScreen() {return  ScoreScreen; }
 
+    /**
+     * Shows score screen.
+     */
     public void showScoreScreen() {
         this.ScoreScreen = true;
     }
+
+    /**
+     * Hides score screen.
+     */
     public void hideScoreScreen() {
         this.ScoreScreen = false;
     }
 
+    /**
+     * @return Checks talent screen state.
+     */
     public boolean isTalentScreen() {
         return talentScreen;
     }
 
+    /**
+     * Shows talent screen.
+     */
     public void showTalentScreen() {
         this.talentScreen = true;
     }
 
+    /**
+     * Hides talent screen.
+     */
     public void hideTalentScreen() {
         this.talentScreen = false;
     }

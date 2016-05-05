@@ -134,6 +134,7 @@ public class AssetHandler {
         manager.load("images/player/hiteffect.png", Texture.class);
         manager.load("images/player/hiteffect2.png", Texture.class);
         manager.load("images/player/rainbow_frames.png", Texture.class);
+        manager.load("images/player/glide_animation.png", Texture.class);
         manager.load("images/objects/allies/star.png", Texture.class);
         manager.load("images/objects/allies/unicorn.png", Texture.class);
     }

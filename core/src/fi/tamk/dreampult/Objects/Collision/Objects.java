@@ -10,10 +10,9 @@ import com.badlogic.gdx.utils.Pool;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 22.3.2016.
+ * @author Tommi Hagelberg
  */
-public class Objects implements Pool.Poolable {
-    GameLoop loop;
+public class Objects {
 
     Animation animation;
     Texture sheet;
@@ -28,12 +27,10 @@ public class Objects implements Pool.Poolable {
     float hitboxOffsetX = 0;
     float hitboxOffsetY = 0;
 
-    //public Objects() {}
-
     /**
      * Creates animation from sprite sheet.
-     * @param FRAME_COLS
-     * @param FRAME_ROWS
+     * @param FRAME_COLS Animation frames per column.
+     * @param FRAME_ROWS Animation frames per row.
      */
     public void create(int FRAME_COLS, int FRAME_ROWS) {
         TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth()/FRAME_COLS, sheet.getHeight()/FRAME_ROWS);
@@ -49,6 +46,12 @@ public class Objects implements Pool.Poolable {
         current = animation.getKeyFrame(stateTime, true);
     }
 
+    /**
+     * Initialize object position.
+     * @param world Wolrd where to create object.
+     * @param position Object position in world.
+     * @param userdata Userdata for collision detection.
+     */
     public void initalizePosition(World world, Vector2 position, String userdata) {
         this.position = position;
         body = createBodyDef(world);
@@ -73,6 +76,10 @@ public class Objects implements Pool.Poolable {
         batch.draw(current, position.x, position.y, width, height);
     }
 
+    /**
+     * @param world Create body to world and sets position.
+     * @return Body of object.
+     */
     public Body createBodyDef(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -80,6 +87,10 @@ public class Objects implements Pool.Poolable {
         return world.createBody(bodyDef);
     }
 
+    /**
+     * Creates bodys fixture.
+     * @param density Defines body density.
+     */
     public void createBodyFixture(Float density) {
         FixtureDef def = new FixtureDef();
         def.density = density;
@@ -89,21 +100,5 @@ public class Objects implements Pool.Poolable {
         def.shape = polygonShape;
         this.body.createFixture(def);
         polygonShape.dispose();
-    }
-
-    public void reset() {
-        //sheet.dispose();
-        //current.getTexture().dispose();
-    }
-
-    public void setSpawnVariables(float minSpawnTime, float maxSpawnTime, float minSpawnHeight, float maxSpawnHeight){
-
-    }
-
-    public boolean positionReserved(Vector2 position) {
-        if(this.position.equals(position)) {
-            return true;
-        }
-        return false;
     }
 }

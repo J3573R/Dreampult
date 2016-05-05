@@ -8,7 +8,7 @@ import fi.tamk.dreampult.GameLoop;
 import org.w3c.dom.Text;
 
 /**
- * Created by Clown on 24.2.2016.
+ * @author Tommi Hagelberg
  */
 public class Meter {
     GameLoop game;
@@ -24,7 +24,7 @@ public class Meter {
     public float speed;
 
     /**
-     * Initialize Meter variables and set default values
+     * Initialize Meter variables and set default values.
      */
     public Meter(GameLoop game) {
         this.game = game;
@@ -39,6 +39,9 @@ public class Meter {
         show = false;
     }
 
+    /**
+     * Reset meter for starting values.
+     */
     public void reset() {
         scale = 0;
         show = false;
@@ -47,7 +50,7 @@ public class Meter {
 
     /**
      * Draw meter and fill it accord time.
-     * @param batch
+     * @param batch Spritebatch for drawing.
      */
     public void draw(SpriteBatch batch) {
         if (show) {

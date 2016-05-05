@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 21.4.2016.
+ * @author Tommi Hagelberg
  */
 public class ShittingRainbow {
 
@@ -31,6 +31,10 @@ public class ShittingRainbow {
 
     float timer = 0;
 
+    /**
+     * Construction of rainbow and setting default values.
+     * @param loop Saves game loop for later use.
+     */
     public ShittingRainbow(GameLoop loop) {
         this.sheet = loop.assets.get("images/player/rainbow_frames.png", Texture.class);
         this.loop = loop;
@@ -42,7 +46,23 @@ public class ShittingRainbow {
         rotation = 0;
         create(2, 4);
     }
+    public ShittingRainbow(GameLoop loop, Texture sheet, int width, int height, int cols, int rows) {
+        this.sheet = sheet;
+        this.loop = loop;
+        stateTime = 0;
+        this.width = width;
+        this.height = height;
+        originX = 4;
+        originY = height / 2;
+        rotation = 0;
+        create(cols, rows);
+    }
 
+    /**
+     * Sets size and origin of raindow.
+     * @param width Rainbow width.
+     * @param height Rainbow height.
+     */
     public void setSize(float width, float height){
         this.width = width;
         this.height = height;
@@ -50,10 +70,18 @@ public class ShittingRainbow {
         this.originY = height / 2;
     }
 
+    /**
+     * @param rotation Sets rotation of rainbow.
+     */
     public void setRotation(float rotation){
         this.rotation = rotation;
     }
 
+    /**
+     * Creates animation from sprite sheet.
+     * @param FRAME_COLS Animation frames per column.
+     * @param FRAME_ROWS Animation frames per row.
+     */
     public void create(int FRAME_COLS, int FRAME_ROWS) {
         TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth()/FRAME_COLS, sheet.getHeight()/FRAME_ROWS);
         frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -68,21 +96,36 @@ public class ShittingRainbow {
         current = animation.getKeyFrame(stateTime, true);
     }
 
+    /**
+     * Plays animation.
+     */
     public void play() {
         timer = 3;
     }
 
+    /**
+     * Stops animation.
+     */
     public void stop(){
         timer = 0;
     }
 
+    /**
+     * Update animation frames.
+     * @param delta Deltatime from last drawn frame.
+     */
     public void update(float delta) {
         if(timer > 0) {
-            timer -= Gdx.graphics.getDeltaTime();
+            timer -= delta;
             current = animation.getKeyFrame(stateTime, true);
             stateTime += delta;
         }
     }
+
+    /**
+     * Draws the shitting rainbow effect.
+     * @param batch Spritebatch for drawing.
+     */
     public void draw(SpriteBatch batch) {
         if(timer > 0) {
             if(!manualRotation) {
@@ -99,6 +142,9 @@ public class ShittingRainbow {
         }
     }
 
+    /**
+     * @return Gives animation remaining time.
+     */
     public float getTime(){
         return timer;
     }
