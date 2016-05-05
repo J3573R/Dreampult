@@ -8,17 +8,18 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
- * Created by Clown on 14.3.2016.
+ * @author Tommi Hagelberg
  */
 public class FontHandler {
 
-    private BitmapFont normalFont;
-    private BitmapFont headerFont;
-
+    /**
+     * Font we use trought our game.
+     */
     public BitmapFont font;
-    public float x;
-    public float y;
 
+    /**
+     * Generates default font for use.
+     */
     public FontHandler() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Ubuntu-R.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -26,49 +27,31 @@ public class FontHandler {
         parameter.color = Color.WHITE;
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 2;
-
-        normalFont = generator.generateFont(parameter);
-
-        parameter.size = 50;
-        parameter.color = Color.WHITE;
-        parameter.borderWidth = 0;
-        parameter.shadowColor = Color.BLACK;
-        parameter.shadowOffsetX = 3;
-        parameter.shadowOffsetY = 3;
-
-        headerFont = generator.generateFont(parameter);
-
-        generator.dispose();
-
-        font = normalFont;
-    }
-
-    public BitmapFont getNormalFont() {
-        return normalFont;
-    }
-
-    public BitmapFont getHeaderFont() {
-        return headerFont;
-    }
-
-    public void GenerateFont(int size, Color color) {
-        /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Ubuntu-R.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = size;
-        parameter.color = color;
-        parameter.borderColor = Color.BLACK;
-        parameter.borderWidth = 2;
-
         font = generator.generateFont(parameter);
-        generator.dispose();*/
+        generator.dispose();
     }
 
+    /**
+     * Draw text at given coordinates.
+     * @param batch Spritebatch for drawing.
+     * @param text Text to draw.
+     * @param x Coordinate x.
+     * @param y Coordinate y.
+     */
     public void draw(SpriteBatch batch, String text, int x, int y) {
-        normalFont.draw(batch, text, x, y);
+        font.draw(batch, text, x, y);
     }
 
+    /**
+     * Draw text at given coordinates at given color.
+     * @param batch Spritebatch for drawing.
+     * @param text Text to draw.
+     * @param x Coordinate x.
+     * @param y Coordinate y.
+     * @param fontColor Color of the font.
+     */
     public void draw(SpriteBatch batch, String text, int x, int y, Color fontColor) {
         font.setColor(fontColor);
-        normalFont.draw(batch, text, x, y);
+        font.draw(batch, text, x, y);
     }
 }

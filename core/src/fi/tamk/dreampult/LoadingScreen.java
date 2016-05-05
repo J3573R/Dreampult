@@ -96,7 +96,6 @@ public class LoadingScreen implements Screen {
         this.fontHandler = game.fontHandler;
 
         loading = game.localization.myBundle.get("loading");
-        fontHandler.GenerateFont(32, Color.WHITE);
         layout = new GlyphLayout(fontHandler.font, loading);
 
         truthRectangle = new Rectangle(960 / 4 - 50, 125, 200, 100);

@@ -8,8 +8,8 @@ import fi.tamk.dreampult.Collection;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by Clown on 9.3.2016.
- */
+ * @author Tommi Hagelberg
+*/
 public class BackgroundHandler {
 
     /**
@@ -48,6 +48,9 @@ public class BackgroundHandler {
      */
     float offset;
 
+    /*
+     * Collection for getting screen widht and height.
+     */
     Collection collection;
 
     /**
@@ -55,18 +58,22 @@ public class BackgroundHandler {
      * @param background Background texture.
      * @param imgWidth Width in loop world.
      * @param imgHeight Height in loop world.
+     * @param speedStabilizer Creates difference between movement speed of backgrounds.
+     * @param collection Provides screen width, height and center for both of them.
      */
     public BackgroundHandler(Texture background, float imgWidth, float imgHeight, float speedStabilizer, Collection collection){
         this.imgWidth = imgWidth;
         this.imgHeight = imgHeight;
         this.speedStabilizer = speedStabilizer;
         this.collection = collection;
-
         this.background = background;
         position = new Vector2(0, 0);
         imageAmount = (int) Math.ceil((double) (collection.SCREEN_WIDTH_CENTER / imgWidth)) + 1;
     }
 
+    /**
+     * Reset background position to start.
+     */
     public void reset() {
         position.set(0, 0);
         offset = 0;
@@ -74,7 +81,7 @@ public class BackgroundHandler {
 
     /**
      * Drawing background.
-     * @param batch
+     * @param batch Sprite batch to draw at.
      */
     public void draw(SpriteBatch batch) {
         for(int i = 0; i < imageAmount; i++) {
@@ -87,7 +94,7 @@ public class BackgroundHandler {
     }
 
     /**
-     * Moving background position.
+     * Moves background position according player speed and speed stabilizer.
      */
     public void move() {
         for(int i = 0; i < imageAmount; i++) {
@@ -99,12 +106,16 @@ public class BackgroundHandler {
     }
 
     /**
-     * Updating offset according GameCamera position.
+     * Updating background offset according GameCamera position.
      */
     public void updateOffset(float cameraX) {
         offset = cameraX - collection.SCREEN_WIDTH_CENTER;
     }
 
+    /**
+     * Set speed of movement.
+     * @param speed Set default movemement speed of background.
+     */
     public void setSpeed(float speed) {
         this.speed = speed;
     }

@@ -4,9 +4,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
- * Created by Clown on 16.4.2016.
+ * @author Tommi Hagelberg
  */
 public class Unicorn extends Objects {
+
+    /**
+     * Initiates Unicorn Objects. Load assets and set default position & size.
+     */
     public Unicorn(AssetManager assets) {
         this.sheet = assets.get("images/objects/allies/unicorn.png", Texture.class);
         width = 3;

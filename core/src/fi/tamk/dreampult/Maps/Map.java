@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Created by Clown on 16.4.2016.
+ * @author Tommi Hagelberg
  */
 public class Map {
     GameLoop loop;
@@ -26,6 +26,10 @@ public class Map {
 
     private Texture staticBackground;
 
+    /**
+     * Constructs map from level.
+     * @param level Integer to indicate level.
+     */
     public Map(int level) {
         this.level = level;
         cameraPosition = new Vector2();
@@ -33,10 +37,17 @@ public class Map {
         backgrounds = new ArrayList<BackgroundHandler>();
     }
 
+    /**
+     * Initialize game loop before map starts running. This is here because map has to load before game loop.
+     * @param loop Gives game loop for later use.
+     */
     public void initialize(GameLoop loop) {
         this.loop = loop;
     }
 
+    /**
+     * Update map objects and backgrounds.
+     */
     public void update(){
         cameraPosition.set(loop.GameCamera.position.x, loop.GameCamera.position.y);
         for ( Generator object : objects ) {
@@ -56,12 +67,20 @@ public class Map {
         }
     }
 
+    /**
+     * Draws maps objects.
+     * @param batch Spritebatch for drawing.
+     */
     public void drawObjects(SpriteBatch batch){
         for ( Generator object : objects) {
             object.draw(batch);
         }
     }
 
+    /**
+     * Draws background according player / camera position.
+     * @param batch Spritebatch for drawing.
+     */
     public void drawBackground(SpriteBatch batch) {
         batch.draw(staticBackground,
                 loop.GameCamera.position.x - loop.collection.SCREEN_WIDTH / 2,
@@ -73,49 +92,65 @@ public class Map {
         }
     }
 
+    /**
+     * Clears monsters from list.
+     * @param world
+     */
     public void clearMonsters(World world){
         for ( Generator object : objects) {
             object.dispose(world);
         }
     }
 
+    /**
+     * Stops background. Used when game paused and additional launch.
+     */
     public void stopBackground(){
         for ( BackgroundHandler background : backgrounds) {
             background.setSpeed(0);
         }
     }
 
+    /**
+     * @return Gives full list of the map objects.
+     */
     public ArrayList<Generator> getObjects() {
         return objects;
     }
 
+    /**
+     * @param objects Sets full list of objects.
+     */
     public void setObjects(ArrayList<Generator> objects) {
         this.objects = objects;
     }
 
+    /**
+     * @return Give full list of backgrounds.
+     */
     public ArrayList<BackgroundHandler> getBackgrounds() {
         return backgrounds;
     }
 
-    public void setBackgrounds(ArrayList<BackgroundHandler> backgrounds) {
-        this.backgrounds = backgrounds;
-    }
-
-    public Texture getStaticBackground() {
-        return staticBackground;
-    }
-
+    /**
+     * @param staticBackground Sets static background for map.
+     */
     public void setStaticBackground(Texture staticBackground) {
         this.staticBackground = staticBackground;
         this.staticBackground.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
+    /**
+     * @return Gives current level.
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Dispose objects bodies from world.
+     */
     public void dispose() {
-
         for (Generator object : objects) {
             object.dispose(loop.world);
         }

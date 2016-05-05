@@ -8,25 +8,48 @@ import fi.tamk.dreampult.Helpers.Saves;
 import fi.tamk.dreampult.Objects.Collision.Objects;
 import fi.tamk.dreampult.Objects.HitEffect;
 
+import java.lang.annotation.Inherited;
+
 /**
- * Created by Clown on 25.2.2016.
+ * @author Tommi Hagelberg
  */
 public class CollisionHandler implements ContactListener {
     GameLoop game;
     Saves saves;
 
+    /**
+     * On construct saves game and saves for later use.
+     * @param game The main game loop.
+     */
     public CollisionHandler (GameLoop game) {
         this.game = game;
         saves = game.game.saves;
     }
+
+    /**
+     * Checks contact between player and game objects.
+     * @param contact Contact poinst between player and object.
+     */
     @Override
     public void beginContact(Contact contact) {
+        /**
+         * Saves userdata of contact point for comparison.
+         */
         String a = (String) contact.getFixtureA().getBody().getUserData();
         String b = (String) contact.getFixtureB().getBody().getUserData();
 
+        /**
+         * Comparison between pig and player.
+         */
         if(a != null && b != null) {
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("pig")) ||
                (a.equalsIgnoreCase("pig") && b.equalsIgnoreCase("torso"))) {
+
+                /**
+                 * Checks if pyjama protection talent is on and behave accordingly.
+                 * If it is on player get one extra bounce and drop the pyjama.
+                 * If it is not the hit animation plays and player is launched towards ground.
+                 */
                 if(game.pyjamaOn) {
                     bounce(contact);
                     game.pyjamaOn = false;
@@ -42,8 +65,18 @@ public class CollisionHandler implements ContactListener {
                 }
             }
 
+            /**
+             * Comparison between cow and player.
+             */
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("cow")) ||
                     (a.equalsIgnoreCase("cow") && b.equalsIgnoreCase("torso"))) {
+
+                /**
+                 * Checks if pyjama protection talent is on and behave accordingly.
+                 * If it is on player get one extra bounce and drop the pyjama.
+                 * If it is not the hit animation plays and player is launched towards
+                 * ground with high angular velocity.
+                 */
                 if(game.pyjamaOn) {
                     bounce(contact);
                     game.pyjamaOn = false;
@@ -59,8 +92,17 @@ public class CollisionHandler implements ContactListener {
                 }
             }
 
+            /**
+             * Comparison between turtle and player.
+             */
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("turtle")) ||
                     (a.equalsIgnoreCase("turtle") && b.equalsIgnoreCase("torso"))) {
+
+                /**
+                 * Checks if pyjama protection talent is on and behave accordingly.
+                 * If it is on player get one extra bounce and drop the pyjama.
+                 * If it is not the hit animation plays and player speed is reduced and given high angular velocity.
+                 */
                 if(game.pyjamaOn) {
                     bounce(contact);
                     game.pyjamaOn = false;
@@ -75,6 +117,9 @@ public class CollisionHandler implements ContactListener {
                 }
             }
 
+            /**
+             * Comparison between unicorn and player. Gives player a huge speed boost on touch.
+             */
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("unicorn")) ||
                     (a.equalsIgnoreCase("unicorn") && b.equalsIgnoreCase("torso"))) {
                 playAnimation(contact);
@@ -85,19 +130,25 @@ public class CollisionHandler implements ContactListener {
                 game.player.torso.body.setLinearVelocity(vel);
             }
 
+            /**
+             * Comparison between bed and player. Bounces player upwards on touch.
+             */
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("bed")) ||
                     (a.equalsIgnoreCase("bed") && b.equalsIgnoreCase("torso"))) {
                 bounce(contact);
-                /*playAnimation(contact);
-                game.game.sounds.play("ground");
-                game.player.setBodypartVelocity(new Vector2(0, 0));
-                Vector2 vel = game.player.torso.body.getLinearVelocity();
-                vel.set(30, 30);
-                game.player.torso.body.setLinearVelocity(vel);*/
             }
 
+            /**
+             * Comparison between clock and player.
+             */
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("clock")) ||
                     (a.equalsIgnoreCase("clock") && b.equalsIgnoreCase("torso"))) {
+
+                /**
+                 * Checks if pyjama protection talent is on and behave accordingly.
+                 * If it is on player get one extra bounce and drop the pyjama.
+                 * If it is not the hit animation plays and player is forced to stop.
+                 */
                 if(game.pyjamaOn) {
                     bounce(contact);
                     game.pyjamaOn = false;
@@ -118,6 +169,9 @@ public class CollisionHandler implements ContactListener {
                 }
             }
 
+            /**
+             * Comparison between star and player. On contact star is added and marked for deletion.
+             */
             if((a.equalsIgnoreCase("torso") && b.equalsIgnoreCase("star")) ||
                     (a.equalsIgnoreCase("star") && b.equalsIgnoreCase("torso"))) {
                 Body star;
@@ -134,12 +188,13 @@ public class CollisionHandler implements ContactListener {
         }
     }
 
+    /**
+     * Plays right animation between player and object on contact point.
+     * @param contact Contact poinst between player and object.
+     */
     public void playAnimation(Contact contact) {
         String a = (String) contact.getFixtureA().getBody().getUserData();
         String b = (String) contact.getFixtureB().getBody().getUserData();
-        System.out.println(a);
-        System.out.println(b);
-
 
         if(a.equalsIgnoreCase("pig") || a.equalsIgnoreCase("clock")
                 || a.equalsIgnoreCase("cow") || a.equalsIgnoreCase("turtle")) {
@@ -164,6 +219,10 @@ public class CollisionHandler implements ContactListener {
         }
     }
 
+    /**
+     * Bounces player upwards on contact.
+     * @param contact Contact poinst between player and object.
+     */
     public void bounce(Contact contact){
         playAnimation(contact);
         game.game.sounds.play("ground");
@@ -173,9 +232,9 @@ public class CollisionHandler implements ContactListener {
         game.player.torso.body.setLinearVelocity(vel);
     }
 
+
     @Override
     public void endContact(Contact contact) {
-
     }
 
     @Override

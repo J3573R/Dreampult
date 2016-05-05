@@ -4,7 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import fi.tamk.dreampult.Handlers.AssetHandler;
 
 /**
- * Created by Clown on 26.4.2016.
+ * @author Tommi Hagelberg
  */
 public class Sounds {
 
@@ -17,6 +17,10 @@ public class Sounds {
     public Sound negative;
     public Sound ground;
 
+    /**
+     * Loads all sound effects for the quick use.
+     * @param manager Asset manager for loading sounds.
+     */
     public Sounds(AssetHandler manager){
         catapult = manager.manager.get("audio/CatapultLaunch2.wav", Sound.class);
         moo = manager.manager.get("audio/CowMoo.wav", Sound.class);
@@ -28,6 +32,10 @@ public class Sounds {
         ground = manager.manager.get("audio/HitGround.wav", Sound.class);
     }
 
+    /**
+     * Plays sound according identifier.
+     * @param sound Name of the sound file.
+     */
     public void play(String sound) {
 
         if(sound.equals("catapult")) {

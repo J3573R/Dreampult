@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by Clown on 22.3.2016.
+ * @author Tommi Hagelberg
  */
 public class Pig extends Objects {
 

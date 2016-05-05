@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.dreampult.GameLoop;
 
 /**
- * Created by DV6-6B20 on 22.2.2016.
+ * @author Tommi Hagelberg
  */
 public class WorldHandler {
 
