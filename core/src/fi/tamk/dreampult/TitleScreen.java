@@ -70,6 +70,8 @@ public class TitleScreen implements Screen {
 
     Vector3 touchPoint;
 
+    boolean drawingStarted = false;
+
     /**
      * Creates the title screen.
      *
@@ -161,7 +163,7 @@ public class TitleScreen implements Screen {
 
         // Draws the splash screen
         if(splashTimer > 0) {
-            if(Gdx.input.justTouched()) {
+            if(Gdx.input.justTouched() ) {
                 splashTimer = 0;
             }
             drawSplash(game.batch);
@@ -255,6 +257,7 @@ public class TitleScreen implements Screen {
 
             game.batch.end();
         }
+        drawingStarted = true;
     }
 
     @Override
@@ -296,6 +299,8 @@ public class TitleScreen implements Screen {
             batch.draw(splashEng, 0, 0, 960, 540);
         }
         batch.end();
-        splashTimer -= Gdx.graphics.getDeltaTime();
+        if(game.assets.manager.update() && drawingStarted) {
+            splashTimer -= Gdx.graphics.getDeltaTime();
+        }
     }
 }

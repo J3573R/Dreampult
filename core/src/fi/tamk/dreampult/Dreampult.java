@@ -41,17 +41,12 @@ public class Dreampult extends Game {
 
     public MusicPlayer player;
 
-    boolean splash;
-
-
     /**
      * Create and initialize Screen.
      */
 	@Override
 	public void create () {
         localization = new Localization(assets, this);
-
-        splash = true;
 
 		collection = new Collection();
 		batch = new SpriteBatch();
@@ -100,7 +95,6 @@ public class Dreampult extends Game {
 	@Override
 	public void render () {
         super.render();
-        //System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     public void setScreen(Screen screen) {
