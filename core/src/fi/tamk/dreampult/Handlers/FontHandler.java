@@ -13,9 +13,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class FontHandler {
 
     /**
-     * Font we use trought our game.
+     * Font we use throughout our game.
      */
     public BitmapFont font;
+
+    public BitmapFont confirmationFont;
 
     /**
      * Generates default font for use.
@@ -28,12 +30,15 @@ public class FontHandler {
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 2;
         font = generator.generateFont(parameter);
+
+        parameter.size = 96;
+        confirmationFont = generator.generateFont(parameter);
         generator.dispose();
     }
 
     /**
      * Draw text at given coordinates.
-     * @param batch Spritebatch for drawing.
+     * @param batch SpriteBatch for drawing.
      * @param text Text to draw.
      * @param x Coordinate x.
      * @param y Coordinate y.
@@ -43,15 +48,17 @@ public class FontHandler {
     }
 
     /**
-     * Draw text at given coordinates at given color.
-     * @param batch Spritebatch for drawing.
+     * Draw confirmation text at given coordinates at given color.
+     * @param batch SpriteBatch for drawing.
      * @param text Text to draw.
      * @param x Coordinate x.
      * @param y Coordinate y.
      * @param fontColor Color of the font.
      */
-    public void draw(SpriteBatch batch, String text, int x, int y, Color fontColor) {
-        font.setColor(fontColor);
-        font.draw(batch, text, x, y);
+    public void drawConfirmation(SpriteBatch batch, String text, int x, int y, Color fontColor) {
+        confirmationFont.setColor(fontColor);
+        confirmationFont.draw(batch, text, x, y);
     }
+
+
 }

@@ -36,8 +36,8 @@ public class ConfirmationText {
 
         location = game.collection.REAL_HEIGHT / 2;
 
-        correctAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
-        incorrectAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
+        correctAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, "loading");
+        incorrectAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, "loading");
 
         timer = 1;
     }
@@ -52,15 +52,15 @@ public class ConfirmationText {
         if (timer > 0) {
 
         if (text && direction) {
-            fontHandler.draw(game.batch,
+            fontHandler.drawConfirmation(game.batch,
                     game.localization.myBundle.get("correctAnswer"),
-                    game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.WHITE);
+                    game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.GREEN);
             location += 2;
 
         } else if (!text && !direction) {
-            fontHandler.draw(game.batch,
+            fontHandler.drawConfirmation(game.batch,
                     game.localization.myBundle.get("incorrectAnswer"),
-                    game.collection.REAL_WIDTH / 2 - (int)incorrectAnswerLayout.width / 2, location, Color.WHITE);
+                    game.collection.REAL_WIDTH / 2 - (int)incorrectAnswerLayout.width / 2, location, Color.ORANGE);
             location -= 2;
         }
 
@@ -77,6 +77,15 @@ public class ConfirmationText {
             game.setScreen(game.gameLoop);
             game.collection.start();
             game.loadingScreen.answerInteger = 0;
+            reset();
         }
+    }
+
+    /**
+     * Resets the timer and location for new use
+     */
+    public void reset() {
+        timer = 1;
+        location = game.collection.REAL_HEIGHT / 2;
     }
 }
