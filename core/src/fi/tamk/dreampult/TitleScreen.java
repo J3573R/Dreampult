@@ -15,58 +15,68 @@ import fi.tamk.dreampult.Helpers.Saves;
 import java.util.Locale;
 
 /**
- * Created by DV6-6B20 on 25.2.2016.
+ * @author Kalle Heinonen
  */
 public class TitleScreen implements Screen {
 
     public Dreampult game;
 
+    // Cameras used for drawing
     public OrthographicCamera GameCamera;
-
     public OrthographicCamera userInterfaceCamera;
 
     public Texture background;
 
     public boolean soundPressed;
 
+    // Textures for the level icons
     public Texture levelOne;
     public Texture levelTwo;
     public Texture levelTree;
 
-    public Texture lockedLevelTwo;
-    public Texture lockedLevelTree;
-
-    public Texture soundOn;
-    public Texture soundOff;
-
-    public Texture finActive;
-    public Texture britActive;
-
-
-    float splashTimer;
-
-    public Texture splashEng;
-    public Texture splashFin;
-
-    public Rectangle flagRectangle;
-
-    public Rectangle soundRectangle;
-
+    // Rectangles for the level icons
     public Rectangle firstLevelRectangle;
     public Rectangle secondLevelRectangle;
     public Rectangle thirdLevelRectangle;
 
+    // States of the sound button
+    public Texture soundOn;
+    public Texture soundOff;
+
+    // The rectangle for the sound button
+    public Rectangle soundRectangle;
+
+    // States of the language flags
+    public Texture finActive;
+    public Texture britActive;
+
+    // The rectangle for the language flags
+    public Rectangle flagRectangle;
+
+    // Timer used for drawing the splash screen
+    float splashTimer;
+
+    // Variants of the splash screen
+    public Texture splashEng;
+    public Texture splashFin;
+
+    // Button for accessing talent screen
     public Button talentButton;
+
+    // Button for resetting progress
     public Button resetProgress;
 
     Saves saves;
 
     Vector3 touchPoint;
 
+    /**
+     * Creates the title screen.
+     *
+     * @param game used for accessing the cameras, localization, and saves of Dreampult
+     */
     public TitleScreen(Dreampult game) {
         this.game = game;
-
-
 
         this.GameCamera = game.GameCamera;
         this.userInterfaceCamera = game.UserInterfaceCamera;
@@ -76,6 +86,8 @@ public class TitleScreen implements Screen {
         saves = game.saves;
 
         levelOne = game.assets.manager.get("images/title/level1_open.png", Texture.class);
+
+        // Checks the state of Level 2 and 3
         if(saves.isLevel2()) {
             levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
         } else {
@@ -87,9 +99,6 @@ public class TitleScreen implements Screen {
         } else {
             levelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
         }
-
-        lockedLevelTwo = game.assets.manager.get("images/title/level2_locked.png", Texture.class);
-        lockedLevelTree = game.assets.manager.get("images/title/level3_locked.png", Texture.class);
 
         soundOn = game.assets.manager.get("images/ui/soundOn.png", Texture.class);
         soundOff = game.assets.manager.get("images/ui/soundOff.png", Texture.class);
@@ -123,10 +132,16 @@ public class TitleScreen implements Screen {
     }
 
     @Override
+    /**
+     * Refreshes the state of the levels as soon as title screen is shown.
+     */
     public void show() {
         refreshLevels();
     }
 
+    /**
+     * Checks the status of the Levels, and changes the drawn images if needed.
+     */
     public void refreshLevels(){
         if(saves.isLevel2()) {
             levelTwo = game.assets.manager.get("images/title/level2_open.png", Texture.class);
@@ -143,6 +158,8 @@ public class TitleScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        // Draws the splash screen
         if(splashTimer > 0) {
             if(Gdx.input.justTouched()) {
                 splashTimer = 0;
@@ -153,8 +170,10 @@ public class TitleScreen implements Screen {
 
             if(Gdx.input.justTouched()) {
                 userInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+                // Resets the loading screen and makes it load the correct level
+                // Also resets the questions so that they have the correct language
                 if (firstLevelRectangle.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Level loading started");
 
                     game.loadingScreen.questionHandler.clearQuestions();
                     game.loadingScreen.questionHandler.initializeQuestions();
@@ -163,7 +182,6 @@ public class TitleScreen implements Screen {
                     game.loadingScreen.reset(1);
 
                 } else if(secondLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel2()){
-                    System.out.println("Level 2 loading started");
 
                     game.loadingScreen.questionHandler.clearQuestions();
                     game.loadingScreen.questionHandler.initializeQuestions();
@@ -172,7 +190,6 @@ public class TitleScreen implements Screen {
                     game.loadingScreen.reset(2);
 
                 } else if(thirdLevelRectangle.contains(touchPoint.x, touchPoint.y) && saves.isLevel3()){
-                    System.out.println("Level 3 loading started");
 
                     game.loadingScreen.questionHandler.clearQuestions();
                     game.loadingScreen.questionHandler.initializeQuestions();
@@ -180,10 +197,13 @@ public class TitleScreen implements Screen {
                     game.setScreen(game.loadingScreen);
                     game.loadingScreen.reset(3);
 
+                // Changes the language
                 } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
                     game.localization.changeLang();
                     talentButton.setText(game.localization.myBundle.get("talents"));
                     resetProgress.setText(game.localization.myBundle.get("reset"));
+
+                // Changes the state of the sound
                 }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y)))) {
                     if(saves.getSounds() == saves.ON) {
                         saves.setSounds(saves.OFF);
@@ -193,9 +213,12 @@ public class TitleScreen implements Screen {
                     saves.save();
                     game.player.toggle();
 
+                // Takes the player to the Talent Screen
                 } else if(talentButton.button.contains(touchPoint.x, touchPoint.y)){
                     game.collection.showTalentScreen();
                     game.setScreen(game.talentsScreen);
+
+                // Resets progress
                 } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
                     game.saves.reset();
                     refreshLevels();
@@ -256,9 +279,13 @@ public class TitleScreen implements Screen {
 
     @Override
     public void dispose() {
-        background.dispose();
+
     }
 
+    /**
+     * Draws the correct splash screen based on the current language
+     * @param batch
+     */
     public void drawSplash(SpriteBatch batch) {
         batch.setProjectionMatrix(userInterfaceCamera.combined);
 

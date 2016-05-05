@@ -8,67 +8,75 @@ import fi.tamk.dreampult.Dreampult;
 import fi.tamk.dreampult.Handlers.FontHandler;
 
 /**
- * Created by DV6-6B20 on 4.5.2016.
+ * @author Kalle Heinonen
  */
 public class ConfirmationText {
 
-        Dreampult game;
-        FontHandler fontHandler;
-        GlyphLayout correctAnswerLayout;
-        GlyphLayout incorrectAnswerLayout;
-        public float timer;
-        int location;
-        int round;
+    Dreampult game;
+    FontHandler fontHandler;
 
-        public ConfirmationText(Dreampult game) {
-            this.game = game;
-            this.fontHandler = game.fontHandler;
+    // Layouts for the text variants
+    GlyphLayout correctAnswerLayout;
+    GlyphLayout incorrectAnswerLayout;
 
-            location = game.collection.REAL_HEIGHT / 2;
+    // Timer for drawing the text
+    public float timer;
 
+    // Location of the text on the Y-axis
+    int location;
 
-            correctAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
-            incorrectAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
+    /**
+     * Creates a moving batch of text to show the player if they answered correctly.
+     *
+     * @param game used for accessing collection and fontHandler
+     */
+    public ConfirmationText(Dreampult game) {
+        this.game = game;
+        this.fontHandler = game.fontHandler;
 
-            timer = 1;
-            round = 0;
+        location = game.collection.REAL_HEIGHT / 2;
+
+        correctAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
+        incorrectAnswerLayout = new GlyphLayout(fontHandler.font, "loading");
+
+        timer = 1;
+    }
+
+    /**
+     * Draws a batch of text based on whether the player answered the question correctly or not.
+     *
+     * @param text decides whether "Correct" or "Incorrect" is drawn
+     * @param direction decides the movement direction for the text, up or down
+     */
+    public void drawText(boolean text, boolean direction) {
+        if (timer > 0) {
+
+        if (text && direction) {
+            fontHandler.draw(game.batch,
+                    game.localization.myBundle.get("correctAnswer"),
+                    game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.WHITE);
+            location += 2;
+
+        } else if (!text && !direction) {
+            fontHandler.draw(game.batch,
+                    game.localization.myBundle.get("incorrectAnswer"),
+                    game.collection.REAL_WIDTH / 2 - (int)incorrectAnswerLayout.width / 2, location, Color.WHITE);
+            location -= 2;
         }
 
-        public void drawText(boolean text, boolean direction) {
-            if (text && direction) {
-                    fontHandler.draw(game.batch,
-                            game.localization.myBundle.get("correctAnswer"),
-                            game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.WHITE);
-                    System.out.println("Location: " + location);
-                    location += 2;
-
-            } else if (!text && !direction) {
-                    fontHandler.draw(game.batch,
-                            game.localization.myBundle.get("incorrectAnswer"),
-                            game.collection.REAL_WIDTH / 2 - (int)incorrectAnswerLayout.width / 2, location, Color.WHITE);
-                    location -= 2;
-            }
-            //game.batch.end();
-            timer -= Gdx.graphics.getDeltaTime();
-            System.out.println(timer);
-            round++;
-            timeOut();
-
-        }
-
-        public boolean timeOut() {
-            boolean end = false;
-
-            if (timer > 0) {
-                end = false;
-            } else if (timer <= 0) {
-                end = true;
-
-                game.setScreen(game.gameLoop);
-                game.collection.start();
-                game.loadingScreen.answerInteger = 0;
-            }
-
-            return end;
+        timer -= Gdx.graphics.getDeltaTime();
+        timeOut();
         }
     }
+
+    /**
+     * Checks the timer, and changes the screen when the timer ends.
+     */
+    public void timeOut() {
+        if (timer <= 0) {
+            game.setScreen(game.gameLoop);
+            game.collection.start();
+            game.loadingScreen.answerInteger = 0;
+        }
+    }
+}

@@ -8,21 +8,29 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by DV6-6B20 on 2.4.2016.
+ * @author Kalle Heinonen
  */
 public class QuestionHandler {
 
+    // ArrayList for the questions
     ArrayList<Question> questions = new ArrayList();
+
     Dreampult game;
 
+    /**
+     * Maintains the questions array, and supplies a random question when needed.
+     *
+     * @param game Used for fetching the localized questions from Localization
+     */
     public QuestionHandler(Dreampult game){
         this.game = game;
 
         initializeQuestions();
-
-        //"baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab" <-- Maximum length for a question
     }
 
+    /**
+     * Initializes the question array
+     */
     public void initializeQuestions() {
         questions.add(new Question(game.localization.myBundle.get("questionOneOne"), true));
         questions.add(new Question(game.localization.myBundle.get("questionOneTwo"), true));
@@ -85,10 +93,18 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionThreeEighteen"), true));
     }
 
+    /**
+     * Used to clear the questions array
+     */
     public void clearQuestions() {
         questions.clear();
     }
 
+    /**
+     * Returns a random question from the array
+     *
+     * @return Returns a random question
+     */
     public Question anyItem() {
         Random random = new Random();
         int index = random.nextInt(questions.size());

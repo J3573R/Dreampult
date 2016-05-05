@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-import com.badlogic.gdx.utils.I18NBundle;
 import fi.tamk.dreampult.Handlers.FontHandler;
 import fi.tamk.dreampult.Handlers.QuestionHandler;
 import fi.tamk.dreampult.Helpers.Button;
@@ -22,26 +21,38 @@ import fi.tamk.dreampult.Maps.Map;
 import fi.tamk.dreampult.Maps.Maps;
 
 /**
- * Created by DV6-6B20 on 15.3.2016.
+ * @author Kalle Heinonen
  */
 public class LoadingScreen implements Screen {
 
     public Dreampult game;
 
+    // Cameras used for drawing
     public OrthographicCamera GameCamera;
-
     public OrthographicCamera UserInterfaceCamera;
 
+    // The background of the loading screen
     public Texture background;
 
+    // Textures for the buttons while loading
     public Texture blankFalse;
     public Texture blankTrue;
 
+    // Textures for the buttons when loading is done
     public Texture falseTexture;
     public Texture trueTexture;
 
+    // Rectangles for the buttons
     public Rectangle truthRectangle;
     public Rectangle falseRectangle;
+
+    // Buttons for answering
+    Button truthButton;
+    Button falseButton;
+
+    // The text for the buttons
+    String positiveAnswer;
+    String negativeAnswer;
 
     FontHandler fontHandler;
 
@@ -53,16 +64,12 @@ public class LoadingScreen implements Screen {
 
     Question question;
 
-    String positiveAnswer;
-    String negativeAnswer;
-
     ShapeRenderer shapeRenderer;
-
-    Button truthButton;
-    Button falseButton;
 
     Map map;
     Maps maps;
+
+    // GlyphLayout for the loading text
     GlyphLayout layout;
 
     int level;
@@ -71,10 +78,16 @@ public class LoadingScreen implements Screen {
 
     ConfirmationText confirmationText;
 
+    // Used for determining if the answer was correct or not
     public int answerInteger = 0;
     final int CORRECT = 1;
     final int INCORRECT = 2;
 
+    /**
+     * Creates the loading screen.
+     *
+     * @param game used for accessing the cameras, localization, and fontHandler
+     */
     public LoadingScreen(Dreampult game) {
         this.game = game;
         this.GameCamera = game.GameCamera;
@@ -101,6 +114,11 @@ public class LoadingScreen implements Screen {
         confirmationText = new ConfirmationText(game);
     }
 
+    /**
+     * Resets the loading screen
+     *
+     * @param level the chosen level, used for drawing the correct background
+     */
     public void reset(int level) {
         this.level = level;
         loaded = false;
@@ -153,6 +171,9 @@ public class LoadingScreen implements Screen {
     }
 
     @Override
+    /**
+     * Loads the assets shared by all levels.
+     */
     public void show() {
         game.assets.loadObjects();
     }
@@ -165,56 +186,35 @@ public class LoadingScreen implements Screen {
                 loading = game.localization.myBundle.get("loaded");
                 layout.setText(fontHandler.font, loading);
 
+                // Checks what the player answered, and compares the answer to the correct answer
                 if (Gdx.input.justTouched()) {
                     UserInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
                     if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        //System.out.println("Truth chosen");
                         if (question.isTrue(true)) {
-//                        positiveSound.play();
                             game.gameLoop.bounces += 1;
                             game.sounds.play("positive");
                             answerInteger = CORRECT;
                         } else {
                             game.sounds.play("negative");
                             answerInteger = INCORRECT;
-//                        negativeSound.play();
-                        }
-
-                        if (confirmationText.timeOut()) {
-                            System.out.println("Time over: " + confirmationText.timer);
-                            //answerInteger = 0;
-                            //game.setScreen(game.gameLoop);
-                            //game.collection.start();
-                        } else if (!confirmationText.timeOut()) {
-                            System.out.println("Timer: " + confirmationText.timer);
                         }
 
                     } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
                         if (question.isTrue(false)) {
-//                        positiveSound.play();
                             game.gameLoop.bounces += 1;
                             game.sounds.play("positive");
                             answerInteger = CORRECT;
                         } else {
                             game.sounds.play("negative");
                             answerInteger = INCORRECT;
-//                        negativeSound.play();
                         }
 
-                        if (confirmationText.timeOut()) {
-                            System.out.println("Time over: " + confirmationText.timer);
-                        } else if (!confirmationText.timeOut()) {
-                            System.out.println("Timer: " + confirmationText.timer);
-                        }
-
-                    } else {
-                        //System.out.println(touchPoint.x + " : " + touchPoint.y);
-                        //System.out.println(question);
                     }
                 }
             }
         } else {
+            // Loads the next level
             if(game.assets.manager.update()) {
                 this.map = maps.loadMap(level, game.assets.manager, game.collection);
                 game.gameLoop.reset(map);
@@ -235,12 +235,14 @@ public class LoadingScreen implements Screen {
         game.batch.draw(background, 0, 0, game.collection.SCREEN_WIDTH, game.collection.SCREEN_HEIGHT);
         game.batch.setProjectionMatrix(UserInterfaceCamera.combined);
 
+        // Draws the buttons based on the status of loading
         if(loaded) {
             game.batch.draw(trueTexture, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
             truthButton.drawShape(shapeRenderer, game.batch);
             game.batch.draw(falseTexture, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
             falseButton.drawShape(shapeRenderer, game.batch);
 
+        // If the loading isn't done yet, draws the buttons as blanks
         } else {
             game.batch.draw(blankTrue, truthRectangle.getX(), truthRectangle.getY(), truthRectangle.getWidth(), truthRectangle.getHeight());
             game.batch.draw(blankFalse, falseRectangle.getX(), falseRectangle.getY(), falseRectangle.getWidth(), falseRectangle.getHeight());
@@ -250,6 +252,7 @@ public class LoadingScreen implements Screen {
 
         game.batch.end();
 
+        // Draws a background for the loading text, making it easier to read
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setProjectionMatrix(UserInterfaceCamera.combined);
@@ -263,10 +266,12 @@ public class LoadingScreen implements Screen {
 
         game.batch.begin();
 
+        // Draws the loading text
         fontHandler.font.draw(game.batch, layout, 960 / 2 - layout.width / 2, 400);
 
         game.batch.end();
 
+        // Draws a background for the question, making it easier to read
         Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setProjectionMatrix(UserInterfaceCamera.combined);
@@ -280,8 +285,10 @@ public class LoadingScreen implements Screen {
 
         game.batch.begin();
 
+        // Draws the question
         question.draw(game.batch);
 
+        // Draws the correct confirmationText
         if (answerInteger == CORRECT) {
             confirmationText.drawText(true, true);
         } else if (answerInteger == INCORRECT) {

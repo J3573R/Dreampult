@@ -15,13 +15,14 @@ import fi.tamk.dreampult.Helpers.Popup;
 import fi.tamk.dreampult.Helpers.Saves;
 
 /**
- * Created by DV6-6B20 on 12.4.2016.
+ * @author Kalle Heinonen
  */
 public class TalentsScreen extends ScreenAdapter {
     public GameLoop loop;
     public OrthographicCamera userInterfaceCamera;
     public FontHandler font;
 
+    // Textures for the talent icons
     public Texture bouncyIcon;
     public Texture catapultIcon;
     public Texture jumpsIcon;
@@ -32,6 +33,7 @@ public class TalentsScreen extends ScreenAdapter {
 
     public ShapeRenderer shapeRenderer;
 
+    // The rectangles for the talents
     public Rectangle bouncyRectangle;
     public Rectangle slipperyRectangle;
     public Rectangle boostRectangle;
@@ -39,6 +41,7 @@ public class TalentsScreen extends ScreenAdapter {
     public Rectangle extraRectangle;
     public Rectangle pyjamaRectangle;
 
+    // The rectangles for the locks
     public Rectangle tierOneLock;
     public Rectangle tierTwoLock;
     public Rectangle tierThreeLock;
@@ -58,6 +61,7 @@ public class TalentsScreen extends ScreenAdapter {
 
     public Texture lock;
 
+    // Used to find out what talent is touched
     private int selected = 0;
     final private int BOUNCY = 1;
     final private int SLIP = 2;
@@ -73,11 +77,17 @@ public class TalentsScreen extends ScreenAdapter {
     public Button yesButton;
     public Button noButton;
 
+    // Used to find out which lock is touched
     private int selectedLock = 0;
     final private int TIER_ONE = 1;
     final private int TIER_TWO = 2;
     final private int TIER_THREE = 3;
 
+    /**
+     * The screen for accessing talents.
+     *
+     * @param game used for accessing saves, cameras, and localization of Dreampult
+     */
     public TalentsScreen(GameLoop game){
         loop = game;
         saves = game.game.saves;
@@ -93,6 +103,9 @@ public class TalentsScreen extends ScreenAdapter {
         initialized = false;
     }
 
+    /**
+     * Initializes the talent screen
+     */
     public void init() {
         saves = loop.game.saves;
         if(!initialized) {
@@ -108,18 +121,18 @@ public class TalentsScreen extends ScreenAdapter {
 
             shapeRenderer = new ShapeRenderer();
 
-            bouncyRectangle = new Rectangle(80, 10, 150, 150);
-            slipperyRectangle = new Rectangle(250, 10, 150, 150);
+            bouncyRectangle = new Rectangle(80, 170, 150, 150);
+            slipperyRectangle = new Rectangle(250, 170, 150, 150);
 
-            boostRectangle = new Rectangle(80, 170, 150, 150);
-            launchRectangle = new Rectangle(250, 170, 150, 150);
+            boostRectangle = new Rectangle(80, 330, 150, 150);
+            launchRectangle = new Rectangle(250, 330, 150, 150);
 
-            pyjamaRectangle = new Rectangle(80, 330, 150, 150);
-            extraRectangle = new Rectangle(250, 330, 150, 150);
+            pyjamaRectangle = new Rectangle(80, 10, 150, 150);
+            extraRectangle = new Rectangle(250, 10, 150, 150);
 
-            tierOneLock = new Rectangle(80, 330, 320, 142);
-            tierTwoLock = new Rectangle(80, 10, 320, 142);
-            tierThreeLock = new Rectangle(80, 170, 320, 142);
+            tierOneLock = new Rectangle(80, 10, 320, 142);
+            tierTwoLock = new Rectangle(80, 170, 320, 142);
+            tierThreeLock = new Rectangle(80, 330, 320, 142);
 
             resetButton = new Button(loop.fontHandler, 520, 0, 260, 100, loop.game.localization.myBundle.get("reset"));
             returnButton = new Button(loop.fontHandler, 550, 150, 200, 100, loop.game.localization.myBundle.get("mainMenu"));
@@ -152,27 +165,56 @@ public class TalentsScreen extends ScreenAdapter {
 
             if (!tutorial.returnState()) {
 
+                // If a tier is unlocked, its talents have their images drawn
+                // Otherwise a lock is drawn on top of them
+                if(saves.isTier1()) {
+                    if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
+
+                        if (!saves.isExtraBounces()) {
+                            saves.enableExtraBounces();
+                            saves.save();
+                            selected = EXTRA;
+                        } else {
+                            selected = EXTRA;
+                        }
+
+                    } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
+
+                        if (!saves.isPyjamaProtection()) {
+                            saves.enablePyjamaProtection();
+                            saves.save();
+                            selected = BLOCK;
+                        } else {
+                            selected = BLOCK;
+                        }
+                    }
+                } else {
+                    if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
+                        selectedLock = TIER_ONE;
+                        purchase = true;
+                        notEnoughStars = false;
+
+                    } else if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
+                        notEnoughStars = true;
+                    }
+                }
+
                 if(saves.isTier2()) {
                     if (bouncyRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        System.out.println("Rectangle One touched");
-
                         if (!saves.isGrowBouncy()) {
                             saves.enableGrowBouncy();
                             saves.save();
                             selected = BOUNCY;
-                            System.out.println("Grow Bouncy enabled.");
                         } else {
                             selected = BOUNCY;
                         }
 
                     } else if (slipperyRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        System.out.println("Rectangle Two touched");
 
                         if (!saves.isGrowSlippery()) {
                             saves.enableGrowSlippery();
                             saves.save();
                             selected = SLIP;
-                            System.out.println("Grow Slippery enabled.");
                         } else {
                             selected = SLIP;
                         }
@@ -182,34 +224,28 @@ public class TalentsScreen extends ScreenAdapter {
                         selectedLock = TIER_TWO;
                         purchase = true;
                         notEnoughStars = false;
-                        System.out.println("Lock Two touched");
                     } else if ((tierTwoLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
-                        System.out.println("Not enough stars!");
                         notEnoughStars = true;
                     }
                 }
 
                 if(saves.isTier3()) {
                     if (boostRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        System.out.println("Rectangle Three touched");
 
                         if (!saves.isBoostLaunch()) {
                             saves.enableBoostLaunch();
                             saves.save();
                             selected = BOOST;
-                            System.out.println("Boost Launch enabled.");
                         } else {
                             selected = BOOST;
                         }
 
                     } else if (launchRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        System.out.println("Rectangle Four touched");
 
                         if (!saves.isAdditionalLaunch()) {
                             saves.enableAdditionalLaunch();
                             saves.save();
                             selected = ADDITIONAL;
-                            System.out.println("Additional Launch enabled.");
                         } else {
                             selected = ADDITIONAL;
                         }
@@ -219,91 +255,50 @@ public class TalentsScreen extends ScreenAdapter {
                         selectedLock = TIER_THREE;
                         purchase = true;
                         notEnoughStars = false;
-                        System.out.println("Lock Three touched");
                     } else if ((tierThreeLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
-                        System.out.println("Not enough stars!");
                         notEnoughStars = true;
                     }
                 }
 
-                if(saves.isTier1()) {
-                    if (extraRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        System.out.println("Rectangle Five touched");
-
-                        if (!saves.isExtraBounces()) {
-                            saves.enableExtraBounces();
-                            saves.save();
-                            selected = EXTRA;
-                            System.out.println("Extra Bounces enabled.");
-                        } else {
-                            selected = EXTRA;
-                        }
-
-                    } else if (pyjamaRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        System.out.println("Rectangle Six touched");
-
-                        if (!saves.isPyjamaProtection()) {
-                            saves.enablePyjamaProtection();
-                            saves.save();
-                            selected = BLOCK;
-                            System.out.println("Pyjama Protection enabled.");
-                        } else {
-                            selected = BLOCK;
-                        }
-                    }
-                } else {
-                    if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() >= 10)) {
-                        System.out.println("Lock One touched");
-                            selectedLock = TIER_ONE;
-                            purchase = true;
-                            notEnoughStars = false;
-
-                    } else if ((tierOneLock.contains(touchPoint.x, touchPoint.y)) && (saves.getStars() < 10)){
-                        System.out.println("Not enough stars!");
-                        notEnoughStars = true;
-                    }
-                }
-
+                // If a lock is touched while having a correct amount of stars
                 if (purchase) {
+                    // If player chooses "Yes", the tier is unlocked
                     if (yesButton.button.contains(touchPoint.x, touchPoint.y)) {
 
                         if (selectedLock == TIER_ONE) {
                             saves.unlockTier(1);
-                            System.out.println("Tier One unlocked.");
                             purchase = false;
                             selectedLock = 0;
 
                         } else if (selectedLock == TIER_TWO) {
                             saves.unlockTier(2);
-                            System.out.println("Tier Two unlocked.");
                             purchase = false;
                             selectedLock = 0;
 
                         } else if (selectedLock == TIER_THREE) {
                             saves.unlockTier(3);
-                            System.out.println("Tier Three unlocked.");
                             purchase = false;
                             selectedLock = 0;
                         }
 
+                    // The tier is not unlocked if the player chooses "No"
                     } else if (noButton.button.contains(touchPoint.x, touchPoint.y)) {
                         purchase = false;
                         selectedLock = 0;
                     }
                 }
 
+                // Resets the status of the tiers, locking them
                 if (resetButton.button.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Reset button pressed");
-                    //resetProgress();
                     saves.resetTalents();
                     selected = 0;
                     selectedLock = 0;
                     purchase = false;
                     notEnoughStars = false;
 
+                // Returns the player back to the title screen
                 } else if (returnButton.button.contains(touchPoint.x, touchPoint.y)) {
                     loop.game.collection.hideTalentScreen();
-                    //savePreferences();
                     saves.save();
                     selected = 0;
                     selectedLock = 0;
@@ -334,6 +329,7 @@ public class TalentsScreen extends ScreenAdapter {
 
         loop.game.batch.draw(background, 0, 0, 960, 540);
 
+        // Draws either a lock or the talent icons
         if(!saves.isTier1()) {
             loop.game.batch.draw(lock, tierOneLock.getX(), tierOneLock.getY(), tierOneLock.getWidth(), tierOneLock.getHeight());
         } else {
@@ -355,13 +351,14 @@ public class TalentsScreen extends ScreenAdapter {
             loop.game.batch.draw(catapultIcon, launchRectangle.getX(), launchRectangle.getY(), launchRectangle.getWidth(), launchRectangle.getHeight());
         }
 
+        // Sets the texts for the buttons in the current language
         resetButton.setText(loop.game.localization.myBundle.get("reset"));
-
         returnButton.setText(loop.game.localization.myBundle.get("mainMenu"));
 
         resetButton.drawImage(loop.game.batch);
         returnButton.drawImage(loop.game.batch);
 
+        // If a talent icon is pressed, its description is drawn to the upper right corner of the screen
         if(selected > 0) {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
 
@@ -388,10 +385,12 @@ public class TalentsScreen extends ScreenAdapter {
         tutorial.setText(loop.game.localization.myBundle.get("talentTutorial"));
         tutorial.setPosition(loop.collection.REAL_WIDTH / 2, loop.collection.REAL_HEIGHT / 2);
 
+        // Draws the tutorial if no tiers are unlocked when entering the screen
         if(!saves.isTier1() && !saves.isTier2() && !saves.isTier3()) {
             tutorial.draw(loop.game.batch);
         }
 
+        // Draws a purchase prompt if a lock is touched while having at least 10 stars
         if (purchase) {
             loop.game.batch.draw(emptyBox, 450, 290, 425, 300);
             font.draw(loop.game.batch, loop.game.localization.myBundle.get("tierUnlock"), 465, 470);
@@ -405,6 +404,29 @@ public class TalentsScreen extends ScreenAdapter {
         }
 
         loop.game.batch.end();
+
+        // Draws a black box on top of talents that aren't currently in use
+        if (saves.isTier1()) {
+            if(!saves.isExtraBounces()) {
+                Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
+                shapeRenderer.setColor(0, 0, 0, 0.75f);
+                shapeRenderer.rect(extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
+                shapeRenderer.setColor(1, 0, 0, 1);
+                shapeRenderer.end();
+            }
+
+            if(!saves.isPyjamaProtection()) {
+                Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
+                shapeRenderer.setColor(0, 0, 0, 0.75f);
+                shapeRenderer.rect(pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
+                shapeRenderer.setColor(1, 0, 0, 1);
+                shapeRenderer.end();
+            }
+        }
 
         if(saves.isTier2()) {
             if(!saves.isGrowBouncy()) {
@@ -445,28 +467,6 @@ public class TalentsScreen extends ScreenAdapter {
                 shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
                 shapeRenderer.setColor(0, 0, 0, 0.75f);
                 shapeRenderer.rect(launchRectangle.getX(), launchRectangle.getY(), launchRectangle.getWidth(), launchRectangle.getHeight());
-                shapeRenderer.setColor(1, 0, 0, 1);
-                shapeRenderer.end();
-            }
-        }
-
-        if (saves.isTier1()) {
-            if(!saves.isExtraBounces()) {
-                Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
-                shapeRenderer.setColor(0, 0, 0, 0.75f);
-                shapeRenderer.rect(extraRectangle.getX(), extraRectangle.getY(), extraRectangle.getWidth(), extraRectangle.getHeight());
-                shapeRenderer.setColor(1, 0, 0, 1);
-                shapeRenderer.end();
-            }
-
-            if(!saves.isPyjamaProtection()) {
-                Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setProjectionMatrix(userInterfaceCamera.combined);
-                shapeRenderer.setColor(0, 0, 0, 0.75f);
-                shapeRenderer.rect(pyjamaRectangle.getX(), pyjamaRectangle.getY(), pyjamaRectangle.getWidth(), pyjamaRectangle.getHeight());
                 shapeRenderer.setColor(1, 0, 0, 1);
                 shapeRenderer.end();
             }
