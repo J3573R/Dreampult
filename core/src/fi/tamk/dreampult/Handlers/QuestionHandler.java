@@ -50,7 +50,6 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionOneSixteen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionOneSeventeen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionOneEighteen"), true));
-        //questions.add(new Question(game.localization.myBundle.get("questionOneNineteen"), false));
         questions.add(new Question(game.localization.myBundle.get("questionOneTwenty"), false));
 
         questions.add(new Question(game.localization.myBundle.get("questionTwoOne"), true));
@@ -87,7 +86,6 @@ public class QuestionHandler {
         questions.add(new Question(game.localization.myBundle.get("questionThreeTwelve"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeThirteen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeFourteen"), true));
-        //questions.add(new Question(game.localization.myBundle.get("questionThreeFifteen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeSixteen"), false));
         questions.add(new Question(game.localization.myBundle.get("questionThreeSeventeen"), true));
         questions.add(new Question(game.localization.myBundle.get("questionThreeEighteen"), true));
