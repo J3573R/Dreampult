@@ -30,6 +30,7 @@ public class MusicPlayer {
     public void playLevel1(){
         playing.stop();
         playing = manager.get("audio/Music/bensound-dance.mp3");
+        playing.setLooping(true);
         toggle();
     }
 
@@ -39,6 +40,7 @@ public class MusicPlayer {
     public void playLevel2(){
         playing.stop();
         playing = manager.get("audio/Music/bensound-scifi.mp3");
+        playing.setLooping(true);
         toggle();
     }
 
@@ -48,6 +50,7 @@ public class MusicPlayer {
     public void playLevel3(){
         playing.stop();
         playing = manager.get("audio/Music/bensound-creepy.mp3");
+        playing.setLooping(true);
         toggle();
     }
 

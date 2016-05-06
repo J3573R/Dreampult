@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 /**
- * @author Kalle Heinonen
+ * @author Kalle Heinonen & Tommi Hagelberg
  */
 public class Saves {
     Preferences prefs;

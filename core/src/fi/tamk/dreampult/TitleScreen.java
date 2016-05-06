@@ -121,7 +121,7 @@ public class TitleScreen implements Screen {
         secondLevelRectangle = new Rectangle(960 / 5 * 2, 80, 180, 120);
         thirdLevelRectangle = new Rectangle(960 / 5 * 3, 80, 180, 120);
 
-        talentButton = new Button(game.fontHandler, 960 / 2 - 150 / 2, 20, 150, 50, game.localization.myBundle.get("talents"));
+        talentButton = new Button(game.fontHandler, 960 / 2 - 160 / 2, 10, 160, 60, game.localization.myBundle.get("talents"));
         talentButton.setText(game.localization.myBundle.get("talents"));
         talentButton.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
 
