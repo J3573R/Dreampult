@@ -39,7 +39,7 @@ public class ConfirmationText {
 
         correctAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, game.localization.myBundle.get("correctAnswer"));
         incorrectAnswerLayout = new GlyphLayout(fontHandler.confirmationFont, game.localization.myBundle.get("incorrectAnswer"));
-        newStageLayout = new GlyphLayout(fontHandler.confirmationFont, game.localization.myBundle.get("stageUnlock"));
+        newStageLayout = new GlyphLayout(fontHandler.congratulationsFont, game.localization.myBundle.get("stageUnlock"));
 
         timer = 1;
     }
@@ -73,13 +73,20 @@ public class ConfirmationText {
 
     public void drawStageUnlock() {
         if (timer > 0) {
-                fontHandler.drawConfirmation(game.batch,
+                fontHandler.drawCongratulations(game.batch,
                         game.localization.myBundle.get("stageUnlock"),
-                        game.collection.REAL_WIDTH / 2 - (int)correctAnswerLayout.width / 2, location, Color.GREEN);
+                        game.collection.REAL_WIDTH / 2 - (int)newStageLayout.width / 2, location);
                 location += 2;
 
             timer -= Gdx.graphics.getDeltaTime();
-            timeOut();
+            confirmationTimeOut();
+        }
+    }
+
+    public void confirmationTimeOut() {
+        if (timer <= 0) {
+            game.gameLoop.levelUnlock = 0;
+            reset();
         }
     }
 

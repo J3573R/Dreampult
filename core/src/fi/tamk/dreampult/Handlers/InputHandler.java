@@ -107,6 +107,15 @@ public class InputHandler extends InputAdapter {
                     loop.levelUnlock = 0;
                     loop.dispose();
                     System.exit(0);
+                } else if(loop.collection.isPauseMenu() && loop.ui.resumeButton.button.contains(touchPos.x, touchPos.y)) {
+                    /**
+                     * Resume game.
+                     */
+                    loop.game.collection.start();
+                    loop.game.collection.hidePauseMenu();
+                    if(!loop.collection.launch) {
+                        loop.tutorial.show();
+                    }
                 } else if(loop.collection.isScoreScreen()) {
                     if(loop.ui.talentsButton.button.contains(touchPos.x, touchPos.y)) {
                         /**

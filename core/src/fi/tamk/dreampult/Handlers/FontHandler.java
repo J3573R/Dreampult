@@ -13,11 +13,13 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class FontHandler {
 
     /**
-     * Font we use throughout our game.
+     * Fonts we use throughout our game.
      */
     public BitmapFont font;
 
     public BitmapFont confirmationFont;
+
+    public BitmapFont congratulationsFont;
 
     /**
      * Generates default font for use.
@@ -33,6 +35,10 @@ public class FontHandler {
 
         parameter.size = 96;
         confirmationFont = generator.generateFont(parameter);
+
+        parameter.size = 32;
+        parameter.color = Color.GREEN;
+        congratulationsFont = generator.generateFont(parameter);
         generator.dispose();
     }
 
@@ -60,5 +66,7 @@ public class FontHandler {
         confirmationFont.draw(batch, text, x, y);
     }
 
-
+    public void drawCongratulations(SpriteBatch batch, String text, int x, int y) {
+        congratulationsFont.draw(batch, text, x, y);
+    }
 }

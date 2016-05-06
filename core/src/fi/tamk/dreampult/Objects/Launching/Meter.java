@@ -70,13 +70,13 @@ public class Meter {
             batch.draw(meterColor,       //Texture
                     0 + game.player.torso.body.getPosition().x, 3f,    //PositionX, PositionY
                     0f, 0f,       //OriginX, OriginY
-                    2, 2,       //Width, Height
+                    3.5f, 3.5f,       //Width, Height
                     0.5f, scale,       // ScaleX, ScaleY
                     0);         //Rotation
             batch.draw(meter,       //Texture
                     0 + game.player.torso.body.getPosition().x, 3f,    //PositionX, PositionY
                     0f, 0f,       //OriginX, OriginY
-                    2, 2,       //Width, Height
+                    3.5f, 3.5f,       //Width, Height
                     0.5f, meterMax,       // ScaleX, ScaleY
                     0);         //Rotation
         }

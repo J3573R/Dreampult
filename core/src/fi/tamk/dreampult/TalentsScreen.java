@@ -161,6 +161,9 @@ public class TalentsScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Updates the amount of stars shown on the Star Button.
+     */
     public void refreshStarButton () {
         starButton.setText(String.valueOf(saves.getStars()));
     }
