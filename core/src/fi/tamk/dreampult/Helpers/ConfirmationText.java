@@ -98,6 +98,7 @@ public class ConfirmationText {
             game.setScreen(game.gameLoop);
             game.collection.start();
             game.loadingScreen.answerInteger = 0;
+            game.loadingScreen.bouncesAdded = false;
             reset();
         }
     }

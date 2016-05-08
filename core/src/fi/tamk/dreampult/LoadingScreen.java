@@ -83,6 +83,8 @@ public class LoadingScreen implements Screen {
     final int CORRECT = 1;
     final int INCORRECT = 2;
 
+    public boolean bouncesAdded;
+
     /**
      * Creates the loading screen.
      *
@@ -111,6 +113,8 @@ public class LoadingScreen implements Screen {
         touchPoint = new Vector3();
 
         confirmationText = new ConfirmationText(game);
+
+        bouncesAdded = false;
     }
 
     /**
@@ -191,7 +195,10 @@ public class LoadingScreen implements Screen {
 
                     if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
                         if (question.isTrue(true)) {
-                            game.gameLoop.bounces += 1;
+                            if (!bouncesAdded) {
+                                game.gameLoop.bounces += 1;
+                                bouncesAdded = true;
+                            }
                             game.sounds.play("positive");
                             answerInteger = CORRECT;
                         } else {
@@ -201,7 +208,10 @@ public class LoadingScreen implements Screen {
 
                     } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
                         if (question.isTrue(false)) {
-                            game.gameLoop.bounces += 1;
+                            if (!bouncesAdded) {
+                                game.gameLoop.bounces += 1;
+                                bouncesAdded = true;
+                            }
                             game.sounds.play("positive");
                             answerInteger = CORRECT;
                         } else {
