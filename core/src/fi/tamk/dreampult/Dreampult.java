@@ -1,17 +1,9 @@
 package fi.tamk.dreampult;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.I18NBundle;
-import com.badlogic.gdx.utils.TimeUtils;
-
-import java.util.Locale;
 
 import fi.tamk.dreampult.Handlers.AssetHandler;
 import fi.tamk.dreampult.Handlers.FontHandler;

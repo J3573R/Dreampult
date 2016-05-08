@@ -63,9 +63,6 @@ public class TitleScreen implements Screen {
     // Button for accessing talent screen
     public Button talentButton;
 
-    // Button for resetting progress
-    public Button resetProgress;
-
     Saves saves;
 
     Vector3 touchPoint;
@@ -124,10 +121,6 @@ public class TitleScreen implements Screen {
         talentButton = new Button(game.fontHandler, 960 / 2 - 160 / 2, 10, 160, 60, game.localization.myBundle.get("talents"));
         talentButton.setText(game.localization.myBundle.get("talents"));
         talentButton.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
-
-        resetProgress = new Button(game.fontHandler, 960 - 280, 540 - 50, 280, 50, game.localization.myBundle.get("talents"));
-        resetProgress.setText(game.localization.myBundle.get("reset"));
-        resetProgress.buttonImage = game.assets.manager.get("images/ui/text_button.png", Texture.class);
 
         touchPoint = new Vector3();
         splashTimer = 5;
@@ -203,7 +196,6 @@ public class TitleScreen implements Screen {
                 } else if (flagRectangle.contains(touchPoint.x, touchPoint.y)) {
                     game.localization.changeLang();
                     talentButton.setText(game.localization.myBundle.get("talents"));
-                    resetProgress.setText(game.localization.myBundle.get("reset"));
 
                 // Changes the state of the sound
                 }  else if (((soundRectangle.contains(touchPoint.x, touchPoint.y)))) {
@@ -221,10 +213,6 @@ public class TitleScreen implements Screen {
                     game.collection.showTalentScreen();
                     game.setScreen(game.talentsScreen);
 
-                // Resets progress
-                } else if(resetProgress.button.contains(touchPoint.x, touchPoint.y)) {
-                    game.saves.reset();
-                    refreshLevels();
                 }
             }
 
@@ -240,7 +228,6 @@ public class TitleScreen implements Screen {
             game.batch.draw(levelTree, thirdLevelRectangle.x, thirdLevelRectangle.y, 180, 130);
 
             talentButton.drawImage(game.batch);
-            resetProgress.drawImage(game.batch);
 
             if(saves.getSounds() == saves.OFF) {
                 game.batch.draw(soundOff, soundRectangle.getX(), soundRectangle.getY(),
