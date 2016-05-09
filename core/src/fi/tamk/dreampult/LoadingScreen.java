@@ -193,32 +193,31 @@ public class LoadingScreen implements Screen {
                 if (Gdx.input.justTouched()) {
                     UserInterfaceCamera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-                    if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        if (question.isTrue(true)) {
-                            if (!bouncesAdded) {
-                                game.gameLoop.bounces += 1;
-                                bouncesAdded = true;
+                    if (!bouncesAdded) {
+                        
+                        if (truthRectangle.contains(touchPoint.x, touchPoint.y)) {
+                            if (question.isTrue(true)) {
+                                    game.gameLoop.bounces += 1;
+                                    bouncesAdded = true;
+                                game.sounds.play("positive");
+                                answerInteger = CORRECT;
+                            } else {
+                                game.sounds.play("negative");
+                                answerInteger = INCORRECT;
                             }
-                            game.sounds.play("positive");
-                            answerInteger = CORRECT;
-                        } else {
-                            game.sounds.play("negative");
-                            answerInteger = INCORRECT;
-                        }
 
-                    } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
-                        if (question.isTrue(false)) {
-                            if (!bouncesAdded) {
-                                game.gameLoop.bounces += 1;
-                                bouncesAdded = true;
+                        } else if (falseRectangle.contains(touchPoint.x, touchPoint.y)) {
+                            if (question.isTrue(false)) {
+                                    game.gameLoop.bounces += 1;
+                                    bouncesAdded = true;
+                                game.sounds.play("positive");
+                                answerInteger = CORRECT;
+                            } else {
+                                game.sounds.play("negative");
+                                answerInteger = INCORRECT;
                             }
-                            game.sounds.play("positive");
-                            answerInteger = CORRECT;
-                        } else {
-                            game.sounds.play("negative");
-                            answerInteger = INCORRECT;
-                        }
 
+                        }
                     }
                 }
             }
